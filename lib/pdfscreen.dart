@@ -2,7 +2,9 @@ import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/homepage.dart';
+import 'package:pdfviewer/popupmenubutton.dart';
 import 'package:pdfviewer/recentpage.dart';
+import 'package:pdfviewer/searchPage.dart';
 
 class pdfscreen extends StatefulWidget {
   @override
@@ -25,15 +27,14 @@ class _pdfscreenState extends State<pdfscreen> {
           style: TextStyle(color: Colors.black),
         ),
         actions: <Widget>[
+          ///search button
+
           IconButton(
-            // Within the `FirstRoute` widget
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => search(),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => searchBar()),
+              );
             },
             icon: Icon(
               Icons.search,
@@ -41,94 +42,16 @@ class _pdfscreenState extends State<pdfscreen> {
               color: Colors.black,
             ),
           ),
-          PopupMenuButton(
-            icon: Icon(
-              Icons.menu,
-              color: Colors.black,
-            ),
-            color: Colors.white,
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: Text("Date"),
-                value: 1,
-              ),
-              PopupMenuItem(
-                child: Text("Name"),
-                value: 2,
-              ),
-              PopupMenuItem(
-                child: Text("Size"),
-                value: 3,
-              )
-            ],
-          ),
+
+          ///popupmanu
+
+          PopUpMenu(),
+
+          ///more
+
           IconButton(
             onPressed: () {
-              showModalBottomSheet<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    color: Colors.white,
-                    height: 230,
-                    child: Column(
-                      children: [
-                        ListTile(
-                          title: Text(
-                            "Brows More file",
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.8),
-                            ),
-                          ),
-                          leading: Icon(
-                            Icons.folder,
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                          onTap: () {},
-                        ),
-                        ListTile(
-                          title: Text(
-                            "Rate Us",
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.8),
-                            ),
-                          ),
-                          leading: Icon(
-                            Icons.star,
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                          onTap: () {},
-                        ),
-                        ListTile(
-                          title: Text(
-                            "Share this app",
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.8),
-                            ),
-                          ),
-                          leading: Icon(
-                            Icons.share,
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                          onTap: () {},
-                        ),
-                        ListTile(
-                          title: Text(
-                            "Privacy Policy",
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.8),
-                            ),
-                          ),
-                          leading: Icon(
-                            Icons.privacy_tip,
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                          onTap: () {},
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
+              bottomNavBar(context);
             },
             icon: Icon(
               Icons.more_vert,
@@ -172,6 +95,74 @@ class _pdfscreenState extends State<pdfscreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> bottomNavBar(BuildContext context) {
+    return showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          color: Colors.white,
+          height: 230,
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(
+                  "Brows More file",
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+                leading: Icon(
+                  Icons.folder,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text(
+                  "Rate Us",
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+                leading: Icon(
+                  Icons.star,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text(
+                  "Share this app",
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+                leading: Icon(
+                  Icons.share,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text(
+                  "Privacy Policy",
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+                leading: Icon(
+                  Icons.privacy_tip,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                onTap: () {},
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

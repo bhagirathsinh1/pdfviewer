@@ -12,7 +12,7 @@ class _FavouritepageState extends State<Favouritepage> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        child: Text("In recent page"),
+        child: Text("In favourite page"),
       ),
     );
   }
