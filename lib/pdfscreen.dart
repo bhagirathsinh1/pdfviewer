@@ -1,5 +1,8 @@
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:pdfviewer/favouritepage.dart';
+import 'package:pdfviewer/homepage.dart';
+import 'package:pdfviewer/recentpage.dart';
 
 class pdfscreen extends StatefulWidget {
   @override
@@ -137,27 +140,9 @@ class _pdfscreenState extends State<pdfscreen> {
       body: PageView(
         controller: _pageController,
         children: [
-          Center(
-            child: Container(
-              child: Text(
-                "In home page",
-              ),
-            ),
-          ),
-          Center(
-            child: Container(
-              child: Text(
-                "In recent page",
-              ),
-            ),
-          ),
-          Center(
-            child: Container(
-              child: Text(
-                "In favourite page",
-              ),
-            ),
-          ),
+          Homepage(),
+          Recentpage(),
+          Favouritepage(),
         ],
         onPageChanged: (index) {
           setState(() => _currentPage = index);
