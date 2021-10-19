@@ -39,9 +39,14 @@ dependencies:
   widgets: ^1.4.5
   flutter_file_manager: ^0.2.0
   path_provider_ex: ^1.0.1
+  
   flutter_full_pdf_viewer: ^1.0.6
   gradient_progress_indicator: ^1.0.0+5
   progress_indicators: ^1.0.0
+  path_provider_extention: ^1.0.3
+  advance_pdf_viewer: ^2.0.0
+  syncfusion_flutter_pdfviewer: ^19.3.45-beta
+  file_manager: ^1.0.0
 
 dev_dependencies:
   flutter_test:

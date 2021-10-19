@@ -40,9 +40,11 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Center(
       child: Scaffold(
-        // appBar: AppBar(
-        //     title: Text("PDF File list from SD Card"),
-        //     backgroundColor: Colors.redAccent),
+        appBar: files == null
+            ? null
+            : AppBar(
+                title: Text("Total ${files.length} pdf found !"),
+                backgroundColor: Colors.redAccent),
         body: files == null
             ? Center(
                 child: Column(
@@ -58,7 +60,7 @@ class _HomepageState extends State<Homepage> {
             : ListView.builder(
                 //if file/folder list is grabbed, then show here
                 itemCount: files?.length ?? 0,
-                
+
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
