@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
 import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
+import 'package:gradient_progress_indicator/widget/gradient_progress_indicator_widget.dart';
 
 import 'package:path_provider_ex/path_provider_ex.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -36,34 +38,54 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            title: Text("PDF File list from SD Card"),
-            backgroundColor: Colors.redAccent),
+    return Center(
+      child: Scaffold(
+        // appBar: AppBar(
+        //     title: Text("PDF File list from SD Card"),
+        //     backgroundColor: Colors.redAccent),
         body: files == null
-            ? Text("Searching Files")
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Searching pdf'),
+                    JumpingDotsProgressIndicator(
+                      fontSize: 20.0,
+                    ),
+                  ],
+                ),
+              )
             : ListView.builder(
                 //if file/folder list is grabbed, then show here
                 itemCount: files?.length ?? 0,
+                
                 itemBuilder: (context, index) {
                   return Card(
-                      child: ListTile(
-                    title: Text(files[index].path.split('/').last),
-                    leading: Icon(Icons.picture_as_pdf),
-                    trailing: Icon(
-                      Icons.arrow_forward,
-                      color: Colors.redAccent,
+                    child: ListTile(
+                      title: Text(files[index].path.split('/').last),
+                      leading: Icon(Icons.picture_as_pdf),
+                      trailing: Icon(
+                        Icons.more_vert,
+                        color: Colors.redAccent,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ViewPDF(
+                                  pathPDF: files[index].path.toString());
+                              //open viewPDF page on click
+                            },
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return ViewPDF(pathPDF: files[index].path.toString());
-                        //open viewPDF page on click
-                      }));
-                    },
-                  ));
+                  );
                 },
-              ));
+              ),
+      ),
+    );
   }
 }
 
@@ -80,5 +102,15 @@ class ViewPDF extends StatelessWidget {
           backgroundColor: Colors.deepOrangeAccent,
         ),
         path: pathPDF);
+  }
+}
+
+class CircularProgressIndicatorApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CircularProgressIndicator(
+      backgroundColor: Colors.red,
+      strokeWidth: 8,
+    );
   }
 }
