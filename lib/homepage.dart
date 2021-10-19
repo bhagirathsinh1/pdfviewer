@@ -16,6 +16,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   var files;
+  var newindex;
 
   void getFiles() async {
     //asyn function to get list of files
@@ -66,9 +67,16 @@ class _HomepageState extends State<Homepage> {
                     child: ListTile(
                       title: Text(files[index].path.split('/').last),
                       leading: Icon(Icons.picture_as_pdf),
-                      trailing: Icon(
-                        Icons.more_vert,
-                        color: Colors.redAccent,
+                      trailing: IconButton(
+                        onPressed: () {
+                          newindex = index;
+
+                          bottomNavBar(context);
+                        },
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: Colors.redAccent,
+                        ),
                       ),
                       onTap: () {
                         Navigator.push(
@@ -87,6 +95,87 @@ class _HomepageState extends State<Homepage> {
                 },
               ),
       ),
+    );
+  }
+
+  Future<void> bottomNavBar(BuildContext context) {
+    return showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          color: Colors.white,
+          height: 300,
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(
+                  files[newindex].path.split('/').last,
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+                leading: Icon(
+                  Icons.share,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text(
+                  "Share",
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+                leading: Icon(
+                  Icons.share,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text(
+                  "Add to favorite",
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+                leading: Icon(
+                  Icons.star,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text(
+                  "Rename",
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+                leading: Icon(
+                  Icons.edit,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text(
+                  "Delete",
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+                leading: Icon(
+                  Icons.delete,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                onTap: () {},
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
