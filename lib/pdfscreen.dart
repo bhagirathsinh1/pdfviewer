@@ -4,7 +4,6 @@ import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/homepage.dart';
 import 'package:pdfviewer/popupmenubutton.dart';
 import 'package:pdfviewer/recentpage.dart';
-import 'package:pdfviewer/searchPage.dart';
 
 class pdfscreen extends StatefulWidget {
   @override
@@ -13,53 +12,15 @@ class pdfscreen extends StatefulWidget {
 
 class _pdfscreenState extends State<pdfscreen> {
   int _currentPage = 0;
+  static bool _init = false;
+  get inits => _init;
 
-  final _pageController = PageController();
+  final _pageController = PageController(keepPage: false);
   TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          "PDF Reader",
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: <Widget>[
-          ///search button
-
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => searchBar()),
-              );
-            },
-            icon: Icon(
-              Icons.search,
-              size: 26.0,
-              color: Colors.black,
-            ),
-          ),
-
-          ///popupmanu
-
-          PopUpMenu(),
-
-          ///more
-
-          IconButton(
-            onPressed: () {
-              bottomNavBar(context);
-            },
-            icon: Icon(
-              Icons.more_vert,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
       body: PageView(
         controller: _pageController,
         children: [
@@ -68,6 +29,7 @@ class _pdfscreenState extends State<pdfscreen> {
           Favouritepage(),
         ],
         onPageChanged: (index) {
+          _init = true;
           setState(() => _currentPage = index);
         },
       ),
@@ -75,7 +37,11 @@ class _pdfscreenState extends State<pdfscreen> {
         selectedIndex: _currentPage,
         onTap: (int index) {
           _pageController.jumpToPage(index);
-          setState(() => _currentPage = index);
+
+          setState(() {
+            _init = true;
+            _currentPage = index;
+          });
         },
         items: <BottomBarItem>[
           BottomBarItem(

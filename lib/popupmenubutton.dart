@@ -5,6 +5,10 @@ class PopUpMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return PopupMenuMethod();
+  }
+
+  PopupMenuButton<int> PopupMenuMethod() {
     return PopupMenuButton(
       icon: Icon(
         Icons.menu,
