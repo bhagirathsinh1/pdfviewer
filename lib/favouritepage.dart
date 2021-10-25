@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
+import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
+// import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 
 List<String> favorite_list = [];
 List<String> reversed_favorite_list = [];
@@ -238,12 +239,13 @@ class ViewPDF extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PDFViewerScaffold(
-        //view PDF
-        appBar: AppBar(
-          title: Text("Documentss"),
-          backgroundColor: Colors.deepOrangeAccent,
-        ),
-        path: pathPDF);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("New package pdf"),
+      ),
+      body: Container(
+        child: PdfView(path: pathPDF),
+      ),
+    );
   }
 }
