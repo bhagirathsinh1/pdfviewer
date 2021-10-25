@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
-import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
-import 'package:gradient_progress_indicator/widget/gradient_progress_indicator_widget.dart';
 
 import 'package:path_provider_ex/path_provider_ex.dart';
 import 'package:pdfviewer/favouritepage.dart';
@@ -17,7 +15,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  bool init = false;
+  bool getfilesbool = false;
   bool order = false;
   List<File> files = [];
 
@@ -25,7 +23,18 @@ class _HomepageState extends State<Homepage> {
 
   var recent_index;
 
-  void getFiles() async {
+  // get files initState
+
+  @override
+  void initState() {
+    if (files.length == 0) {
+      getFiles(context);
+    } //call getFiles() function on initial state.
+    super.initState();
+    print("-----------------------------> called homepage Initstate");
+  }
+
+  void getFiles(BuildContext context) async {
     //asyn function to get list of files
     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
     var root = storageInfo[0]
@@ -37,20 +46,6 @@ class _HomepageState extends State<Homepage> {
         );
     print(files);
     setState(() {}); //update the UI
-  }
-
-  @override
-  void initState() {
-//     files.sort((a, b) {
-//   return a['name'].toLowerCase().compareTo(b['name'].toLowerCase());
-// });
-
-    if (init == true) {
-    } else {
-      getFiles(); //call getFiles() function on initial state.
-      super.initState();
-      init = true;
-    }
   }
 
   @override
@@ -423,6 +418,10 @@ class _HomepageState extends State<Homepage> {
       padding: const EdgeInsets.all(8),
       child: TextField(
         decoration: InputDecoration(hintText: 'Search...'),
+        onChanged: (text) {
+          text = text.toLowerCase();
+          setState(() {});
+        },
       ),
     );
   }

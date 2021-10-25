@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 import 'package:pdfviewer/favouritepage.dart';
-import 'package:pdfviewer/homepage.dart';
-import 'package:path_provider_ex/path_provider_ex.dart';
 
 List<String> recent_list = [];
 List<String> reversed_recent_list = [];
@@ -19,7 +16,6 @@ class _RecentpageState extends State<Recentpage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     reversed_recent_list = recent_list.reversed.toList();
   }
@@ -224,6 +220,7 @@ class _RecentpageState extends State<Recentpage> {
                   setState(() {
                     recent_list.clear();
                     reversed_recent_list.clear();
+                    Navigator.pop(context);
                   });
                 },
               ),

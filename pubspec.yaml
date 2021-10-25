@@ -47,6 +47,8 @@ dependencies:
   advance_pdf_viewer: ^2.0.0
   syncfusion_flutter_pdfviewer: ^19.3.45-beta
   file_manager: ^1.0.0
+  shared_preferences: ^2.0.8
+  permission_handler: ^8.2.5
 
 dev_dependencies:
   flutter_test:

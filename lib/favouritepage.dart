@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
-import 'package:pdfviewer/homepage.dart';
-import 'package:path_provider_ex/path_provider_ex.dart';
 
 List<String> favorite_list = [];
 List<String> reversed_favorite_list = [];
@@ -16,7 +14,6 @@ class Favouritepage extends StatefulWidget {
 class _FavouritepageState extends State<Favouritepage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     reversed_favorite_list = favorite_list.reversed.toList();
   }
@@ -223,6 +220,7 @@ class _FavouritepageState extends State<Favouritepage> {
                   setState(() {
                     favorite_list.clear();
                     reversed_favorite_list.clear();
+                    Navigator.pop(context);
                   });
                 },
               ),

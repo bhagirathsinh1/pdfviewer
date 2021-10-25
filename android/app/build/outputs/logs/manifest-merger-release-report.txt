@@ -5,6 +5,7 @@ INJECTED from E:\Flutter projects\pdfviewer\android\app\src\main\AndroidManifest
 INJECTED from E:\Flutter projects\pdfviewer\android\app\src\main\AndroidManifest.xml:1:1-47:12
 INJECTED from E:\Flutter projects\pdfviewer\android\app\src\main\AndroidManifest.xml:1:1-47:12
 MERGED from [:flutter_full_pdf_viewer] E:\Flutter projects\pdfviewer\build\flutter_full_pdf_viewer\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
+MERGED from [:shared_preferences] E:\Flutter projects\pdfviewer\build\shared_preferences\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:sqflite] E:\Flutter projects\pdfviewer\build\sqflite\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:syncfusion_flutter_pdfviewer] E:\Flutter projects\pdfviewer\build\syncfusion_flutter_pdfviewer\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:advance_pdf_viewer] E:\Flutter projects\pdfviewer\build\advance_pdf_viewer\intermediates\library_manifest\release\AndroidManifest.xml:2:1-7:12
@@ -127,6 +128,8 @@ INJECTED from E:\Flutter projects\pdfviewer\android\app\src\main\AndroidManifest
 INJECTED from E:\Flutter projects\pdfviewer\android\app\src\main\AndroidManifest.xml
 MERGED from [:flutter_full_pdf_viewer] E:\Flutter projects\pdfviewer\build\flutter_full_pdf_viewer\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_full_pdf_viewer] E:\Flutter projects\pdfviewer\build\flutter_full_pdf_viewer\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] E:\Flutter projects\pdfviewer\build\shared_preferences\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] E:\Flutter projects\pdfviewer\build\shared_preferences\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:sqflite] E:\Flutter projects\pdfviewer\build\sqflite\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:sqflite] E:\Flutter projects\pdfviewer\build\sqflite\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:syncfusion_flutter_pdfviewer] E:\Flutter projects\pdfviewer\build\syncfusion_flutter_pdfviewer\intermediates\library_manifest\release\AndroidManifest.xml:5:5-44

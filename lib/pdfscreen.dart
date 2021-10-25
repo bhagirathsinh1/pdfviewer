@@ -2,7 +2,6 @@ import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/homepage.dart';
-import 'package:pdfviewer/popupmenubutton.dart';
 import 'package:pdfviewer/recentpage.dart';
 
 class pdfscreen extends StatefulWidget {
@@ -14,6 +13,7 @@ class _pdfscreenState extends State<pdfscreen> {
   int _currentPage = 0;
   static bool _init = false;
   get inits => _init;
+  bool willpop = false;
 
   final _pageController = PageController(keepPage: false);
   TextEditingController textController = TextEditingController();
@@ -30,7 +30,9 @@ class _pdfscreenState extends State<pdfscreen> {
         ],
         onPageChanged: (index) {
           _init = true;
-          setState(() => _currentPage = index);
+          setState(
+            () => _currentPage = index,
+          );
         },
       ),
       bottomNavigationBar: BottomBar(
