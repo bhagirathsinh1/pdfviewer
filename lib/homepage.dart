@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
+// import 'package:gradient_progress_indicator/widget/gradient_progress_indicator_widget.dart';
 
-import 'package:path_provider_ex/path_provider_ex.dart';
-
+import 'package:path_provider_extention/path_provider_extention.dart';
 import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/recentpage.dart';
 import 'package:progress_indicators/progress_indicators.dart';
@@ -16,7 +16,6 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  bool getfilesbool = false;
   bool order = false;
   List<File> files = [];
 
@@ -28,14 +27,12 @@ class _HomepageState extends State<Homepage> {
 
   @override
   void initState() {
-    if (files.length == 0) {
-      getFiles(context);
-    } //call getFiles() function on initial state.
+    getFiles(); //call getFiles() function on initial state.
     super.initState();
     print("-----------------------------> called homepage Initstate");
   }
 
-  void getFiles(BuildContext context) async {
+  void getFiles() async {
     //asyn function to get list of files
     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
     var root = storageInfo[0]
