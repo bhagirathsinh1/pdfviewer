@@ -6,6 +6,7 @@ import 'package:flutter_file_manager/flutter_file_manager.dart';
 import 'package:path_provider_extention/path_provider_extention.dart';
 import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/recentpage.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 
 class Homepage extends StatefulWidget {
@@ -27,6 +28,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   void initState() {
+    setState(() {});
     getFiles(); //call getFiles() function on initial state.
     super.initState();
     print("-----------------------------> called homepage Initstate");
@@ -50,7 +52,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Center(
       child: Scaffold(
-        appBar: files.isEmpty
+        appBar: Permission.storage.request().isGranted == true
             ? AppBar(
                 title: Text(
                   "PDF Reader",

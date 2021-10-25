@@ -1,5 +1,7 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/pdfscreen.dart';
+import 'package:pdfviewer/splashscree.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
@@ -51,6 +53,12 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: pdfscreen());
+        home: AnimatedSplashScreen(
+            splash: Icons.picture_as_pdf,
+            duration: 1500,
+            splashTransition: SplashTransition.scaleTransition,
+            // pageTransitionType: PageTransitionType.scale,
+            backgroundColor: Colors.blue,
+            nextScreen: pdfscreen()));
   }
 }
