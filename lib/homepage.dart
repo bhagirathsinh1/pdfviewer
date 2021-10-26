@@ -1,13 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
 // import 'package:gradient_progress_indicator/widget/gradient_progress_indicator_widget.dart';
 
 import 'package:path_provider_extention/path_provider_extention.dart';
+import 'package:pdfviewer/extra.dart';
 import 'package:pdfviewer/favouritepage.dart';
+import 'package:pdfviewer/main.dart';
+import 'package:pdfviewer/pdfscreen.dart';
 import 'package:pdfviewer/recentpage.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:progress_indicators/progress_indicators.dart';
+// import 'package:progress_indicators/progress_indicators.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -17,8 +21,9 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  bool showfiles = false;
+  bool myfiles = false;
   bool order = false;
-  List<File> files = [];
 
   var favorite_index;
 
@@ -29,23 +34,8 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     setState(() {});
-    getFiles(); //call getFiles() function on initial state.
     super.initState();
     print("-----------------------------> called homepage Initstate");
-  }
-
-  void getFiles() async {
-    //asyn function to get list of files
-    List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
-    var root = storageInfo[0]
-        .rootDir; //storageInfo[1] for SD card, geting the root directory
-    var fm = FileManager(root: Directory(root)); //
-    files = await fm.filesTree(
-        excludedPaths: ["/storage/emulated/0/Android"],
-        extensions: ["pdf"] //optional, to filter files, list only pdf files
-        );
-    print(files);
-    setState(() {}); //update the UI
   }
 
   @override
@@ -94,7 +84,7 @@ class _HomepageState extends State<Homepage> {
                   ])
             : AppBar(
                 title: Text(
-                  "Total ${files.length} pdf found !",
+                  " ${files.length} pdf found !",
                   style: TextStyle(color: Colors.black),
                 ),
                 backgroundColor: Colors.white,
@@ -137,9 +127,31 @@ class _HomepageState extends State<Homepage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Loading pdf'),
-                    JumpingDotsProgressIndicator(
-                      fontSize: 20.0,
+                    TextButton(
+                      onPressed: () {
+                        getFiles();
+                        setState(() {
+                          ListView.builder(
+                            reverse: order,
+                            //if file/folder list is grabbed, then show here
+                            itemCount: files.length,
+                            itemBuilder: (BuildContext ctxt, index) {
+                              return _listItem(index);
+                            },
+                          );
+                          showfiles = true;
+                        });
+
+                        // initState();
+                        // initState();
+                        // getFiles();
+
+                        // // getFiles();
+                        // setState(() {});
+
+                        print("......get my files bool 1....");
+                      },
+                      child: showfiles ? Text("Get files") : Text("Reload Pdf"),
                     ),
                   ],
                 ),
@@ -149,7 +161,7 @@ class _HomepageState extends State<Homepage> {
                 //if file/folder list is grabbed, then show here
                 itemCount: files.length,
                 itemBuilder: (BuildContext ctxt, index) {
-                  return index == 0 ? _searchBar() : _listItem(index - 1);
+                  return _listItem(index);
                 },
               ),
       ),
@@ -413,16 +425,16 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  _searchBar() {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: TextField(
-        decoration: InputDecoration(hintText: 'Search...'),
-        onChanged: (text) {
-          text = text.toLowerCase();
-          setState(() {});
-        },
-      ),
-    );
-  }
+  // _searchBar() {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(8),
+  //     child: TextField(
+  //       decoration: InputDecoration(hintText: 'Search...'),
+  //       onChanged: (text) {
+  //         text = text.toLowerCase();
+  //         setState(() {});
+  //       },
+  //     ),
+  //   );
+  // }
 }

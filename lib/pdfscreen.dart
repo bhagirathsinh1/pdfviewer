@@ -2,6 +2,7 @@ import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/homepage.dart';
+import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/recentpage.dart';
 
 class pdfscreen extends StatefulWidget {
@@ -17,6 +18,12 @@ class _pdfscreenState extends State<pdfscreen> {
 
   final _pageController = PageController(keepPage: false);
   TextEditingController textController = TextEditingController();
+  @override
+  void initState() {
+    getFiles();
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

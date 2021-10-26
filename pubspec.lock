@@ -212,13 +212,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
-  path_provider_ex:
-    dependency: "direct main"
-    description:
-      name: path_provider_ex
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   path_provider_extention:
     dependency: "direct main"
     description:
@@ -310,13 +303,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
-  progress_indicators:
-    dependency: "direct main"
-    description:
-      name: progress_indicators
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   shared_preferences:
     dependency: "direct main"
     description:

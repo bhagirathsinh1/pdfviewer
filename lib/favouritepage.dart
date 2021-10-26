@@ -241,7 +241,11 @@ class ViewPDF extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("New package pdf"),
+        title: Text(
+          "PDF Reader",
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
       ),
       body: Container(
         child: PdfView(path: pathPDF),
