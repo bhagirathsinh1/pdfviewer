@@ -10,18 +10,20 @@ import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/main.dart';
 // import 'package:pdfviewer/pdfscreen.dart';
 import 'package:pdfviewer/recentpage.dart';
-import 'package:pdfviewer/searchPage.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:pdfviewer/serachpage.dart';
+// import 'package:permission_handler/permission_handler.dart';
 // import 'package:progress_indicators/progress_indicators.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
+class searchPage extends StatefulWidget {
+  const searchPage({Key? key}) : super(key: key);
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<searchPage> createState() => _searchPageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _searchPageState extends State<searchPage> {
+  TextEditingController editingController = TextEditingController();
+
   bool showfiles = false;
   bool myfiles = false;
   bool order = false;
@@ -36,93 +38,42 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     setState(() {});
     super.initState();
-    print("-----------------------------> called homepage Initstate");
+    print("-----------------------------> called searchPage Initstate");
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Scaffold(
-        appBar: Permission.storage.request().isGranted == true
-            ? AppBar(
-                title: Text(
-                  "PDF Reader",
-                  style: TextStyle(color: Colors.black),
-                ),
-                backgroundColor: Colors.white,
-                actions: <Widget>[
-                    ///search button
-
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => searchPage()),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.search,
-                        size: 26.0,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                    ///popupmanu
-
-                    popUpMenu(),
-
-                    ///more
-
-                    IconButton(
-                      onPressed: () {
-                        bottmNavBar(context);
-                      },
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ])
-            : AppBar(
-                title: Text(
-                  " ${files.length} pdf found !",
-                  style: TextStyle(color: Colors.black),
-                ),
-                backgroundColor: Colors.white,
-                actions: <Widget>[
-                  ///search button
-
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => searchPage()),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.search,
-                      size: 26.0,
-                      color: Colors.black,
-                    ),
-                  ),
-
-                  ///popupmanu
-
-                  popUpMenu(),
-
-                  ///more
-
-                  IconButton(
-                    onPressed: () {
-                      bottmNavBar(context);
-                    },
-                    icon: Icon(
-                      Icons.more_vert,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
+        appBar: AppBar(
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
               ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+          backgroundColor: Colors.white,
+          title: TextField(
+            controller: editingController,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              hintText: ' Search Documents',
+              suffixIcon: IconButton(
+                onPressed: editingController.clear,
+                icon: Icon(Icons.clear),
+              ),
+            ),
+          ),
+        ),
         body: files.isEmpty
             ? Center(
                 child: Column(

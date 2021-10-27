@@ -8,6 +8,7 @@ import 'package:pdfviewer/pdfscreen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 List<File> files = [];
+List<File> duplicateItems = [];
 
 void main() {
   runApp(
@@ -41,6 +42,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _getStoragePermission();
+    files.addAll(duplicateItems);
 
     super.initState();
   }
