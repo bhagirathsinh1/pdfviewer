@@ -10,6 +10,7 @@ import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/pdfscreen.dart';
 import 'package:pdfviewer/recentpage.dart';
+import 'package:pdfviewer/serachpage.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:progress_indicators/progress_indicators.dart';
 
@@ -54,10 +55,10 @@ class _HomepageState extends State<Homepage> {
 
                     IconButton(
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => searchBar()),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => searchBar()),
+                        );
                       },
                       icon: Icon(
                         Icons.search,
@@ -93,10 +94,10 @@ class _HomepageState extends State<Homepage> {
 
                   IconButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => searchBar()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => searchBar()),
+                      );
                     },
                     icon: Icon(
                       Icons.search,
@@ -416,7 +417,13 @@ class _HomepageState extends State<Homepage> {
                   Icons.delete,
                   color: Colors.black.withOpacity(0.5),
                 ),
-                onTap: () {},
+                onTap: () {
+                  print(
+                      "...................gesture clicked.......................");
+                  files.removeAt(favorite_index);
+                  Navigator.pop(context);
+                  initState();
+                },
               ),
             ],
           ),
