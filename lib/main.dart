@@ -26,6 +26,7 @@ void getFiles() async {
       excludedPaths: ["/storage/emulated/0/Android"],
       extensions: ["pdf"] //optional, to filter files, list only pdf files
       );
+
   print(files);
   //update the UI
 }

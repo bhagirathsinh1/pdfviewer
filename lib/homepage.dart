@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 // import 'package:pdfviewer/extra.dart';
 import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/main.dart';
+import 'package:pdfviewer/pdfscreen.dart';
 // import 'package:pdfviewer/pdfscreen.dart';
 import 'package:pdfviewer/recentpage.dart';
 import 'package:pdfviewer/searchPage.dart';
@@ -420,16 +421,108 @@ class _HomepageState extends State<Homepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
-                  print(
-                      "...................gesture clicked.......................");
-                  files.removeAt(favorite_index);
-                  Navigator.pop(context);
-                  initState();
+                  newshowAlertDialog(context);
                 },
               ),
             ],
           ),
         );
+      },
+    );
+  }
+
+  Future<void> deleteFile(File file) async {
+    try {
+      if (await file.exists()) {
+        await file.delete();
+      }
+    } catch (e) {
+      // Error in getting access to the file.
+    }
+  }
+
+  deleteMethod() {
+    deleteFile(
+      File(
+        files[favorite_index].path.toString(),
+      ),
+    );
+
+    getFiles();
+    CircularProgressIndicator();
+    setState(() {
+      _listItem(favorite_index);
+    });
+
+    // Navigator.pop(context);
+
+    showAlertDialog(context);
+
+    initState();
+    initState();
+    // );
+  }
+
+  newshowAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () {
+        Navigator.pop(context);
+
+        deleteMethod();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Alert!"),
+      content: Text(
+          "Would you like to delete ${files[favorite_index].path.split('/').last}"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Succesfuly deleted"),
+      content: Text(files[favorite_index].path.split('/').last),
+      actions: [
+        TextButton(
+          child: Text("OK"),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
       },
     );
   }
