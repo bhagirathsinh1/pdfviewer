@@ -1,4 +1,6 @@
 // import 'dart:io';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_file_manager/flutter_file_manager.dart';
@@ -10,6 +12,7 @@ import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/main.dart';
 // import 'package:pdfviewer/pdfscreen.dart';
 import 'package:pdfviewer/recentpage.dart';
+import 'package:share/share.dart';
 // import 'package:pdfviewer/serachpage.dart';
 // import 'package:permission_handler/permission_handler.dart';
 // import 'package:progress_indicators/progress_indicators.dart';
@@ -59,6 +62,9 @@ class _searchPageState extends State<searchPage> {
           ),
           backgroundColor: Colors.white,
           title: TextField(
+            onChanged: (value) {
+              filterSearchResults(value);
+            },
             controller: editingController,
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -74,48 +80,14 @@ class _searchPageState extends State<searchPage> {
             ),
           ),
         ),
-        body: files.isEmpty
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        getFiles();
-                        setState(() {
-                          ListView.builder(
-                            reverse: order,
-                            //if file/folder list is grabbed, then show here
-                            itemCount: files.length,
-                            itemBuilder: (BuildContext ctxt, index) {
-                              return _listItem(index);
-                            },
-                          );
-                          showfiles = true;
-                        });
-
-                        // initState();
-                        // initState();
-                        // getFiles();
-
-                        // // getFiles();
-                        // setState(() {});
-
-                        print("......get my files bool 1....");
-                      },
-                      child: showfiles ? Text("Get files") : Text("Reload Pdf"),
-                    ),
-                  ],
-                ),
-              )
-            : ListView.builder(
-                reverse: order,
-                //if file/folder list is grabbed, then show here
-                itemCount: files.length,
-                itemBuilder: (BuildContext ctxt, index) {
-                  return _listItem(index);
-                },
-              ),
+        body: ListView.builder(
+          reverse: order,
+          //if file/folder list is grabbed, then show here
+          itemCount: files.length,
+          itemBuilder: (BuildContext ctxt, index) {
+            return _listItem(index);
+          },
+        ),
       ),
     );
   }
@@ -308,7 +280,8 @@ class _searchPageState extends State<searchPage> {
                 ),
                 onTap: () {
                   setState(() {
-                    order = !order;
+                    List<String> paths = [files[favorite_index].path];
+                    Share.shareFiles(paths);
                   });
                 },
               ),
@@ -394,5 +367,27 @@ class _searchPageState extends State<searchPage> {
   //       },
   //     ),
   //   );
+  // }
+}
+
+void filterSearchResults(String query) {
+  // List<File> duplicateItems = [];
+  // if (query.isNotEmpty) {
+  //   List<File> duplicateItems = [];
+  //   duplicateItems.forEach((item) {
+  //     if (item.(query)) {
+  //       duplicateItems.add(item);
+  //     }
+  //   });
+  //   setState(() {
+  //     files.clear();
+  //     files.addAll(duplicateItems);
+  //   });
+  //   return;
+  // } else {
+  //   setState(() {
+  //     files.clear();
+  //     files.addAll(duplicateItems);
+  //   });
   // }
 }

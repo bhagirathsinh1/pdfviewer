@@ -1,4 +1,6 @@
 // import 'dart:io';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_file_manager/flutter_file_manager.dart';
@@ -12,6 +14,7 @@ import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/recentpage.dart';
 import 'package:pdfviewer/searchPage.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:share/share.dart';
 // import 'package:progress_indicators/progress_indicators.dart';
 
 class Homepage extends StatefulWidget {
@@ -356,9 +359,8 @@ class _HomepageState extends State<Homepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
-                  setState(() {
-                    order = !order;
-                  });
+                  List<String> paths = [files[favorite_index].path];
+                  Share.shareFiles(paths);
                 },
               ),
               ListTile(
