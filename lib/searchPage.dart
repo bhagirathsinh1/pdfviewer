@@ -1,54 +1,56 @@
-// import 'dart:io';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_file_manager/flutter_file_manager.dart';
-// import 'package:gradient_progress_indicator/widget/gradient_progress_indicator_widget.dart';
-
-// import 'package:path_provider_extention/path_provider_extention.dart';
-// import 'package:pdfviewer/extra.dart';
 import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/main.dart';
-// import 'package:pdfviewer/pdfscreen.dart';
-import 'package:pdfviewer/recentpage.dart';
-import 'package:share/share.dart';
-// import 'package:pdfviewer/serachpage.dart';
-// import 'package:permission_handler/permission_handler.dart';
-// import 'package:progress_indicators/progress_indicators.dart';
 
 class searchPage extends StatefulWidget {
-  const searchPage({Key? key}) : super(key: key);
-
   @override
-  State<searchPage> createState() => _searchPageState();
+  _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _searchPageState extends State<searchPage> {
+class _MyHomePageState extends State<searchPage> {
   TextEditingController editingController = TextEditingController();
 
-  bool showfiles = false;
-  bool myfiles = false;
-  bool order = false;
-
-  var favorite_index;
-
-  var recent_index;
-
-  // get files initState
+  var items = [];
 
   @override
   void initState() {
-    setState(() {});
+    items.addAll(files);
     super.initState();
-    print("-----------------------------> called searchPage Initstate");
+    print(".............items.add..................");
+    print(items);
+  }
+
+  void filterSearchResults(String query) {
+    List<File> dummySearchList = [];
+    dummySearchList.addAll(files);
+    print("......................dummysearchlist................");
+    print(dummySearchList);
+    if (query.isNotEmpty) {
+      List<File> dummyListData = [];
+      dummySearchList.forEach((item) {
+        if (item.path.split('/').last.contains(query)) {
+          dummyListData.add(item);
+        }
+      });
+      setState(() {
+        // items.clear();
+        items = dummyListData;
+      });
+      // return;
+    } else {
+      // setState(() {
+      //   items.clear();
+      //   items.addAll(files);
+      // });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Scaffold(
-        appBar: AppBar(
+    return new Scaffold(
+      appBar: AppBar(
           leading: Builder(
             builder: (context) => IconButton(
               icon: Icon(
@@ -63,331 +65,66 @@ class _searchPageState extends State<searchPage> {
           backgroundColor: Colors.white,
           title: TextField(
             onChanged: (value) {
-              filterSearchResults(value);
+              filterSearchResults(value.toLowerCase());
             },
             controller: editingController,
             decoration: InputDecoration(
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              hintText: ' Search Documents',
+              // labelText: "Search",
+              hintText: "Search Documents",
               suffixIcon: IconButton(
                 onPressed: editingController.clear,
                 icon: Icon(Icons.clear),
               ),
             ),
-          ),
-        ),
-        body: ListView.builder(
-          reverse: order,
-          //if file/folder list is grabbed, then show here
-          itemCount: files.length,
-          itemBuilder: (BuildContext ctxt, index) {
-            return _listItem(index);
-          },
+          )),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView.builder(
+                //if file/folder list is grabbed, then show here
+                itemCount: items.length,
+                itemBuilder: (BuildContext ctxt, index) {
+                  return _listItem(index);
+                },
+              ),
+            ),
+          ],
         ),
       ),
-    );
-  }
-
-  PopupMenuButton<int> popUpMenu() {
-    return PopupMenuButton(
-      icon: Icon(
-        Icons.menu,
-        color: Colors.black,
-      ),
-      color: Colors.white,
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          child: Text("Date"),
-          value: 1,
-        ),
-        PopupMenuItem(
-          child: Text("Name"),
-          value: 2,
-        ),
-        PopupMenuItem(
-          child: Text("Size"),
-          value: 3,
-        )
-      ],
-    );
-  }
-
-  Future<void> bottmNavBar(BuildContext context) {
-    return showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          color: Colors.white,
-          height: 230,
-          child: Column(
-            children: [
-              ListTile(
-                title: Text(
-                  "Brows More file",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.folder,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                title: Text(
-                  "Rate Us",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.star,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                title: Text(
-                  "Share this app",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.share,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                title: Text(
-                  "Privacy Policy",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.privacy_tip,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {},
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 
   _listItem(index) {
     return Card(
       child: ListTile(
-        title: Text(files[index].path.split('/').last),
+        title: Text(items[index].path.split('/').last),
         leading: Icon(Icons.picture_as_pdf),
-        trailing: IconButton(
-          onPressed: () {
-            favorite_index = index;
-            // recent_index = index;
-            bottomNavBar(context);
-          },
-          icon: Icon(
-            Icons.more_vert,
-            color: Colors.redAccent,
-          ),
-        ),
+        // trailing: IconButton(
+        //   onPressed: () {
+        //     // favorite_index = index;
+        //     // // recent_index = index;
+        //     // bottomNavBar(context);
+        //   },
+        //   icon: Icon(
+        //     Icons.more_vert,
+        //     color: Colors.redAccent,
+        //   ),
+        // ),
         onTap: () {
-          print("......................");
-          print(recent_list);
-          print("......................");
-
-          print(reversed_recent_list);
-          print("......................");
-
-          recent_index = index;
-
-          // recent_list.add(files[recent_index].path);
-
-          // print(".......recent list.......");
-          // print(recent_list);
-          // recent_list.add(files[recent_index].path);
-
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) {
                 return ViewPDF(
-                  pathPDF: files[index].path.toString(),
+                  pathPDF: items[index].path.toString(),
                 );
                 //open viewPDF page on click
               },
             ),
-          ).whenComplete(() {
-            recent_list.add(files[recent_index].path);
-          });
-          // recent_list.add(files[recent_index].path);
-          print(".......recent list.......");
-          print(recent_list);
+          );
         },
       ),
     );
   }
-
-  Future<void> bottomNavBar(BuildContext context) {
-    return showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          color: Colors.white,
-          height: 300,
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.yellow[100],
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 5,
-                    )),
-                child: ListTile(
-                  title: Text(
-                    files[favorite_index].path.split('/').last,
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.8),
-                    ),
-                  ),
-                  leading: Icon(
-                    Icons.picture_as_pdf,
-                    color: Colors.black.withOpacity(0.5),
-                  ),
-                  onTap: () {},
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  "Share",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.share,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {
-                  setState(() {
-                    List<String> paths = [files[favorite_index].path];
-                    Share.shareFiles(paths);
-                  });
-                },
-              ),
-              ListTile(
-                title: Text(
-                  "Add to favorite",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.star,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {
-                  if (favorite_list.contains(files[favorite_index].path)) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Already added !!"),
-                      ),
-                    );
-                  } else {
-                    favorite_list.add(files[favorite_index].path);
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Successfully added !!"),
-                      ),
-                    );
-                  }
-                },
-              ),
-              ListTile(
-                title: Text(
-                  "Rename",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.edit,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                title: Text(
-                  "Delete",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.delete,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {
-                  print(
-                      "...................gesture clicked.......................");
-                  files.removeAt(favorite_index);
-                  Navigator.pop(context);
-                  initState();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  // _searchBar() {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(8),
-  //     child: TextField(
-  //       decoration: InputDecoration(hintText: 'Search...'),
-  //       onChanged: (text) {
-  //         text = text.toLowerCase();
-  //         setState(() {});
-  //       },
-  //     ),
-  //   );
-  // }
-}
-
-void filterSearchResults(String query) {
-  // List<File> duplicateItems = [];
-  // if (query.isNotEmpty) {
-  //   List<File> duplicateItems = [];
-  //   duplicateItems.forEach((item) {
-  //     if (item.(query)) {
-  //       duplicateItems.add(item);
-  //     }
-  //   });
-  //   setState(() {
-  //     files.clear();
-  //     files.addAll(duplicateItems);
-  //   });
-  //   return;
-  // } else {
-  //   setState(() {
-  //     files.clear();
-  //     files.addAll(duplicateItems);
-  //   });
-  // }
 }
