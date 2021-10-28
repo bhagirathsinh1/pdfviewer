@@ -1,22 +1,15 @@
-// import 'dart:io';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_file_manager/flutter_file_manager.dart';
-// import 'package:gradient_progress_indicator/widget/gradient_progress_indicator_widget.dart';
 
-// import 'package:path_provider_extention/path_provider_extention.dart';
-// import 'package:pdfviewer/extra.dart';
 import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/main.dart';
-import 'package:pdfviewer/pdfscreen.dart';
-// import 'package:pdfviewer/pdfscreen.dart';
 import 'package:pdfviewer/recentpage.dart';
 import 'package:pdfviewer/searchPage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share/share.dart';
-// import 'package:progress_indicators/progress_indicators.dart';
+
+import 'main.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -186,6 +179,31 @@ class _HomepageState extends State<Homepage> {
           value: 1,
         ),
         PopupMenuItem(
+          onTap: () {
+            print("...........files1..................");
+            print(files);
+
+            try {
+              setState(() {
+                files.sort((a, b) {
+                  return a.path
+                      .split('/')
+                      .last
+                      .compareTo(b.path.split('/').last);
+                });
+              });
+            } catch (e) {
+              print('-------------------> error ---> $e');
+            }
+            print("...........files2..................");
+            print(files);
+            // setState(
+            //   () {
+            //     _listItem(context);
+            //   },
+            // );
+            // initState();
+          },
           child: Text("Name"),
           value: 2,
         ),
