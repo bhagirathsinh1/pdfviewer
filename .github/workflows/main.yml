@@ -46,6 +46,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           tag: PdfViewer.v1.0.${{ github.run_number }}
-          name: ${{ env.APP_VERSION }}
+          name: PdfViewer.v1.0.${{ github.run_number }}
           token: ${{ secrets.PDFVIEWER_TOKEN }}
           artifacts: 'build/app/outputs/apk/release/*.apk'
