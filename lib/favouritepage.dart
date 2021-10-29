@@ -208,7 +208,7 @@ class _FavouritepageState extends State<Favouritepage> {
             children: [
               ListTile(
                 title: Text(
-                  "Clear Recents",
+                  "Clear Favorites",
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.8),
                   ),
@@ -218,11 +218,16 @@ class _FavouritepageState extends State<Favouritepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
-                  setState(() {
-                    favorite_list.clear();
-                    reversed_favorite_list.clear();
-                    Navigator.pop(context);
-                  });
+                  setState(
+                    () {
+                      favorite_list.clear();
+                      reversed_favorite_list.clear();
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Favorites cleared !!")));
+                    },
+                  );
                 },
               ),
             ],

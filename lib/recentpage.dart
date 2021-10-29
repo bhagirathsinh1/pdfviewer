@@ -221,6 +221,10 @@ class _RecentpageState extends State<Recentpage> {
                     recent_list.clear();
                     reversed_recent_list.clear();
                     Navigator.pop(context);
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Recent cleared !!"),
+                    ));
                   });
                 },
               ),

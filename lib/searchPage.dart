@@ -29,21 +29,25 @@ class _MyHomePageState extends State<searchPage> {
     print(dummySearchList);
     if (query.isNotEmpty) {
       List<File> dummyListData = [];
-      dummySearchList.forEach((item) {
-        if (item.path.split('/').last.contains(query)) {
-          dummyListData.add(item);
-        }
-      });
-      setState(() {
-        // items.clear();
-        items = dummyListData;
-      });
+      dummySearchList.forEach(
+        (item) {
+          if (item.path.split('/').last.contains(query)) {
+            dummyListData.add(item);
+          }
+        },
+      );
+      setState(
+        () {
+          // items.clear();
+          items = dummyListData;
+        },
+      );
       // return;
     } else {
       // setState(() {
       //   items.clear();
       //   items.addAll(files);
-      // });
+      // },);
     }
   }
 
@@ -51,32 +55,40 @@ class _MyHomePageState extends State<searchPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-          leading: Builder(
-            builder: (context) => IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        backgroundColor: Colors.white,
+        title: TextField(
+          onChanged: (value) {
+            filterSearchResults(
+              value.toLowerCase(),
+            );
+          },
+          controller: editingController,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            // labelText: "Search",
+            hintText: "Search Documents",
+            suffixIcon: IconButton(
+              onPressed: editingController.clear,
+              icon: Icon(Icons.clear),
             ),
           ),
-          backgroundColor: Colors.white,
-          title: TextField(
-            onChanged: (value) {
-              filterSearchResults(value.toLowerCase());
-            },
-            controller: editingController,
-            decoration: InputDecoration(
-              // labelText: "Search",
-              hintText: "Search Documents",
-              suffixIcon: IconButton(
-                onPressed: editingController.clear,
-                icon: Icon(Icons.clear),
-              ),
-            ),
-          )),
+        ),
+      ),
       body: Container(
         child: Column(
           children: <Widget>[

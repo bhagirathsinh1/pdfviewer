@@ -19,6 +19,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  bool favoritestar = false;
   bool showfiles = false;
   bool myfiles = false;
   bool order = false;
@@ -288,16 +289,31 @@ class _HomepageState extends State<Homepage> {
       child: ListTile(
         title: Text(files[index].path.split('/').last),
         leading: Icon(Icons.picture_as_pdf),
-        trailing: IconButton(
-          onPressed: () {
-            favorite_index = index;
-            // recent_index = index;
-            bottomNavBar(context);
-          },
-          icon: Icon(
-            Icons.more_vert,
-            color: Colors.redAccent,
-          ),
+        trailing: Wrap(
+          children: [
+            IconButton(
+              onPressed: () {
+                // favorite_index = index;
+                // // recent_index = index;
+                // bottomNavBar(context);
+              },
+              icon: Icon(
+                Icons.star,
+                color: favoritestar ? Colors.blue : Colors.white,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                favorite_index = index;
+                // recent_index = index;
+                bottomNavBar(context);
+              },
+              icon: Icon(
+                Icons.more_vert,
+                color: Colors.redAccent,
+              ),
+            ),
+          ],
         ),
         onTap: () {
           print("......................");
@@ -404,6 +420,9 @@ class _HomepageState extends State<Homepage> {
                     );
                   } else {
                     favorite_list.add(files[favorite_index].path);
+                    setState(() {
+                      favoritestar = true;
+                    });
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).clearSnackBars();
                     ScaffoldMessenger.of(context).showSnackBar(
