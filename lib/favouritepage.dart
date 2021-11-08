@@ -134,7 +134,7 @@ class _FavouritepageState extends State<Favouritepage> {
               ),
               ListTile(
                 title: Text(
-                  "Add to favorite",
+                  "Remove from favorite",
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.8),
                   ),
@@ -166,13 +166,13 @@ class _FavouritepageState extends State<Favouritepage> {
               ),
               ListTile(
                 title: Text(
-                  "Rename",
+                  "Delete",
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.8),
                   ),
                 ),
                 leading: Icon(
-                  Icons.edit,
+                  Icons.delete,
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {},
@@ -244,17 +244,191 @@ class ViewPDF extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "PDF Reader",
-          style: TextStyle(color: Colors.black),
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "PDF Reader",
+              style: TextStyle(color: Colors.black),
+            ),
+            backgroundColor: Colors.white,
+          ),
+          body: PdfView(path: pathPDF),
         ),
-        backgroundColor: Colors.white,
-      ),
-      body: Container(
-        child: PdfView(path: pathPDF),
-      ),
+        Positioned(
+          bottom: 15,
+          right: 15,
+          child: FloatingActionButton(
+            // elevation: 0,
+            onPressed: () {},
+            child: IconButton(
+              onPressed: () {
+                showModalBottomSheet<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Container(
+                        color: Colors.white,
+                        height: 500,
+                        child: Column(
+                          children: [
+                            // Container(
+                            //   decoration: BoxDecoration(
+                            //       color: Colors.yellow[100],
+                            //       border: Border.all(
+                            //         color: Colors.grey,
+                            //         width: 5,
+                            //       )),
+                            //   child: ListTile(
+                            //     title: Text(
+                            //       reversed_favorite_list[newindex]
+                            //           .split('/')
+                            //           .last,
+                            //       style: TextStyle(
+                            //         color: Colors.black.withOpacity(0.8),
+                            //       ),
+                            //     ),
+                            //     leading: Icon(
+                            //       Icons.picture_as_pdf,
+                            //       color: Colors.black.withOpacity(0.5),
+                            //     ),
+                            //     onTap: () {},
+                            //   ),
+                            // ),
+                            ListTile(
+                              title: Text(
+                                "Continuous page",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                              leading: Icon(
+                                Icons.print_outlined,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                              onTap: () {
+                                // setState(() {
+                                //   // order = !order;
+                                // });
+                              },
+                            ),
+                            ListTile(
+                              title: Text(
+                                "Page by page",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                              leading: Icon(
+                                Icons.call_to_action_rounded,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                              onTap: () {},
+                            ),
+                            ListTile(
+                              title: Text(
+                                "Night Mode",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                              leading: Icon(
+                                Icons.nights_stay,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                              onTap: () {},
+                            ),
+                            ListTile(
+                              title: Text(
+                                "Go to page",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                              leading: Icon(
+                                Icons.screen_search_desktop_rounded,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                              onTap: () {},
+                            ),
+                            Divider(
+                              height: 5,
+                              color: Colors.grey,
+                            ),
+                            ListTile(
+                              title: Text(
+                                "Remove from favorite",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                              leading: Icon(
+                                Icons.star_border,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                              onTap: () {
+                                // setState(() {
+                                //   // order = !order;
+                                // });
+                              },
+                            ),
+                            ListTile(
+                              title: Text(
+                                "Rename",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                              leading: Icon(
+                                Icons.drive_file_rename_outline_outlined,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                              onTap: () {},
+                            ),
+                            ListTile(
+                              title: Text(
+                                "Print",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                              leading: Icon(
+                                Icons.local_print_shop_rounded,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                              onTap: () {},
+                            ),
+                            ListTile(
+                              title: Text(
+                                "Delete",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                ),
+                              ),
+                              leading: Icon(
+                                Icons.delete_rounded,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              icon: Icon(Icons.settings),
+            ),
+          ),
+        ),
+      ],
     );
   }
+
+//  Future<void> floatingbtndrawer(BuildContext context) {
+//     return
+//   }
 }

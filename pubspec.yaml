@@ -50,6 +50,7 @@ dependencies:
   permission_handler: ^8.2.5
   pdf_viewer_plugin: ^2.0.1
   animated_splash_screen: ^1.1.0
+  intl: ^0.17.0
   share: ^2.0.4
   file_picker: ^4.1.6
   # file_manager: ^1.0.0

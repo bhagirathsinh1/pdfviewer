@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/favouritepage.dart';
+import 'package:pdfviewer/homepage.dart';
+import 'package:pdfviewer/main.dart';
 
 List<String> recent_list = [];
 List<String> reversed_recent_list = [];
@@ -143,38 +145,52 @@ class _RecentpageState extends State<Recentpage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
-                  // if (favorite_list.contains(files[favorite_index].path)) {
-                  //   Navigator.pop(context);
-                  //   ScaffoldMessenger.of(context).clearSnackBars();
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     SnackBar(
-                  //       content: Text("Already added !!"),
-                  //     ),
-                  //   );
-                  // } else {
-                  //   favorite_list.add(files[favorite_index].path);
-                  //   Navigator.pop(context);
-                  //   ScaffoldMessenger.of(context).clearSnackBars();
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     SnackBar(
-                  //       content: Text("Successfully added !!"),
-                  //     ),
-                  //   );
-                  // }
+                  if (favorite_list.contains(files[favorite_index].path)) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Already added !!"),
+                      ),
+                    );
+                  } else {
+                    favorite_list.add(files[favorite_index].path);
+                    setState(() {
+                      favoritestar = true;
+                    });
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Successfully added !!"),
+                      ),
+                    );
+                  }
                 },
               ),
               ListTile(
                 title: Text(
-                  "Rename",
+                  "Remove from recents",
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.8),
                   ),
                 ),
                 leading: Icon(
-                  Icons.edit,
+                  Icons.auto_delete,
                   color: Colors.black.withOpacity(0.5),
                 ),
-                onTap: () {},
+                onTap: () {
+                  reversed_recent_list.remove(recent_index);
+                  recent_list.remove(recent_index);
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Remove from recents !!"),
+                    ),
+                  );
+                  initState();
+                },
               ),
               ListTile(
                 title: Text(

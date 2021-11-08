@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/main.dart';
@@ -11,6 +12,10 @@ import 'package:share/share.dart';
 
 import 'main.dart';
 
+bool favoritestar = false;
+
+var favorite_index;
+
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
 
@@ -19,12 +24,13 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  bool favoritestar = false;
+  String? formattedDate;
+  var finalfilesize;
   bool showfiles = false;
   bool myfiles = false;
   bool order = false;
-
-  var favorite_index;
+  bool sizedsort = false;
+  bool namesort = false;
 
   var recent_index;
 
@@ -32,7 +38,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   void initState() {
-    setState(() {});
+    // setState(() {});
     super.initState();
     print("-----------------------------> called homepage Initstate");
   }
@@ -129,17 +135,16 @@ class _HomepageState extends State<Homepage> {
                     TextButton(
                       onPressed: () {
                         getFiles();
-                        setState(() {
-                          ListView.builder(
-                            reverse: order,
-                            //if file/folder list is grabbed, then show here
-                            itemCount: files.length,
-                            itemBuilder: (BuildContext ctxt, index) {
-                              return _listItem(index);
-                            },
-                          );
-                          showfiles = true;
-                        });
+
+                        ListView.builder(
+                          reverse: order,
+                          //if file/folder list is grabbed, then show here
+                          itemCount: files.length,
+                          itemBuilder: (BuildContext ctxt, index) {
+                            return _listItem(index);
+                          },
+                        );
+                        showfiles = true;
 
                         // initState();
                         // initState();
@@ -176,25 +181,48 @@ class _HomepageState extends State<Homepage> {
       color: Colors.white,
       itemBuilder: (context) => [
         PopupMenuItem(
-          child: Text("Date"),
+          onTap: () {
+            if (sizedsort == false) {
+              try {
+                setState(
+                  () {
+                    files.sort(
+                      (a, b) {
+                        return a.lengthSync().compareTo(b.lengthSync());
+                      },
+                    );
+                    sizedsort = true;
+                    namesort = false;
+                  },
+                );
+              } catch (e) {
+                print('-------------------> error ---> $e');
+              }
+            }
+          },
+          child: Text("Size"),
           value: 1,
         ),
         PopupMenuItem(
           onTap: () {
-            print("...........files1..................");
-            print(files);
+            if (namesort == false) {
+              print("...........files1..................");
+              print(files);
 
-            try {
-              setState(() {
-                files.sort((a, b) {
-                  return a.path
-                      .split('/')
-                      .last
-                      .compareTo(b.path.split('/').last);
+              try {
+                setState(() {
+                  files.sort((a, b) {
+                    return a.path
+                        .split('/')
+                        .last
+                        .compareTo(b.path.split('/').last);
+                  });
+                  namesort = true;
+                  sizedsort = false;
                 });
-              });
-            } catch (e) {
-              print('-------------------> error ---> $e');
+              } catch (e) {
+                print('-------------------> error ---> $e');
+              }
             }
             print("...........files2..................");
             print(files);
@@ -209,7 +237,7 @@ class _HomepageState extends State<Homepage> {
           value: 2,
         ),
         PopupMenuItem(
-          child: Text("Size"),
+          child: Text("Date"),
           value: 3,
         )
       ],
@@ -285,9 +313,23 @@ class _HomepageState extends State<Homepage> {
   }
 
   _listItem(index) {
+    _getDateTime(index);
+
+    File filesize = File(
+      files[index].path.toString(),
+    );
+    finalfilesize = filesize.lengthSync();
+    var sizeInKb = (finalfilesize / (1024)).toStringAsFixed(2);
+
+    print("....................file size.........................");
+    print('Mb ${sizeInKb}');
     return Card(
       child: ListTile(
         title: Text(files[index].path.split('/').last),
+        subtitle: sizeInKb.length < 7
+            ? Text("${formattedDate.toString()}\n${sizeInKb} Kb")
+            : Text(
+                "${formattedDate.toString()}\n${(finalfilesize / (1024.00 * 1024)).toStringAsFixed(2)} Mb"),
         leading: Icon(Icons.picture_as_pdf),
         trailing: Wrap(
           children: [
@@ -350,6 +392,16 @@ class _HomepageState extends State<Homepage> {
         },
       ),
     );
+  }
+
+  void _getDateTime(index) async {
+    File datefile = new File(
+      files[index].path.toString(),
+    );
+
+    var lastModDate1 = await datefile.lastModified();
+    formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
+    print("File last modified @ : " + "${formattedDate.toString()}");
   }
 
   Future<void> bottomNavBar(BuildContext context) {
@@ -487,9 +539,9 @@ class _HomepageState extends State<Homepage> {
 
     getFiles();
     CircularProgressIndicator();
-    setState(() {
-      _listItem(favorite_index);
-    });
+    // setState(() {
+    _listItem(favorite_index);
+    // });
 
     // Navigator.pop(context);
 
