@@ -1,6 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
+import 'package:snapping_page_scroll/snapping_page_scroll.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
 // import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
+var brightness = SchedulerBinding.instance!.window.platformBrightness;
+bool isDarkMode = brightness == Brightness.dark;
+
+var bgColor = isDarkMode ? Colors.black : Colors.white;
 
 List<String> favorite_list = [];
 List<String> reversed_favorite_list = [];
@@ -20,9 +30,11 @@ class _FavouritepageState extends State<Favouritepage> {
   }
 
   var newindex;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
@@ -238,9 +250,18 @@ class _FavouritepageState extends State<Favouritepage> {
   }
 }
 
-class ViewPDF extends StatelessWidget {
+class ViewPDF extends StatefulWidget {
   String pathPDF = "";
   ViewPDF({required this.pathPDF});
+
+  @override
+  State<ViewPDF> createState() => _ViewPDFState();
+}
+
+class _ViewPDFState extends State<ViewPDF> {
+  bool dark = true;
+
+  bool continuePageBool = false;
 
   @override
   Widget build(BuildContext context) {
@@ -248,13 +269,33 @@ class ViewPDF extends StatelessWidget {
       children: [
         Scaffold(
           appBar: AppBar(
+            // leading: IconButton(
+            //   color: Colors.black,
+            //   icon: new Icon(Icons.search),
+            //   highlightColor: Colors.pink,
+            //   onPressed: () {
+            //     if (dark == true) {
+            //       dark = false;
+            //     } else {
+            //       dark = true;
+            //     }
+            //     // setState(() {
+            //     changeBackground();
+            //     // });
+            //   },
+            // ),
             title: Text(
               "PDF Reader",
               style: TextStyle(color: Colors.black),
             ),
             backgroundColor: Colors.white,
           ),
-          body: PdfView(path: pathPDF),
+          body: SfPdfViewer.file(
+            File(widget.pathPDF),
+            pageLayoutMode: continuePageBool
+                ? PdfPageLayoutMode.single
+                : PdfPageLayoutMode.continuous,
+          ),
         ),
         Positioned(
           bottom: 15,
@@ -304,14 +345,20 @@ class ViewPDF extends StatelessWidget {
                                   color: Colors.black.withOpacity(0.8),
                                 ),
                               ),
-                              leading: Icon(
-                                Icons.print_outlined,
+                              leading: IconButton(
+                                icon: new Icon(Icons.print_outlined),
                                 color: Colors.black.withOpacity(0.5),
+                                onPressed: () {},
                               ),
                               onTap: () {
-                                // setState(() {
-                                //   // order = !order;
-                                // });
+                                print(
+                                    "---------continue page bool 1 $continuePageBool------------");
+                                setState(() {
+                                  continuePageBool = true;
+                                  print(
+                                      "----------continue page bool 2 $continuePageBool----------");
+                                });
+                                Navigator.pop(context);
                               },
                             ),
                             ListTile(
@@ -325,7 +372,17 @@ class ViewPDF extends StatelessWidget {
                                 Icons.call_to_action_rounded,
                                 color: Colors.black.withOpacity(0.5),
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                print(
+                                    "---------page by page bool 1 $continuePageBool------------");
+
+                                setState(() {
+                                  continuePageBool = false;
+                                  print(
+                                      "---------page by page bool 2 $continuePageBool------------");
+                                });
+                                Navigator.pop(context);
+                              },
                             ),
                             ListTile(
                               title: Text(
@@ -428,7 +485,11 @@ class ViewPDF extends StatelessWidget {
     );
   }
 
-//  Future<void> floatingbtndrawer(BuildContext context) {
-//     return
-//   }
+  void changeBackground() {
+    if (dark == true) {
+      bgColor = Colors.black;
+    } else {
+      bgColor = Colors.white;
+    }
+  }
 }
