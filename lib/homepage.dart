@@ -55,38 +55,39 @@ class _HomepageState extends State<Homepage> {
                 ),
                 backgroundColor: Colors.white,
                 actions: <Widget>[
-                    ///search button
+                  ///search button
 
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => searchPage()),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.search,
-                        size: 26.0,
-                        color: Colors.black,
-                      ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => searchPage()),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.search,
+                      size: 26.0,
+                      color: Colors.black,
                     ),
+                  ),
 
-                    ///popupmanu
+                  ///popupmanu
 
-                    popUpMenu(),
+                  popUpMenu(),
 
-                    ///more
+                  ///more
 
-                    IconButton(
-                      onPressed: () {
-                        bottmNavBar(context);
-                      },
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: Colors.black,
-                      ),
+                  IconButton(
+                    onPressed: () {
+                      bottmNavBar(context);
+                    },
+                    icon: Icon(
+                      Icons.more_vert,
+                      color: Colors.black,
                     ),
-                  ])
+                  ),
+                ],
+              )
             : AppBar(
                 title: Text(
                   " ${files.length} pdf found !",
@@ -187,7 +188,7 @@ class _HomepageState extends State<Homepage> {
                 setState(
                   () {
                     files.sort(
-                      (a, b) {
+                      (b, a) {
                         return a.lengthSync().compareTo(b.lengthSync());
                       },
                     );
@@ -362,7 +363,7 @@ class _HomepageState extends State<Homepage> {
           print(recent_list);
           print("......................");
 
-          print(reversed_recent_list);
+          // print(reversed_recent_list);
           print("......................");
 
           recent_index = index;

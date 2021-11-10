@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
+import 'package:pdfviewer/homepage.dart';
+import 'package:pdfviewer/main.dart';
+import 'package:share/share.dart';
 import 'package:snapping_page_scroll/snapping_page_scroll.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -13,7 +16,7 @@ bool isDarkMode = brightness == Brightness.dark;
 var bgColor = isDarkMode ? Colors.black : Colors.white;
 
 List<String> favorite_list = [];
-List<String> reversed_favorite_list = [];
+// List<String> reversed_favorite_list = [];
 
 class Favouritepage extends StatefulWidget {
   const Favouritepage({Key? key}) : super(key: key);
@@ -26,7 +29,7 @@ class _FavouritepageState extends State<Favouritepage> {
   @override
   void initState() {
     super.initState();
-    reversed_favorite_list = favorite_list.reversed.toList();
+    // reversed_favorite_list = favorite_list.reversed.toList();
   }
 
   var newindex;
@@ -58,41 +61,45 @@ class _FavouritepageState extends State<Favouritepage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        //if file/folder list is grabbed, then show here
-        itemCount: reversed_favorite_list.length,
+      body: SingleChildScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          //if file/folder list is grabbed, then show here
+          itemCount: favorite_list.length,
+          reverse: true,
 
-        itemBuilder: (context, index) {
-          return Card(
-            child: ListTile(
-              title: Text(reversed_favorite_list[index].split('/').last),
-              leading: Icon(Icons.picture_as_pdf),
-              trailing: IconButton(
-                onPressed: () {
-                  newindex = index;
-                  favNavDrawer(context);
-                },
-                icon: Icon(
-                  Icons.more_vert,
-                  color: Colors.redAccent,
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return ViewPDF(
-                        pathPDF: reversed_favorite_list[index].toString(),
-                      );
-                      //open viewPDF page on click
-                    },
+          itemBuilder: (context, index) {
+            return Card(
+              child: ListTile(
+                title: Text(favorite_list[index].split('/').last),
+                leading: Icon(Icons.picture_as_pdf),
+                trailing: IconButton(
+                  onPressed: () {
+                    newindex = index;
+                    favNavDrawer(context);
+                  },
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: Colors.redAccent,
                   ),
-                );
-              },
-            ),
-          );
-        },
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ViewPDF(
+                          pathPDF: favorite_list[index].toString(),
+                        );
+                        //open viewPDF page on click
+                      },
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -115,7 +122,7 @@ class _FavouritepageState extends State<Favouritepage> {
                     )),
                 child: ListTile(
                   title: Text(
-                    reversed_favorite_list[newindex].split('/').last,
+                    favorite_list[newindex].split('/').last,
                     style: TextStyle(
                       color: Colors.black.withOpacity(0.8),
                     ),
@@ -139,9 +146,8 @@ class _FavouritepageState extends State<Favouritepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
-                  setState(() {
-                    // order = !order;
-                  });
+                  List<String> paths = [files[favorite_index].path];
+                  Share.shareFiles(paths);
                 },
               ),
               ListTile(
@@ -156,38 +162,21 @@ class _FavouritepageState extends State<Favouritepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
-                  // if (favorite_list.contains(files[favorite_index].path)) {
-                  //   Navigator.pop(context);
-                  //   ScaffoldMessenger.of(context).clearSnackBars();
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     SnackBar(
-                  //       content: Text("Already added !!"),
-                  //     ),
-                  //   );
-                  // } else {
-                  //   favorite_list.add(files[favorite_index].path);
-                  //   Navigator.pop(context);
-                  //   ScaffoldMessenger.of(context).clearSnackBars();
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     SnackBar(
-                  //       content: Text("Successfully added !!"),
-                  //     ),
-                  //   );
-                  // }
+                  setState(
+                    () {
+                      favorite_list.removeAt(newindex);
+
+                      Navigator.pop(context);
+
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Remove from favorites !!"),
+                        ),
+                      );
+                    },
+                  );
                 },
-              ),
-              ListTile(
-                title: Text(
-                  "Delete",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.delete,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {},
               ),
               ListTile(
                 title: Text(
@@ -233,7 +222,7 @@ class _FavouritepageState extends State<Favouritepage> {
                   setState(
                     () {
                       favorite_list.clear();
-                      reversed_favorite_list.clear();
+                      // reversed_favorite_list.clear();
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -351,13 +340,13 @@ class _ViewPDFState extends State<ViewPDF> {
                                 onPressed: () {},
                               ),
                               onTap: () {
-                                print(
-                                    "---------continue page bool 1 $continuePageBool------------");
-                                setState(() {
-                                  continuePageBool = true;
-                                  print(
-                                      "----------continue page bool 2 $continuePageBool----------");
-                                });
+                                // print(
+                                //     "---------continue page bool 1 $continuePageBool------------");
+                                // setState(() {
+                                //   continuePageBool = true;
+                                //   print(
+                                //       "----------continue page bool 2 $continuePageBool----------");
+                                // });
                                 Navigator.pop(context);
                               },
                             ),
@@ -373,14 +362,14 @@ class _ViewPDFState extends State<ViewPDF> {
                                 color: Colors.black.withOpacity(0.5),
                               ),
                               onTap: () {
-                                print(
-                                    "---------page by page bool 1 $continuePageBool------------");
+                                // print(
+                                //     "---------page by page bool 1 $continuePageBool------------");
 
-                                setState(() {
-                                  continuePageBool = false;
-                                  print(
-                                      "---------page by page bool 2 $continuePageBool------------");
-                                });
+                                // setState(() {
+                                //   continuePageBool = false;
+                                //   print(
+                                //       "---------page by page bool 2 $continuePageBool------------");
+                                // });
                                 Navigator.pop(context);
                               },
                             ),
@@ -425,11 +414,7 @@ class _ViewPDFState extends State<ViewPDF> {
                                 Icons.star_border,
                                 color: Colors.black.withOpacity(0.5),
                               ),
-                              onTap: () {
-                                // setState(() {
-                                //   // order = !order;
-                                // });
-                              },
+                              onTap: () {},
                             ),
                             ListTile(
                               title: Text(
