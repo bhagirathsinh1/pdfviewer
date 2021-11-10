@@ -16,6 +16,8 @@ bool isDarkMode = brightness == Brightness.dark;
 var bgColor = isDarkMode ? Colors.black : Colors.white;
 
 List<String> favorite_list = [];
+var newindex;
+
 // List<String> reversed_favorite_list = [];
 
 class Favouritepage extends StatefulWidget {
@@ -31,8 +33,6 @@ class _FavouritepageState extends State<Favouritepage> {
     super.initState();
     // reversed_favorite_list = favorite_list.reversed.toList();
   }
-
-  var newindex;
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +110,7 @@ class _FavouritepageState extends State<Favouritepage> {
       builder: (BuildContext context) {
         return Container(
           color: Colors.white,
-          height: 350,
+          height: 250,
           child: Column(
             children: [
               Container(
@@ -189,7 +189,10 @@ class _FavouritepageState extends State<Favouritepage> {
                   Icons.delete,
                   color: Colors.black.withOpacity(0.5),
                 ),
-                onTap: () {},
+                onTap: () {
+                  newshowAlertDialog(context);
+                  setState(() {});
+                },
               ),
             ],
           ),
@@ -236,6 +239,103 @@ class _FavouritepageState extends State<Favouritepage> {
         );
       },
     );
+  }
+}
+
+newshowAlertDialog(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  Widget continueButton = TextButton(
+    child: Text("Continue"),
+    onPressed: () {
+      Navigator.pop(context);
+
+      deleteMethod();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Alert!"),
+    content: Text(
+        "Would you like to delete ${files[favorite_index].path.split('/').last}"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+deleteMethod() {
+  deleteFile(
+    File(
+      files[favorite_index].path.toString(),
+    ),
+  );
+
+  favorite_list.removeAt(newindex);
+
+  getFiles();
+  CircularProgressIndicator();
+
+  // setState(() {
+
+  // });
+
+  // Navigator.pop(context);
+
+  // showAlertDialog(context);
+
+  // );
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the button
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Succesfuly deleted"),
+    content: Text(files[favorite_index].path.split('/').last),
+    actions: [
+      TextButton(
+        child: Text("OK"),
+        onPressed: () {
+          Navigator.pop(context);
+          Navigator.pop(context);
+        },
+      ),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+Future<void> deleteFile(File file) async {
+  try {
+    if (await file.exists()) {
+      await file.delete();
+    }
+  } catch (e) {
+    // Error in getting access to the file.
   }
 }
 

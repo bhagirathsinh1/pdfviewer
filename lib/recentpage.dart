@@ -26,68 +26,69 @@ class _RecentpageState extends State<Recentpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text(
-            "PDF Reader",
-            style: TextStyle(color: Colors.black),
-          ),
-          actions: <Widget>[
-            ///search button
-
-            ///more
-
-            IconButton(
-              onPressed: () {
-                recentBottomSheet(context);
-              },
-              icon: Icon(
-                Icons.more_vert,
-                color: Colors.black,
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          "PDF Reader",
+          style: TextStyle(color: Colors.black),
         ),
-        body: SingleChildScrollView(
-          child: ListView.builder(
-            shrinkWrap: true,
-            //if file/folder list is grabbed, then show here
-            itemCount: recent_list.length,
-            reverse: true,
+        actions: <Widget>[
+          ///search button
 
-            itemBuilder: (context, index) {
-              return Card(
-                child: ListTile(
-                  title: Text(recent_list[index].split('/').last),
-                  leading: Icon(Icons.picture_as_pdf),
-                  trailing: IconButton(
-                    onPressed: () {
-                      recent_index = index;
-                      recentBottomBar(context);
-                    },
-                    icon: Icon(
-                      Icons.more_vert,
-                      color: Colors.redAccent,
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return ViewPDF(
-                            pathPDF: recent_list[index].toString(),
-                          );
-                          //open viewPDF page on click
-                        },
-                      ),
-                    );
-                  },
-                ),
-              );
+          ///more
+
+          IconButton(
+            onPressed: () {
+              recentBottomSheet(context);
             },
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.black,
+            ),
           ),
-        ));
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          //if file/folder list is grabbed, then show here
+          itemCount: recent_list.length,
+          reverse: true,
+
+          itemBuilder: (context, index) {
+            return Card(
+              child: ListTile(
+                title: Text(recent_list[index].split('/').last),
+                leading: Icon(Icons.picture_as_pdf),
+                trailing: IconButton(
+                  onPressed: () {
+                    recent_index = index;
+                    recentBottomBar(context);
+                  },
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: Colors.redAccent,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ViewPDF(
+                          pathPDF: recent_list[index].toString(),
+                        );
+                        //open viewPDF page on click
+                      },
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   Future<void> recentBottomBar(BuildContext context) {
@@ -96,7 +97,7 @@ class _RecentpageState extends State<Recentpage> {
       builder: (BuildContext context) {
         return Container(
           color: Colors.white,
-          height: 350,
+          height: 250,
           child: Column(
             children: [
               Container(
