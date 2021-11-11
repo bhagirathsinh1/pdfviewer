@@ -12,7 +12,7 @@ import 'package:share/share.dart';
 
 import 'main.dart';
 
-bool favoritestar = false;
+// bool favoritestar = false;
 
 var favorite_index;
 
@@ -334,17 +334,17 @@ class _HomepageState extends State<Homepage> {
         leading: Icon(Icons.picture_as_pdf),
         trailing: Wrap(
           children: [
-            IconButton(
-              onPressed: () {
-                // favorite_index = index;
-                // // recent_index = index;
-                // bottomNavBar(context);
-              },
-              icon: Icon(
-                Icons.star,
-                color: favoritestar ? Colors.blue : Colors.white,
-              ),
-            ),
+            // IconButton(
+            //   onPressed: () {
+            //     // favorite_index = index;
+            //     // // recent_index = index;
+            //     // bottomNavBar(context);
+            //   },
+            // icon: Icon(
+            //   Icons.star,
+            //   color: favoritestar ? Colors.blue : Colors.white,
+            // ),
+            // ),
             IconButton(
               onPressed: () {
                 favorite_index = index;
@@ -474,7 +474,7 @@ class _HomepageState extends State<Homepage> {
                   } else {
                     favorite_list.add(files[favorite_index].path);
                     setState(() {
-                      favoritestar = true;
+                      // favoritestar = true;
                     });
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).clearSnackBars();
@@ -511,7 +511,9 @@ class _HomepageState extends State<Homepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
-                  newshowAlertDialog(context);
+                  setState(() {
+                    newshowAlertDialog(context);
+                  });
                 },
               ),
             ],

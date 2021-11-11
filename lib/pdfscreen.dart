@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/favouritepage.dart';
@@ -27,48 +29,53 @@ class _pdfscreenState extends State<pdfscreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        children: [
-          Homepage(),
-          Recentpage(),
-          Favouritepage(),
-        ],
-        onPageChanged: (index) {
-          _init = true;
-          setState(
-            () => _currentPage = index,
-          );
-        },
-      ),
-      bottomNavigationBar: BottomBar(
-        selectedIndex: _currentPage,
-        onTap: (int index) {
-          _pageController.jumpToPage(index);
-
-          setState(() {
+    return WillPopScope(
+      onWillPop: () {
+        return exit(0);
+      },
+      child: Scaffold(
+        body: PageView(
+          controller: _pageController,
+          children: [
+            Homepage(),
+            Recentpage(),
+            Favouritepage(),
+          ],
+          onPageChanged: (index) {
             _init = true;
-            _currentPage = index;
-          });
-        },
-        items: <BottomBarItem>[
-          BottomBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-            activeColor: Colors.blue,
-          ),
-          BottomBarItem(
-            icon: Icon(Icons.lock_clock),
-            title: Text('Recent'),
-            activeColor: Colors.blue,
-          ),
-          BottomBarItem(
-            icon: Icon(Icons.favorite),
-            title: Text('Favorites'),
-            activeColor: Colors.blue,
-          ),
-        ],
+            setState(
+              () => _currentPage = index,
+            );
+          },
+        ),
+        bottomNavigationBar: BottomBar(
+          selectedIndex: _currentPage,
+          onTap: (int index) {
+            _pageController.jumpToPage(index);
+
+            setState(() {
+              _init = true;
+              _currentPage = index;
+            });
+          },
+          items: <BottomBarItem>[
+            BottomBarItem(
+              icon: Icon(Icons.home),
+              title: Text('Home'),
+              activeColor: Colors.blue,
+            ),
+            BottomBarItem(
+              icon: Icon(Icons.lock_clock),
+              title: Text('Recent'),
+              activeColor: Colors.blue,
+            ),
+            BottomBarItem(
+              icon: Icon(Icons.favorite),
+              title: Text('Favorites'),
+              activeColor: Colors.blue,
+            ),
+          ],
+        ),
       ),
     );
   }

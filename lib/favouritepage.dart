@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 import 'package:pdfviewer/homepage.dart';
 import 'package:pdfviewer/main.dart';
+import 'package:pdfviewer/pdfscreen.dart';
 import 'package:share/share.dart';
 import 'package:snapping_page_scroll/snapping_page_scroll.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -191,7 +192,11 @@ class _FavouritepageState extends State<Favouritepage> {
                 ),
                 onTap: () {
                   newshowAlertDialog(context);
-                  setState(() {});
+
+                  // Navigator.pop(context);
+                  // setState(() {
+                  //   initState();
+                  // });
                 },
               ),
             ],
@@ -255,7 +260,7 @@ newshowAlertDialog(BuildContext context) {
     onPressed: () {
       Navigator.pop(context);
 
-      deleteMethod();
+      deleteMethod(context);
     },
   );
 
@@ -279,7 +284,7 @@ newshowAlertDialog(BuildContext context) {
   );
 }
 
-deleteMethod() {
+deleteMethod(BuildContext context) {
   deleteFile(
     File(
       files[favorite_index].path.toString(),
@@ -290,14 +295,17 @@ deleteMethod() {
 
   getFiles();
   CircularProgressIndicator();
-
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => pdfscreen()),
+  );
   // setState(() {
 
   // });
 
   // Navigator.pop(context);
 
-  // showAlertDialog(context);
+  showAlertDialog(context);
 
   // );
 }
@@ -314,7 +322,7 @@ showAlertDialog(BuildContext context) {
         child: Text("OK"),
         onPressed: () {
           Navigator.pop(context);
-          Navigator.pop(context);
+          // Navigator.pop(context);
         },
       ),
     ],
