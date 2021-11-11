@@ -473,9 +473,11 @@ class _HomepageState extends State<Homepage> {
                     );
                   } else {
                     favorite_list.add(files[favorite_index].path);
-                    setState(() {
-                      // favoritestar = true;
-                    });
+                    setState(
+                      () {
+                        // favoritestar = true;
+                      },
+                    );
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).clearSnackBars();
                     ScaffoldMessenger.of(context).showSnackBar(
