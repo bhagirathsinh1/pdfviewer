@@ -211,16 +211,18 @@ class _HomepageState extends State<Homepage> {
               print(files);
 
               try {
-                setState(() {
-                  files.sort((a, b) {
-                    return a.path
-                        .split('/')
-                        .last
-                        .compareTo(b.path.split('/').last);
-                  });
-                  namesort = true;
-                  sizedsort = false;
-                });
+                setState(
+                  () {
+                    files.sort((a, b) {
+                      return a.path
+                          .split('/')
+                          .last
+                          .compareTo(b.path.split('/').last);
+                    });
+                    namesort = true;
+                    sizedsort = false;
+                  },
+                );
               } catch (e) {
                 print('-------------------> error ---> $e');
               }

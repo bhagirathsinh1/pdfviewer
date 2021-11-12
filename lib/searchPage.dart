@@ -17,8 +17,10 @@ class _MyHomePageState extends State<searchPage> {
   @override
   void initState() {
     items.addAll(files);
+    print("----files length----------${files.length}----------");
+    print(items.length);
     super.initState();
-    print(".............items.add..................");
+    print(".....items length........${items.length}..................");
     print(items);
   }
 
@@ -31,23 +33,25 @@ class _MyHomePageState extends State<searchPage> {
       List<File> dummyListData = [];
       dummySearchList.forEach(
         (item) {
-          if (item.path.split('/').last.contains(query)) {
+          if (item.path.split('/').last.toLowerCase().contains(query)) {
             dummyListData.add(item);
           }
         },
       );
       setState(
         () {
-          // items.clear();
+          items.clear();
           items = dummyListData;
         },
       );
       // return;
     } else {
-      // setState(() {
-      //   items.clear();
-      //   items.addAll(files);
-      // },);
+      setState(
+        () {
+          items.clear();
+          items.addAll(files);
+        },
+      );
     }
   }
 
