@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
+import 'package:pdfviewer/SQLService/add_pdf_serrvice.dart';
+import 'package:pdfviewer/SQLService/sqlService.dart';
+import 'package:pdfviewer/SQLService/sql_model.dart';
 import 'package:pdfviewer/homepage.dart';
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/pdfscreen.dart';
@@ -16,7 +19,7 @@ bool isDarkMode = brightness == Brightness.dark;
 
 var bgColor = isDarkMode ? Colors.black : Colors.white;
 
-List<String> favorite_list = [];
+// List<String> favorite_list = [];
 var newindex;
 
 // List<String> reversed_favorite_list = [];
@@ -33,6 +36,18 @@ class _FavouritepageState extends State<Favouritepage> {
   void initState() {
     super.initState();
     // reversed_favorite_list = favorite_list.reversed.toList();
+  }
+
+  Future<List<FavouriteListPdfModel>> getallPDF() async {
+    final dbClient = await SqlModel().db;
+    List<Map<String, Object?>> futurePDFList =
+        await dbClient.rawQuery("Select *from ${SqlModel.tableFavorite}");
+    List<FavouriteListPdfModel> list = [];
+
+    futurePDFList.forEach((element) {
+      list.add(FavouriteListPdfModel.fromJson(element));
+    });
+    return list;
   }
 
   @override
@@ -62,46 +77,111 @@ class _FavouritepageState extends State<Favouritepage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: ListView.builder(
-          shrinkWrap: true,
-          //if file/folder list is grabbed, then show here
-          itemCount: favorite_list.length,
-          reverse: true,
+      body: FutureBuilder(
+        future: getallPDF(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<FavouriteListPdfModel>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              print("------------------response positive-------------");
 
-          itemBuilder: (context, index) {
-            return Card(
-              child: ListTile(
-                title: Text(favorite_list[index].split('/').last),
-                leading: Icon(Icons.picture_as_pdf),
-                trailing: IconButton(
-                  onPressed: () {
-                    newindex = index;
-                    favNavDrawer(context);
+              if (snapshot.data!.isEmpty) {
+                return Text("Data is empty");
+              } else {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var arrivedata = snapshot.data![index].pdf;
+                    print("dataaay is $arrivedata");
+                    return Card(
+                      child: ListTile(
+                        title: Text(arrivedata!.split('/').last.toString()),
+                        leading: Icon(Icons.picture_as_pdf),
+                        trailing: IconButton(
+                          onPressed: () {
+                            newindex = index;
+                            favNavDrawer(context);
+                          },
+                          icon: Icon(
+                            Icons.more_vert,
+                            color: Colors.redAccent,
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ViewPDF(
+                                  pathPDF: arrivedata.toString(),
+                                );
+                                //open viewPDF page on click
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    );
                   },
-                  icon: Icon(
-                    Icons.more_vert,
-                    color: Colors.redAccent,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ViewPDF(
-                          pathPDF: favorite_list[index].toString(),
-                        );
-                        //open viewPDF page on click
-                      },
-                    ),
-                  );
-                },
+                );
+              }
+            }
+            if (snapshot.hasError) {
+              return Text(snapshot.hasError.toString());
+            } else {
+              return Text("Somehting went weong");
+            }
+          } else {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
               ),
             );
-          },
-        ),
+          }
+        },
       ),
+      // SingleChildScrollView(
+      //   child: ListView.builder(
+      //     shrinkWrap: true,
+      //     //if file/folder list is grabbed, then show here
+      //     itemCount: favorite_list.length,
+      //     reverse: true,
+
+      //     itemBuilder: (context, index) {
+      //       return Card(
+      //         child: ListTile(
+      //           title: Text(favorite_list[index].split('/').last),
+      //           leading: Icon(Icons.picture_as_pdf),
+      //           trailing: IconButton(
+      //             onPressed: () {
+      //               newindex = index;
+      //               favNavDrawer(context);
+      //             },
+      //             icon: Icon(
+      //               Icons.more_vert,
+      //               color: Colors.redAccent,
+      //             ),
+      //           ),
+      //           onTap: () {
+      //             Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                 builder: (context) {
+      //                   return ViewPDF(
+      //                     pathPDF: favorite_list[index].toString(),
+      //                   );
+      //                   //open viewPDF page on click
+      //                 },
+      //               ),
+      //             );
+      //           },
+      //         ),
+      //       );
+      //     },
+      //   ),
+      // ),
     );
   }
 
@@ -114,27 +194,27 @@ class _FavouritepageState extends State<Favouritepage> {
           height: 250,
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.yellow[100],
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 5,
-                    )),
-                child: ListTile(
-                  title: Text(
-                    favorite_list[newindex].split('/').last,
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.8),
-                    ),
-                  ),
-                  leading: Icon(
-                    Icons.picture_as_pdf,
-                    color: Colors.black.withOpacity(0.5),
-                  ),
-                  onTap: () {},
-                ),
-              ),
+              // Container(
+              //   decoration: BoxDecoration(
+              //       color: Colors.yellow[100],
+              //       border: Border.all(
+              //         color: Colors.grey,
+              //         width: 5,
+              //       )),
+              //   child: ListTile(
+              //     title: Text(
+              //       favorite_list[newindex].split('/').last,
+              //       style: TextStyle(
+              //         color: Colors.black.withOpacity(0.8),
+              //       ),
+              //     ),
+              //     leading: Icon(
+              //       Icons.picture_as_pdf,
+              //       color: Colors.black.withOpacity(0.5),
+              //     ),
+              //     onTap: () {},
+              //   ),
+              // ),
               ListTile(
                 title: Text(
                   "Share",
@@ -165,7 +245,7 @@ class _FavouritepageState extends State<Favouritepage> {
                 onTap: () {
                   setState(
                     () {
-                      favorite_list.removeAt(newindex);
+                      // favorite_list.removeAt(newindex);
 
                       Navigator.pop(context);
 
@@ -227,9 +307,10 @@ class _FavouritepageState extends State<Favouritepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
+                  // deleteAll();
                   setState(
                     () {
-                      favorite_list.clear();
+                      "DELETE FROM tableFavorite";
                       // reversed_favorite_list.clear();
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).clearSnackBars();
@@ -291,7 +372,7 @@ deleteMethod(BuildContext context) {
     ),
   );
 
-  favorite_list.removeAt(newindex);
+  // favorite_list.removeAt(newindex);
 
   getFiles();
   CircularProgressIndicator();
@@ -366,21 +447,6 @@ class _ViewPDFState extends State<ViewPDF> {
       children: [
         Scaffold(
           appBar: AppBar(
-            // leading: IconButton(
-            //   color: Colors.black,
-            //   icon: new Icon(Icons.search),
-            //   highlightColor: Colors.pink,
-            //   onPressed: () {
-            //     if (dark == true) {
-            //       dark = false;
-            //     } else {
-            //       dark = true;
-            //     }
-            //     // setState(() {
-            //     changeBackground();
-            //     // });
-            //   },
-            // ),
             title: Text(
               "PDF Reader",
               style: TextStyle(color: Colors.black),
@@ -561,7 +627,10 @@ class _ViewPDFState extends State<ViewPDF> {
                                 Icons.delete_rounded,
                                 color: Colors.black.withOpacity(0.5),
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                // newshowAlertDialogOpenPdf(context);
+                                print('--------------delete clicked---------');
+                              },
                             ),
                           ],
                         ),
@@ -578,11 +647,99 @@ class _ViewPDFState extends State<ViewPDF> {
     );
   }
 
-  void changeBackground() {
+  changeBackground() {
     if (dark == true) {
       bgColor = Colors.black;
     } else {
       bgColor = Colors.white;
     }
   }
+}
+
+newshowAlertDialogOpenPdf(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  Widget continueButton = TextButton(
+    child: Text("Continue"),
+    onPressed: () {
+      Navigator.pop(context);
+
+      deleteMethodOpenPdf(context);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Alert!"),
+    content: Text(
+        "Would you like to delete ${files[favorite_index].path.split('/').last}"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+deleteMethodOpenPdf(BuildContext context) {
+  deleteFile(
+    File(
+      files[favorite_index].path.toString(),
+    ),
+  );
+
+  // favorite_list.removeAt(newindex);
+
+  // getFiles();
+  CircularProgressIndicator();
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => pdfscreen()),
+  );
+  // setState(() {
+
+  // });
+
+  // Navigator.pop(context);
+
+  showAlertDialogOpenPdf(context);
+}
+
+showAlertDialogOpenPdf(BuildContext context) {
+  // set up the button
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Succesfuly deleted"),
+    content: Text(files[favorite_index].path.split('/').last),
+    actions: [
+      TextButton(
+        child: Text("OK"),
+        onPressed: () {
+          Navigator.pop(context);
+          // Navigator.pop(context);
+        },
+      ),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

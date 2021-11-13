@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/homepage.dart';
 import 'package:pdfviewer/main.dart';
+import 'package:pdfviewer/pdfscreen.dart';
 import 'package:share/share.dart';
 
 List<String> recent_list = [];
 // List<String> reversed_recent_list = [];
+var recent_index;
 
 class Recentpage extends StatefulWidget {
   const Recentpage({Key? key}) : super(key: key);
@@ -15,8 +19,6 @@ class Recentpage extends StatefulWidget {
 }
 
 class _RecentpageState extends State<Recentpage> {
-  var recent_index;
-
   @override
   void initState() {
     super.initState();
@@ -211,7 +213,9 @@ class _RecentpageState extends State<Recentpage> {
                   Icons.delete,
                   color: Colors.black.withOpacity(0.5),
                 ),
-                onTap: () {},
+                onTap: () {
+                  newshowAlertDialogRecent(context);
+                },
               ),
             ],
           ),
@@ -259,6 +263,94 @@ class _RecentpageState extends State<Recentpage> {
   }
 }
 
+void newshowAlertDialogRecent(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  Widget continueButton = TextButton(
+    child: Text("Continue"),
+    onPressed: () {
+      Navigator.pop(context);
+
+      deleteMethodRecent(context);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Alert!"),
+    content: Text(
+        "Would you like to delete ${files[favorite_index].path.split('/').last}"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+void deleteMethodRecent(BuildContext context) {
+  deleteFile(
+    File(
+      files[favorite_index].path.toString(),
+    ),
+  );
+
+  CircularProgressIndicator();
+  recent_list.removeAt(recent_index);
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => pdfscreen()),
+  );
+  // setState(() {
+
+  // });
+
+  // Navigator.pop(context);
+
+  showAlertDialogRecent(context);
+
+  // );
+}
+
+void showAlertDialogRecent(BuildContext context) {
+  // set up the button
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Succesfuly deleted"),
+    content: Text(files[favorite_index].path.split('/').last),
+    actions: [
+      TextButton(
+        child: Text("OK"),
+        onPressed: () {
+          Navigator.pop(context);
+          // Navigator.pop(context);
+        },
+      ),
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
 // class ViewPDF extends StatelessWidget {
 //   String pathPDF = "";
 //   ViewPDF({required this.pathPDF});

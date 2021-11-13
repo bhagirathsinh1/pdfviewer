@@ -54,6 +54,7 @@ dependencies:
   share: ^2.0.4
   file_picker: ^4.1.6
   snapping_page_scroll: ^2.0.2
+  sqflite: ^2.0.0+4
   # file_manager: ^1.0.0
 
 dev_dependencies:

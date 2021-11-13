@@ -5,12 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
 import 'package:path_provider_extention/path_provider_extention.dart';
 import 'package:pdfviewer/pdfscreen.dart';
+import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 List<File> files = [];
 List<File> duplicateItems = [];
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final db = SqlModel();
+  await db.initDb();
+  var a = await db.creatingTables();
+  print(a);
   runApp(
     MyApp(),
   );

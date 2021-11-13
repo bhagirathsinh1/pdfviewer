@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pdfviewer/SQLService/add_pdf_serrvice.dart';
+import 'package:pdfviewer/SQLService/sqlService.dart';
 
 import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/main.dart';
@@ -316,13 +318,12 @@ class _HomepageState extends State<Homepage> {
   }
 
   _listItem(index) {
-    _getDateTime(index);
-
     File filesize = File(
       files[index].path.toString(),
     );
     finalfilesize = filesize.lengthSync();
     var sizeInKb = (finalfilesize / (1024)).toStringAsFixed(2);
+    _getDateTime(index);
 
     print("....................file size.........................");
     print('Mb ${sizeInKb}');
@@ -464,30 +465,47 @@ class _HomepageState extends State<Homepage> {
                   Icons.star,
                   color: Colors.black.withOpacity(0.5),
                 ),
-                onTap: () {
-                  if (favorite_list.contains(files[favorite_index].path)) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Already added !!"),
-                      ),
-                    );
-                  } else {
-                    favorite_list.add(files[favorite_index].path);
-                    setState(
-                      () {
-                        // favoritestar = true;
-                      },
-                    );
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Successfully added !!"),
-                      ),
-                    );
+                onTap: () async {
+                  Map<String, Object> data = {
+                    'pdf': (files[favorite_index].path),
+                  };
+
+                  if (!data.isEmpty) {
+                    try {
+                      await SQLPDFService()
+                          .insertPDF(data, SqlModel.tableFavorite);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(e.toString())));
+                    }
+                    print("pdfname is--------------> $data");
                   }
+                  Navigator.pop(context);
+
+                  // if (favorite_list.contains(files[favorite_index].path)) {
+                  //   Navigator.pop(context);
+                  //   ScaffoldMessenger.of(context).clearSnackBars();
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     SnackBar(
+                  //       content: Text("Already added !!"),
+                  //     ),
+                  //   );
+                  // } else {
+                  //   favorite_list.add(files[favorite_index].path);
+                  //   setState(
+                  //     () {
+                  //       // favoritestar = true;
+                  //     },
+                  //   );
+                  //   Navigator.pop(context);
+                  //   ScaffoldMessenger.of(context).clearSnackBars();
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     SnackBar(
+                  //       content: Text("Successfully added !!"),
+                  //     ),
+                  //   );
+                  // }
                 },
               ),
               ListTile(
