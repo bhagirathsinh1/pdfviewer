@@ -50,6 +50,8 @@ class _FavouritepageState extends State<Favouritepage> {
     return list;
   }
 
+  var arrivedata;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +95,7 @@ class _FavouritepageState extends State<Favouritepage> {
                   scrollDirection: Axis.vertical,
                   itemCount: snapshot.data!.length,
                   itemBuilder: (BuildContext context, int index) {
-                    var arrivedata = snapshot.data![index].pdf;
+                    arrivedata = snapshot.data![index].pdf;
                     print("dataaay is $arrivedata");
                     return Card(
                       child: ListTile(
@@ -227,7 +229,7 @@ class _FavouritepageState extends State<Favouritepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
-                  List<String> paths = [files[favorite_index].path];
+                  List<String> paths = [arrivedata];
                   Share.shareFiles(paths);
                 },
               ),
@@ -243,20 +245,19 @@ class _FavouritepageState extends State<Favouritepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
-                  setState(
-                    () {
-                      // favorite_list.removeAt(newindex);
+                  // setState(
+                  //   () {
+                  // arrivedata.removeAt(newindex);
 
-                      Navigator.pop(context);
+                  Navigator.pop(context);
 
-                      ScaffoldMessenger.of(context).clearSnackBars();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Remove from favorites !!"),
-                        ),
-                      );
-                    },
-                  );
+                  // ScaffoldMessenger.of(context).clearSnackBars();
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //   SnackBar(
+                  //     content: Text("Remove from favorites !!"),
+                  //   ),
+                  // );
+                  //   );
                 },
               ),
               ListTile(
@@ -271,12 +272,12 @@ class _FavouritepageState extends State<Favouritepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
-                  newshowAlertDialog(context);
+                  // newshowAlertDialog(context);
 
-                  // Navigator.pop(context);
-                  // setState(() {
-                  //   initState();
-                  // });
+                  Navigator.pop(context);
+                  setState(() {
+                    initState();
+                  });
                 },
               ),
             ],
@@ -307,17 +308,18 @@ class _FavouritepageState extends State<Favouritepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
+                  Navigator.pop(context);
                   // deleteAll();
-                  setState(
-                    () {
-                      "DELETE FROM tableFavorite";
-                      // reversed_favorite_list.clear();
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).clearSnackBars();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Favorites cleared !!")));
-                    },
-                  );
+                  // setState(
+                  //   () {
+                  //     "DELETE FROM tableFavorite";
+                  //     // reversed_favorite_list.clear();
+                  //     Navigator.pop(context);
+                  //     ScaffoldMessenger.of(context).clearSnackBars();
+                  //     ScaffoldMessenger.of(context).showSnackBar(
+                  //         SnackBar(content: Text("Favorites cleared !!")));
+                  //   },
+                  // );
                 },
               ),
             ],
