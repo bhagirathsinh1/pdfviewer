@@ -11,6 +11,7 @@ class SqlModel {
 
 // TABLE NAMES
   static final tableFavorite = 'tableFavorite';
+  static final tableRecent = 'tableRecent';
 
   /// Initialize DB
   Future initDb() async {
@@ -42,7 +43,11 @@ class SqlModel {
         auto_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         pdf TEXT)
       """);
-
+      dbClient.execute("""
+     CREATE TABLE IF NOT EXISTS $tableRecent(
+        auto_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        recentpdf TEXT)
+      """);
       return "tables created";
     } catch (e) {
       debugPrint(e.toString());

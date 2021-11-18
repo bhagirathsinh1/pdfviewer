@@ -1,4 +1,5 @@
 import 'dart:io';
+// import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -10,7 +11,6 @@ import 'package:pdfviewer/homepage.dart';
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/pdfscreen.dart';
 import 'package:share/share.dart';
-import 'package:snapping_page_scroll/snapping_page_scroll.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 // import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
@@ -18,9 +18,10 @@ var brightness = SchedulerBinding.instance!.window.platformBrightness;
 bool isDarkMode = brightness == Brightness.dark;
 
 var bgColor = isDarkMode ? Colors.black : Colors.white;
+var arrivedata;
 
 // List<String> favorite_list = [];
-var newindex;
+// var newindex;
 
 // List<String> reversed_favorite_list = [];
 
@@ -34,6 +35,9 @@ class Favouritepage extends StatefulWidget {
 class _FavouritepageState extends State<Favouritepage> {
   @override
   void initState() {
+    setState(() {});
+    // getallPDF();
+
     super.initState();
     // reversed_favorite_list = favorite_list.reversed.toList();
   }
@@ -44,13 +48,13 @@ class _FavouritepageState extends State<Favouritepage> {
         await dbClient.rawQuery("Select *from ${SqlModel.tableFavorite}");
     List<FavouriteListPdfModel> list = [];
 
-    futurePDFList.forEach((element) {
-      list.add(FavouriteListPdfModel.fromJson(element));
-    });
+    futurePDFList.forEach(
+      (element) {
+        list.add(FavouriteListPdfModel.fromJson(element));
+      },
+    );
     return list;
   }
-
-  var arrivedata;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +92,7 @@ class _FavouritepageState extends State<Favouritepage> {
               print("------------------response positive-------------");
 
               if (snapshot.data!.isEmpty) {
-                return Text("Data is empty");
+                return Center(child: Text("Data is empty !"));
               } else {
                 return ListView.builder(
                   shrinkWrap: true,
@@ -103,8 +107,109 @@ class _FavouritepageState extends State<Favouritepage> {
                         leading: Icon(Icons.picture_as_pdf),
                         trailing: IconButton(
                           onPressed: () {
-                            newindex = index;
-                            favNavDrawer(context);
+                            // newindex = index;
+
+                            showModalBottomSheet<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  color: Colors.white,
+                                  height: 250,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.yellow[100],
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                              width: 5,
+                                            )),
+                                        child: ListTile(
+                                          title: Text(
+                                            snapshot.data![index].pdf
+                                                .toString()
+                                                .split('/')
+                                                .last,
+                                            style: TextStyle(
+                                              color:
+                                                  Colors.black.withOpacity(0.8),
+                                            ),
+                                          ),
+                                          leading: Icon(
+                                            Icons.picture_as_pdf,
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                          ),
+                                          onTap: () {},
+                                        ),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          "Share",
+                                          style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.8),
+                                          ),
+                                        ),
+                                        leading: Icon(
+                                          Icons.share,
+                                          color: Colors.black.withOpacity(0.5),
+                                        ),
+                                        onTap: () {
+                                          List<String> paths = [
+                                            snapshot.data![index].pdf.toString()
+                                          ];
+                                          Share.shareFiles(paths);
+                                        },
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          "Remove from favorite",
+                                          style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.8),
+                                          ),
+                                        ),
+                                        leading: Icon(
+                                          Icons.star,
+                                          color: Colors.black.withOpacity(0.5),
+                                        ),
+                                        onTap: () async {
+                                          Navigator.pop(context);
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => pdfscreen()),
+                                          // );
+                                          await SQLPDFService()
+                                              .removeFromFavorite(
+                                                  snapshot.data![index].pdf
+                                                      .toString(),
+                                                  SqlModel.tableFavorite)
+                                              .whenComplete(() => initState());
+                                        },
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          "Delete",
+                                          style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.8),
+                                          ),
+                                        ),
+                                        leading: Icon(
+                                          Icons.delete,
+                                          color: Colors.black.withOpacity(0.5),
+                                        ),
+                                        onTap: () {
+                                          deleteDialougeFavoriteScreen(
+                                              context, snapshot, index);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
                           },
                           icon: Icon(
                             Icons.more_vert,
@@ -117,7 +222,7 @@ class _FavouritepageState extends State<Favouritepage> {
                             MaterialPageRoute(
                               builder: (context) {
                                 return ViewPDF(
-                                  pathPDF: arrivedata.toString(),
+                                  pathPDF: snapshot.data![index].pdf.toString(),
                                 );
                                 //open viewPDF page on click
                               },
@@ -144,146 +249,6 @@ class _FavouritepageState extends State<Favouritepage> {
           }
         },
       ),
-      // SingleChildScrollView(
-      //   child: ListView.builder(
-      //     shrinkWrap: true,
-      //     //if file/folder list is grabbed, then show here
-      //     itemCount: favorite_list.length,
-      //     reverse: true,
-
-      //     itemBuilder: (context, index) {
-      //       return Card(
-      //         child: ListTile(
-      //           title: Text(favorite_list[index].split('/').last),
-      //           leading: Icon(Icons.picture_as_pdf),
-      //           trailing: IconButton(
-      //             onPressed: () {
-      //               newindex = index;
-      //               favNavDrawer(context);
-      //             },
-      //             icon: Icon(
-      //               Icons.more_vert,
-      //               color: Colors.redAccent,
-      //             ),
-      //           ),
-      //           onTap: () {
-      //             Navigator.push(
-      //               context,
-      //               MaterialPageRoute(
-      //                 builder: (context) {
-      //                   return ViewPDF(
-      //                     pathPDF: favorite_list[index].toString(),
-      //                   );
-      //                   //open viewPDF page on click
-      //                 },
-      //               ),
-      //             );
-      //           },
-      //         ),
-      //       );
-      //     },
-      //   ),
-      // ),
-    );
-  }
-
-  Future<void> favNavDrawer(BuildContext context) {
-    return showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          color: Colors.white,
-          height: 250,
-          child: Column(
-            children: [
-              // Container(
-              //   decoration: BoxDecoration(
-              //       color: Colors.yellow[100],
-              //       border: Border.all(
-              //         color: Colors.grey,
-              //         width: 5,
-              //       )),
-              //   child: ListTile(
-              //     title: Text(
-              //       favorite_list[newindex].split('/').last,
-              //       style: TextStyle(
-              //         color: Colors.black.withOpacity(0.8),
-              //       ),
-              //     ),
-              //     leading: Icon(
-              //       Icons.picture_as_pdf,
-              //       color: Colors.black.withOpacity(0.5),
-              //     ),
-              //     onTap: () {},
-              //   ),
-              // ),
-              ListTile(
-                title: Text(
-                  "Share",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.share,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {
-                  List<String> paths = [arrivedata];
-                  Share.shareFiles(paths);
-                },
-              ),
-              ListTile(
-                title: Text(
-                  "Remove from favorite",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.star,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {
-                  // setState(
-                  //   () {
-                  // arrivedata.removeAt(newindex);
-
-                  Navigator.pop(context);
-
-                  // ScaffoldMessenger.of(context).clearSnackBars();
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   SnackBar(
-                  //     content: Text("Remove from favorites !!"),
-                  //   ),
-                  // );
-                  //   );
-                },
-              ),
-              ListTile(
-                title: Text(
-                  "Delete",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.delete,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {
-                  // newshowAlertDialog(context);
-
-                  Navigator.pop(context);
-                  setState(() {
-                    initState();
-                  });
-                },
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 
@@ -307,19 +272,18 @@ class _FavouritepageState extends State<Favouritepage> {
                   Icons.delete,
                   color: Colors.black.withOpacity(0.5),
                 ),
-                onTap: () {
+                onTap: () async {
                   Navigator.pop(context);
-                  // deleteAll();
-                  // setState(
-                  //   () {
-                  //     "DELETE FROM tableFavorite";
-                  //     // reversed_favorite_list.clear();
-                  //     Navigator.pop(context);
-                  //     ScaffoldMessenger.of(context).clearSnackBars();
-                  //     ScaffoldMessenger.of(context).showSnackBar(
-                  //         SnackBar(content: Text("Favorites cleared !!")));
-                  //   },
-                  // );
+
+                  await SQLPDFService()
+                      .clearData(SqlModel.tableFavorite)
+                      .whenComplete(
+                        () => initState(),
+                      );
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Favorite cleared !!"),
+                  ));
                 },
               ),
             ],
@@ -328,105 +292,101 @@ class _FavouritepageState extends State<Favouritepage> {
       },
     );
   }
-}
 
-newshowAlertDialog(BuildContext context) {
-  // set up the buttons
-  Widget cancelButton = TextButton(
-    child: Text("Cancel"),
-    onPressed: () {
-      Navigator.pop(context);
-    },
-  );
-  Widget continueButton = TextButton(
-    child: Text("Continue"),
-    onPressed: () {
-      Navigator.pop(context);
+  deleteDialougeFavoriteScreen(BuildContext context, snapshot, index) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () {
+        Navigator.pop(context);
 
-      deleteMethod(context);
-    },
-  );
+        deleteMethodFavoriteScreen(context, snapshot, index);
+      },
+    );
 
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text("Alert!"),
-    content: Text(
-        "Would you like to delete ${files[favorite_index].path.split('/').last}"),
-    actions: [
-      cancelButton,
-      continueButton,
-    ],
-  );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Alert!"),
+      content: Text(
+          "Would you like to delete ${snapshot.data![index].pdf.toString().split('/').last}"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
 
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
-deleteMethod(BuildContext context) {
-  deleteFile(
-    File(
-      files[favorite_index].path.toString(),
-    ),
-  );
-
-  // favorite_list.removeAt(newindex);
-
-  getFiles();
-  CircularProgressIndicator();
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => pdfscreen()),
-  );
-  // setState(() {
-
-  // });
-
-  // Navigator.pop(context);
-
-  showAlertDialog(context);
-
-  // );
-}
-
-showAlertDialog(BuildContext context) {
-  // set up the button
-
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text("Succesfuly deleted"),
-    content: Text(files[favorite_index].path.split('/').last),
-    actions: [
-      TextButton(
-        child: Text("OK"),
-        onPressed: () {
-          Navigator.pop(context);
-          // Navigator.pop(context);
-        },
+  deleteMethodFavoriteScreen(context, snapshot, index) async {
+    await SQLPDFService().removeFromFavorite(
+        snapshot.data![index].pdf.toString(), SqlModel.tableFavorite);
+    deleteFileFavorite(
+      File(
+        snapshot.data![index].pdf.toString(),
       ),
-    ],
-  );
+    );
+    getFiles();
+    CircularProgressIndicator();
+    // setState(() {
+    getallPDF(); // });
 
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
+    // Navigator.pop(context);
 
-Future<void> deleteFile(File file) async {
-  try {
-    if (await file.exists()) {
-      await file.delete();
+    showAlertDialogFavorite(context, snapshot, index);
+
+    initState();
+    initState();
+  }
+
+  Future<void> deleteFileFavorite(File file) async {
+    try {
+      if (await file.exists()) {
+        await file.delete();
+      }
+    } catch (e) {
+      // Error in getting access to the file.
     }
-  } catch (e) {
-    // Error in getting access to the file.
+  }
+
+  showAlertDialogFavorite(BuildContext context, snapshot, index) {
+    // set up the button
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Succesfuly deleted"),
+      content: Text(snapshot.data![index].pdf.toString().split('/').last),
+      actions: [
+        TextButton(
+          child: Text("OK"),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+            initState();
+          },
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
 
@@ -538,8 +498,7 @@ class _ViewPDFState extends State<ViewPDF> {
                                 color: Colors.black.withOpacity(0.5),
                               ),
                               onTap: () {
-                                // print(
-                                //     "---------page by page bool 1 $continuePageBool------------");
+                                // print(                                //     "---------page by page bool 1 $continuePageBool------------");
 
                                 // setState(() {
                                 //   continuePageBool = false;
@@ -648,100 +607,4 @@ class _ViewPDFState extends State<ViewPDF> {
       ],
     );
   }
-
-  changeBackground() {
-    if (dark == true) {
-      bgColor = Colors.black;
-    } else {
-      bgColor = Colors.white;
-    }
-  }
-}
-
-newshowAlertDialogOpenPdf(BuildContext context) {
-  // set up the buttons
-  Widget cancelButton = TextButton(
-    child: Text("Cancel"),
-    onPressed: () {
-      Navigator.pop(context);
-    },
-  );
-  Widget continueButton = TextButton(
-    child: Text("Continue"),
-    onPressed: () {
-      Navigator.pop(context);
-
-      deleteMethodOpenPdf(context);
-    },
-  );
-
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text("Alert!"),
-    content: Text(
-        "Would you like to delete ${files[favorite_index].path.split('/').last}"),
-    actions: [
-      cancelButton,
-      continueButton,
-    ],
-  );
-
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
-
-deleteMethodOpenPdf(BuildContext context) {
-  deleteFile(
-    File(
-      files[favorite_index].path.toString(),
-    ),
-  );
-
-  // favorite_list.removeAt(newindex);
-
-  // getFiles();
-  CircularProgressIndicator();
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => pdfscreen()),
-  );
-  // setState(() {
-
-  // });
-
-  // Navigator.pop(context);
-
-  showAlertDialogOpenPdf(context);
-}
-
-showAlertDialogOpenPdf(BuildContext context) {
-  // set up the button
-
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text("Succesfuly deleted"),
-    content: Text(files[favorite_index].path.split('/').last),
-    actions: [
-      TextButton(
-        child: Text("OK"),
-        onPressed: () {
-          Navigator.pop(context);
-          // Navigator.pop(context);
-        },
-      ),
-    ],
-  );
-
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
 }

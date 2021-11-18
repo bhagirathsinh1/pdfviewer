@@ -1,7 +1,8 @@
 import 'package:pdfviewer/SQLService/sqlService.dart';
+import 'package:pdfviewer/recentpage.dart';
 
-class SQLPDFService {
-  Future<bool> insertPDF(dynamic data, table) async {
+class RecentSQLPDFService {
+  Future<bool> insertRecentPDF(dynamic data, table) async {
     final dbClient = await SqlModel().db;
     try {
       var result = await dbClient.insert(table, data);
@@ -15,7 +16,7 @@ class SQLPDFService {
     }
   }
 
-  Future<bool> clearData(String table) async {
+  Future<bool> clearRecentPdfData(String table) async {
     final dbClientDelete = await SqlModel().db;
     try {
       var resultDelete =
@@ -29,14 +30,14 @@ class SQLPDFService {
     }
   }
 
-  Future<bool> removeFromFavorite(arrivdata, String table) async {
-    final dbClientRemoveFromFavorite = await SqlModel().db;
+  Future<bool> removeFromRecent(arrivedataRecent, String table) async {
+    final dbClientRemoveFromRecent = await SqlModel().db;
     try {
-      var resultRemoveFromFav = await dbClientRemoveFromFavorite.rawQuery(
-        'DELETE FROM $table WHERE pdf = ?',
-        [arrivdata],
+      var resultRemoveFromRecent = await dbClientRemoveFromRecent.rawQuery(
+        'DELETE FROM $table WHERE recentpdf = ?',
+        [arrivedataRecent],
       );
-      print("deleted index $resultRemoveFromFav");
+      print("deleted in recent index $resultRemoveFromRecent");
 
       return true;
     } catch (e) {
@@ -45,7 +46,7 @@ class SQLPDFService {
     }
   }
 
-  Future<List<Map<String, Object?>>> getAllPDF(String table) async {
+  Future<List<Map<String, Object?>>> getAllRecentPDF(String table) async {
     final dbClient = await SqlModel().db;
 
     try {
