@@ -1,8 +1,8 @@
 import "dart:io" as io;
 import 'package:flutter/material.dart';
 import "package:path/path.dart";
-import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class SqlModel {
   static final SqlModel _instance = new SqlModel.internal();

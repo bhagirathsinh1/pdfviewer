@@ -8,6 +8,7 @@ import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/homepage.dart';
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/pdfscreen.dart';
+import 'package:pdfviewer/widget/PageView.dart';
 import 'package:share/share.dart';
 
 List<String> recent_list = [];

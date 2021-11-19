@@ -3,13 +3,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
+// import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 import 'package:pdfviewer/SQLService/add_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/SQLService/sql_model.dart';
 import 'package:pdfviewer/homepage.dart';
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/pdfscreen.dart';
+import 'package:pdfviewer/widget/PageView.dart';
 import 'package:share/share.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -217,17 +218,20 @@ class _FavouritepageState extends State<Favouritepage> {
                           ),
                         ),
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return ViewPDF(
-                                  pathPDF: snapshot.data![index].pdf.toString(),
-                                );
-                                //open viewPDF page on click
-                              },
-                            ),
-                          );
+                          Future.delayed(Duration.zero, () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ViewPDF(
+                                    pathPDF:
+                                        snapshot.data![index].pdf.toString(),
+                                  );
+                                  //open viewPDF page on click
+                                },
+                              ),
+                            );
+                          });
                         },
                       ),
                     );
@@ -386,225 +390,6 @@ class _FavouritepageState extends State<Favouritepage> {
       builder: (BuildContext context) {
         return alert;
       },
-    );
-  }
-}
-
-class ViewPDF extends StatefulWidget {
-  String pathPDF = "";
-  ViewPDF({required this.pathPDF});
-
-  @override
-  State<ViewPDF> createState() => _ViewPDFState();
-}
-
-class _ViewPDFState extends State<ViewPDF> {
-  bool dark = true;
-
-  bool continuePageBool = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: Text(
-              "PDF Reader",
-              style: TextStyle(color: Colors.black),
-            ),
-            backgroundColor: Colors.white,
-          ),
-          body: SfPdfViewer.file(
-            File(widget.pathPDF),
-            pageLayoutMode: continuePageBool
-                ? PdfPageLayoutMode.single
-                : PdfPageLayoutMode.continuous,
-          ),
-        ),
-        Positioned(
-          bottom: 15,
-          right: 15,
-          child: FloatingActionButton(
-            // elevation: 0,
-            onPressed: () {},
-            child: IconButton(
-              onPressed: () {
-                showModalBottomSheet<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Container(
-                        color: Colors.white,
-                        height: 500,
-                        child: Column(
-                          children: [
-                            // Container(
-                            //   decoration: BoxDecoration(
-                            //       color: Colors.yellow[100],
-                            //       border: Border.all(
-                            //         color: Colors.grey,
-                            //         width: 5,
-                            //       )),
-                            //   child: ListTile(
-                            //     title: Text(
-                            //       reversed_favorite_list[newindex]
-                            //           .split('/')
-                            //           .last,
-                            //       style: TextStyle(
-                            //         color: Colors.black.withOpacity(0.8),
-                            //       ),
-                            //     ),
-                            //     leading: Icon(
-                            //       Icons.picture_as_pdf,
-                            //       color: Colors.black.withOpacity(0.5),
-                            //     ),
-                            //     onTap: () {},
-                            //   ),
-                            // ),
-                            ListTile(
-                              title: Text(
-                                "Continuous page",
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                              ),
-                              leading: IconButton(
-                                icon: new Icon(Icons.print_outlined),
-                                color: Colors.black.withOpacity(0.5),
-                                onPressed: () {},
-                              ),
-                              onTap: () {
-                                // print(
-                                //     "---------continue page bool 1 $continuePageBool------------");
-                                // setState(() {
-                                //   continuePageBool = true;
-                                //   print(
-                                //       "----------continue page bool 2 $continuePageBool----------");
-                                // });
-                                Navigator.pop(context);
-                              },
-                            ),
-                            ListTile(
-                              title: Text(
-                                "Page by page",
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                              ),
-                              leading: Icon(
-                                Icons.call_to_action_rounded,
-                                color: Colors.black.withOpacity(0.5),
-                              ),
-                              onTap: () {
-                                // print(                                //     "---------page by page bool 1 $continuePageBool------------");
-
-                                // setState(() {
-                                //   continuePageBool = false;
-                                //   print(
-                                //       "---------page by page bool 2 $continuePageBool------------");
-                                // });
-                                Navigator.pop(context);
-                              },
-                            ),
-                            ListTile(
-                              title: Text(
-                                "Night Mode",
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                              ),
-                              leading: Icon(
-                                Icons.nights_stay,
-                                color: Colors.black.withOpacity(0.5),
-                              ),
-                              onTap: () {},
-                            ),
-                            ListTile(
-                              title: Text(
-                                "Go to page",
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                              ),
-                              leading: Icon(
-                                Icons.screen_search_desktop_rounded,
-                                color: Colors.black.withOpacity(0.5),
-                              ),
-                              onTap: () {},
-                            ),
-                            Divider(
-                              height: 5,
-                              color: Colors.grey,
-                            ),
-                            ListTile(
-                              title: Text(
-                                "Remove from favorite",
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                              ),
-                              leading: Icon(
-                                Icons.star_border,
-                                color: Colors.black.withOpacity(0.5),
-                              ),
-                              onTap: () {},
-                            ),
-                            ListTile(
-                              title: Text(
-                                "Rename",
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                              ),
-                              leading: Icon(
-                                Icons.drive_file_rename_outline_outlined,
-                                color: Colors.black.withOpacity(0.5),
-                              ),
-                              onTap: () {},
-                            ),
-                            ListTile(
-                              title: Text(
-                                "Print",
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                              ),
-                              leading: Icon(
-                                Icons.local_print_shop_rounded,
-                                color: Colors.black.withOpacity(0.5),
-                              ),
-                              onTap: () {},
-                            ),
-                            ListTile(
-                              title: Text(
-                                "Delete",
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                              ),
-                              leading: Icon(
-                                Icons.delete_rounded,
-                                color: Colors.black.withOpacity(0.5),
-                              ),
-                              onTap: () {
-                                // newshowAlertDialogOpenPdf(context);
-                                print('--------------delete clicked---------');
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-              icon: Icon(Icons.settings),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

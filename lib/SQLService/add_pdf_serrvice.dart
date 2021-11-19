@@ -3,12 +3,40 @@ import 'package:pdfviewer/SQLService/sqlService.dart';
 class SQLPDFService {
   Future<bool> insertPDF(dynamic data, table) async {
     final dbClient = await SqlModel().db;
+
+    var isExist = await _checkrecordExists(data['pdf'].toString());
+
+    if (!isExist) {
+      try {
+        var result = await dbClient.insert(table, data);
+
+        print("----------insert pdf rsult add to fav page $result");
+
+        return true;
+      } catch (e) {
+        print(e);
+        return false;
+      }
+    } else {
+      throw "---------already exists---------";
+    }
+  }
+
+  Future<bool> _checkrecordExists(String data) async {
+    final dbClient = await SqlModel().db;
+    // var user = await SaveData().getUserData();
+
     try {
-      var result = await dbClient.insert(table, data);
+      var result = await dbClient.rawQuery(
+          """select *from ${SqlModel.tableFavorite} where pdf= '$data'""");
 
       print("result $result");
 
-      return true;
+      if (result.isNotEmpty) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       print(e);
       return false;

@@ -38,7 +38,7 @@ dependencies:
   flutter_search_bar: ^2.1.0
   widgets: ^1.4.5
   flutter_file_manager: ^0.2.0
-  # path_provider_ex: ^1.0.1
+  path_provider: ^2.0.7
   
   # flutter_full_pdf_viewer: ^1.0.6
   gradient_progress_indicator: ^1.0.0+5
@@ -48,13 +48,15 @@ dependencies:
   # file_manager: ^1.0.0
   shared_preferences: ^2.0.8
   permission_handler: ^8.2.5
-  pdf_viewer_plugin: ^2.0.1
+  # pdf_viewer_plugin: ^2.0.1
   animated_splash_screen: ^1.1.0
   intl: ^0.17.0
   share: ^2.0.4
   file_picker: ^4.1.6
   snapping_page_scroll: ^2.0.2
   sqflite: ^2.0.0+4
+  pdf_viewer_plugin: ^2.0.1
+  file: ^6.1.2
   # file_manager: ^1.0.0
 
 dev_dependencies:
