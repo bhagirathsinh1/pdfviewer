@@ -3,18 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-// import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 import 'package:pdfviewer/SQLService/add_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/SQLService/sql_model.dart';
-import 'package:pdfviewer/homepage.dart';
 import 'package:pdfviewer/main.dart';
-import 'package:pdfviewer/pdfscreen.dart';
 import 'package:pdfviewer/widget/PageView.dart';
 import 'package:share/share.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-// import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 var brightness = SchedulerBinding.instance!.window.platformBrightness;
 bool isDarkMode = brightness == Brightness.dark;
 

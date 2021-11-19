@@ -1,7 +1,15 @@
 import 'dart:io';
-
+import 'package:pdfviewer/SQLService/add_pdf_serrvice.dart';
+import 'package:pdfviewer/SQLService/recentpdf_model.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:pdfviewer/SQLService/add_pdf_serrvice.dart';
+import 'package:pdfviewer/SQLService/sqlService.dart';
+import 'package:pdfviewer/SQLService/sql_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pdfviewer/homepage.dart';
+import 'package:pdfviewer/main.dart';
+import 'package:pdfviewer/pdfscreen.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ViewPDF extends StatefulWidget {
@@ -23,6 +31,32 @@ class _ViewPDFState extends State<ViewPDF> {
   void initState() {
     super.initState();
     loading();
+  }
+
+  Future<List<FavouriteListPdfModel>> getallPDF() async {
+    final dbClient = await SqlModel().db;
+    List<Map<String, Object?>> futurePDFList =
+        await dbClient.rawQuery("Select *from ${SqlModel.tableFavorite}");
+    List<FavouriteListPdfModel> list = [];
+
+    futurePDFList.forEach(
+      (element) {
+        list.add(FavouriteListPdfModel.fromJson(element));
+      },
+    );
+    return list;
+  }
+
+  Future<List<RecentListPdfModel>> getallPDFRecent() async {
+    final dbClient = await SqlModel().db;
+    List<Map<String, Object?>> futurePDFList =
+        await dbClient.rawQuery("Select *from ${SqlModel.tableRecent}");
+    List<RecentListPdfModel> list = [];
+
+    futurePDFList.forEach((element) {
+      list.add(RecentListPdfModel.fromJson(element));
+    });
+    return list;
   }
 
   @override
@@ -94,32 +128,33 @@ class _ViewPDFState extends State<ViewPDF> {
                       scrollDirection: Axis.vertical,
                       child: Container(
                         color: Colors.white,
-                        height: 500,
+                        height: 530,
                         child: Column(
                           children: [
-                            // Container(
-                            //   decoration: BoxDecoration(
-                            //       color: Colors.yellow[100],
-                            //       border: Border.all(
-                            //         color: Colors.grey,
-                            //         width: 5,
-                            //       )),
-                            //   child: ListTile(
-                            //     title: Text(
-                            //       reversed_favorite_list[newindex]
-                            //           .split('/')
-                            //           .last,
-                            //       style: TextStyle(
-                            //         color: Colors.black.withOpacity(0.8),
-                            //       ),
-                            //     ),
-                            //     leading: Icon(
-                            //       Icons.picture_as_pdf,
-                            //       color: Colors.black.withOpacity(0.5),
-                            //     ),
-                            //     onTap: () {},
-                            //   ),
-                            // ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow[100],
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 5,
+                                  )),
+                              child: ListTile(
+                                title: Text(
+                                  File(widget.pathPDF)
+                                      .toString()
+                                      .split('/')
+                                      .last,
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
+                                ),
+                                leading: Icon(
+                                  Icons.picture_as_pdf,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                                onTap: () {},
+                              ),
+                            ),
                             ListTile(
                               title: Text(
                                 "Continuous page",
@@ -256,7 +291,8 @@ class _ViewPDFState extends State<ViewPDF> {
                                 color: Colors.black.withOpacity(0.5),
                               ),
                               onTap: () {
-                                // newshowAlertDialogOpenPdf(context);
+                                deleteDialougeFavoriteScreen(
+                                    context, File(widget.pathPDF).toString());
                                 print('--------------delete clicked---------');
                               },
                             ),
@@ -343,6 +379,106 @@ class _ViewPDFState extends State<ViewPDF> {
       actions: [
         cancelButton,
         continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  deleteDialougeFavoriteScreen(BuildContext context, String string) {
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () {
+        Navigator.pop(context);
+
+        deleteMethodFavoriteScreen();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Alert!"),
+      content: Text("Would you like to delete ${string.split('/').last}"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  deleteMethodFavoriteScreen() async {
+    await SQLPDFService().removeFromFavorite(
+        File(widget.pathPDF).toString(), SqlModel.tableFavorite);
+    deleteFileFavorite(
+      File(File(widget.pathPDF).toString()),
+    );
+    print("-------string delete 1${File(widget.pathPDF).toString()}----------");
+
+    getFiles();
+    CircularProgressIndicator();
+
+    // setState(() {
+
+    // Navigator.pop(context);
+
+    showAlertDialogFavorite(context, File(widget.pathPDF).toString());
+
+    initState();
+    initState();
+  }
+
+  Future<void> deleteFileFavorite(File string) async {
+    print(
+        "-------string delete 2 ${File(widget.pathPDF).toString()}----------");
+    try {
+      print("-------string delete 3 ${string}----------");
+
+      if (await File(widget.pathPDF).exists()) {
+        await File(widget.pathPDF).delete();
+        print("-------string delete 4 ${string}----------");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  showAlertDialogFavorite(BuildContext context, String string) {
+    // set up the button
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Succesfuly deleted"),
+      content: Text(string.split('/').last),
+      actions: [
+        TextButton(
+          child: Text("OK"),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => pdfscreen()),
+            );
+          },
+        ),
       ],
     );
 

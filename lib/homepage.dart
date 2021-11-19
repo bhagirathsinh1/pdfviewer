@@ -530,12 +530,18 @@ class _HomepageState extends State<Homepage> {
   }
 
   Future<void> deleteFile(File file) async {
+    print(
+        "-------string delete 2 homepage${files[favorite_index].path.toString()}----------");
     try {
+      print(
+          "-------string delete 3 homepage${files[favorite_index].path.toString()}----------");
       if (await file.exists()) {
         await file.delete();
+        print(
+            "-------string delete 4 homepage${files[favorite_index].path.toString()}----------");
       }
     } catch (e) {
-      // Error in getting access to the file.
+      print(e);
     }
   }
 
@@ -545,6 +551,9 @@ class _HomepageState extends State<Homepage> {
         files[favorite_index].path.toString(),
       ),
     );
+    print(
+        "-------string delete 1 homepage${files[favorite_index].path.toString()}----------");
+
     getFiles();
     CircularProgressIndicator();
     // setState(() {
