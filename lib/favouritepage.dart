@@ -305,9 +305,14 @@ class _FavouritepageState extends State<Favouritepage> {
     Widget continueButton = TextButton(
       child: Text("Continue"),
       onPressed: () {
-        Navigator.pop(context);
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () async {
+            Navigator.pop(context);
 
-        deleteMethodFavoriteScreen(context, snapshot, index);
+            deleteMethodFavoriteScreen(context, snapshot, index);
+          },
+        );
       },
     );
 

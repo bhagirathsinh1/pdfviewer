@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/widget/PageView.dart';
 

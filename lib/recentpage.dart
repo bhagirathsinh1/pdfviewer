@@ -302,9 +302,14 @@ class _RecentpageState extends State<Recentpage> {
     Widget continueButton = TextButton(
       child: Text("Continue"),
       onPressed: () {
-        Navigator.pop(context);
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () async {
+            Navigator.pop(context);
 
-        deleteMethodRecentScreen(context, snapshot, index);
+            deleteMethodRecentScreen(context, snapshot, index);
+          },
+        );
       },
     );
 

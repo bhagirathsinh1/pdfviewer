@@ -6,14 +6,11 @@ import 'package:pdfviewer/SQLService/add_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 
-import 'package:pdfviewer/favouritepage.dart';
 import 'package:pdfviewer/main.dart';
-import 'package:pdfviewer/recentpage.dart';
 import 'package:pdfviewer/searchPage.dart';
 import 'package:pdfviewer/widget/PageView.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share/share.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import 'main.dart';
 
@@ -36,7 +33,7 @@ class _HomepageState extends State<Homepage> {
   bool order = false;
   bool sizedsort = false;
   bool namesort = false;
-
+  bool datesort = false;
   // var recent_index;
 
   // get files initState
@@ -183,15 +180,21 @@ class _HomepageState extends State<Homepage> {
           onTap: () {
             if (sizedsort == false) {
               try {
-                setState(
-                  () {
-                    files.sort(
-                      (b, a) {
-                        return a.lengthSync().compareTo(b.lengthSync());
+                Future.delayed(
+                  const Duration(milliseconds: 200),
+                  () async {
+                    setState(
+                      () {
+                        files.sort(
+                          (b, a) {
+                            return a.lengthSync().compareTo(b.lengthSync());
+                          },
+                        );
+                        sizedsort = true;
+                        namesort = false;
+                        datesort = false;
                       },
                     );
-                    sizedsort = true;
-                    namesort = false;
                   },
                 );
               } catch (e) {
@@ -209,16 +212,24 @@ class _HomepageState extends State<Homepage> {
               print(files);
 
               try {
-                setState(
-                  () {
-                    files.sort((a, b) {
-                      return a.path
-                          .split('/')
-                          .last
-                          .compareTo(b.path.split('/').last);
-                    });
-                    namesort = true;
-                    sizedsort = false;
+                Future.delayed(
+                  const Duration(milliseconds: 200),
+                  () async {
+                    setState(
+                      () {
+                        files.sort(
+                          (a, b) {
+                            return a.path
+                                .split('/')
+                                .last
+                                .compareTo(b.path.split('/').last);
+                          },
+                        );
+                        namesort = true;
+                        sizedsort = false;
+                        datesort = false;
+                      },
+                    );
                   },
                 );
               } catch (e) {
@@ -232,9 +243,36 @@ class _HomepageState extends State<Homepage> {
           value: 2,
         ),
         PopupMenuItem(
+          onTap: () {
+            if (datesort == false) {
+              try {
+                Future.delayed(
+                  const Duration(milliseconds: 200),
+                  () async {
+                    setState(
+                      () {
+                        files.sort(
+                          (b, a) {
+                            return a
+                                .lastModifiedSync()
+                                .compareTo(b.lastModifiedSync());
+                          },
+                        );
+                        datesort = true;
+                        sizedsort = false;
+                        namesort = false;
+                      },
+                    );
+                  },
+                );
+              } catch (e) {
+                print('-------------------> error ---> $e');
+              }
+            }
+          },
           child: Text("Date"),
           value: 3,
-        )
+        ),
       ],
     );
   }
@@ -313,8 +351,14 @@ class _HomepageState extends State<Homepage> {
     );
     finalfilesize = filesize.lengthSync();
     var sizeInKb = (finalfilesize / (1024)).toStringAsFixed(2);
-    _getDateTime(index);
 
+    File datefile = new File(
+      files[index].path.toString(),
+    );
+
+    var lastModDate1 = datefile.lastModifiedSync();
+    formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
+    ;
     print("....................file size.........................");
     print('Mb ${sizeInKb}');
     return Card(
@@ -388,17 +432,6 @@ class _HomepageState extends State<Homepage> {
         },
       ),
     );
-  }
-
-  void _getDateTime(index) async {
-    Future.delayed(const Duration(seconds: 1), () async {
-      File datefile = new File(
-        files[index].path.toString(),
-      );
-
-      var lastModDate1 = await datefile.lastModified();
-      formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
-    });
   }
 
   Future<void> bottomNavBar(BuildContext context) {
