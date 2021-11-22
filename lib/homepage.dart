@@ -40,7 +40,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   void initState() {
-    setState(() {});
+    // setState(() {});
     super.initState();
     print("-----------------------------> called homepage Initstate");
   }
