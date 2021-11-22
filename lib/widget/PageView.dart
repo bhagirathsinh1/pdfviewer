@@ -459,16 +459,9 @@ class _ViewPDFState extends State<ViewPDF> {
     print("-------string delete 1${File(widget.pathPDF).toString()}----------");
 
     getFiles();
-    CircularProgressIndicator();
-
-    // setState(() {
-
-    // Navigator.pop(context);
 
     showAlertDialogFavorite(context, File(widget.pathPDF).toString());
-
-    initState();
-    initState();
+    setState(() {});
   }
 
   Future<void> deleteFileFavorite(File string) async {
@@ -499,7 +492,7 @@ class _ViewPDFState extends State<ViewPDF> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => pdfscreen()),
+              MaterialPageRoute(builder: (context) => Pdfscreen()),
             );
           },
         ),

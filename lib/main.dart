@@ -88,7 +88,7 @@ class _MyAppState extends State<MyApp> {
         splashTransition: SplashTransition.scaleTransition,
         // pageTransitionType: PageTransitionType.scale,
         backgroundColor: Colors.lightBlue,
-        nextScreen: pdfscreen(),
+        nextScreen: Pdfscreen(),
       ),
     );
   }

@@ -7,12 +7,12 @@ import 'package:pdfviewer/homepage.dart';
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/recentpage.dart';
 
-class pdfscreen extends StatefulWidget {
+class Pdfscreen extends StatefulWidget {
   @override
-  State<pdfscreen> createState() => _pdfscreenState();
+  State<Pdfscreen> createState() => _PdfscreenState();
 }
 
-class _pdfscreenState extends State<pdfscreen> {
+class _PdfscreenState extends State<Pdfscreen> {
   int _currentPage = 0;
   static bool _init = false;
   get inits => _init;

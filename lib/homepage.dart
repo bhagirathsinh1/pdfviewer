@@ -30,14 +30,11 @@ class _HomepageState extends State<Homepage> {
   var finalfilesize;
   bool showfiles = false;
   bool myfiles = false;
-  bool order = false;
+  int order = 1;
   bool sizedsort = false;
   bool namesort = false;
   bool datesort = false;
-  // var recent_index;
-
-  // get files initState
-
+  bool revsized = false;
   @override
   void initState() {
     // setState(() {});
@@ -63,7 +60,7 @@ class _HomepageState extends State<Homepage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => searchPage()),
+                        MaterialPageRoute(builder: (context) => SearchPage()),
                       );
                     },
                     icon: Icon(
@@ -103,7 +100,7 @@ class _HomepageState extends State<Homepage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => searchPage()),
+                        MaterialPageRoute(builder: (context) => SearchPage()),
                       );
                     },
                     icon: Icon(
@@ -140,7 +137,6 @@ class _HomepageState extends State<Homepage> {
                         getFiles();
 
                         ListView.builder(
-                          reverse: order,
                           //if file/folder list is grabbed, then show here
                           itemCount: files.length,
                           itemBuilder: (BuildContext ctxt, index) {
@@ -157,7 +153,7 @@ class _HomepageState extends State<Homepage> {
                 ),
               )
             : ListView.builder(
-                reverse: order,
+                reverse: revsized,
                 //if file/folder list is grabbed, then show here
                 itemCount: files.length,
                 itemBuilder: (BuildContext ctxt, index) {
@@ -178,25 +174,31 @@ class _HomepageState extends State<Homepage> {
       itemBuilder: (context) => [
         PopupMenuItem(
           onTap: () {
-            if (sizedsort == false) {
+            if (order == 2) {
+              setState(
+                () {
+                  revsized = true;
+                },
+              );
+            } else {
               try {
                 Future.delayed(
                   const Duration(milliseconds: 200),
                   () async {
-                    setState(
-                      () {
-                        files.sort(
-                          (b, a) {
-                            return a.lengthSync().compareTo(b.lengthSync());
-                          },
-                        );
-                        sizedsort = true;
-                        namesort = false;
-                        datesort = false;
+                    files.sort(
+                      (b, a) {
+                        return a.lengthSync().compareTo(b.lengthSync());
                       },
                     );
+                    setState(() {
+                      order++;
+                      sizedsort = true;
+                      namesort = false;
+                      datesort = false;
+                    });
                   },
                 );
+                order++;
               } catch (e) {
                 print('-------------------> error ---> $e');
               }
@@ -215,16 +217,17 @@ class _HomepageState extends State<Homepage> {
                 Future.delayed(
                   const Duration(milliseconds: 200),
                   () async {
+                    files.sort(
+                      (a, b) {
+                        return a.path
+                            .split('/')
+                            .last
+                            .compareTo(b.path.split('/').last);
+                      },
+                    );
                     setState(
                       () {
-                        files.sort(
-                          (a, b) {
-                            return a.path
-                                .split('/')
-                                .last
-                                .compareTo(b.path.split('/').last);
-                          },
-                        );
+                        order = 0;
                         namesort = true;
                         sizedsort = false;
                         datesort = false;
@@ -249,15 +252,15 @@ class _HomepageState extends State<Homepage> {
                 Future.delayed(
                   const Duration(milliseconds: 200),
                   () async {
+                    files.sort(
+                      (b, a) {
+                        return a
+                            .lastModifiedSync()
+                            .compareTo(b.lastModifiedSync());
+                      },
+                    );
                     setState(
                       () {
-                        files.sort(
-                          (b, a) {
-                            return a
-                                .lastModifiedSync()
-                                .compareTo(b.lastModifiedSync());
-                          },
-                        );
                         datesort = true;
                         sizedsort = false;
                         namesort = false;
@@ -535,12 +538,7 @@ class _HomepageState extends State<Homepage> {
                   color: Colors.black.withOpacity(0.5),
                 ),
                 onTap: () {
-                  setState(
-                    () {
-                      newshowAlertDialog(context);
-                      setState(() {});
-                    },
-                  );
+                  newshowAlertDialog(context);
                 },
               ),
             ],
@@ -571,21 +569,9 @@ class _HomepageState extends State<Homepage> {
       File(
         files[favorite_index].path.toString(),
       ),
-    );
-    print(
-        "-------string delete 1 homepage${files[favorite_index].path.toString()}----------");
+    ).whenComplete(
+        () => {getFiles(), showAlertDialog(context), setState(() {})});
 
-    getFiles();
-    CircularProgressIndicator();
-    // setState(() {
-    _listItem(favorite_index);
-    // });
-
-    // Navigator.pop(context);
-
-    showAlertDialog(context);
-
-    setState(() {});
     // );
   }
 
@@ -600,9 +586,14 @@ class _HomepageState extends State<Homepage> {
     Widget continueButton = TextButton(
       child: Text("Continue"),
       onPressed: () {
-        Navigator.pop(context);
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () async {
+            Navigator.pop(context);
 
-        deleteMethod();
+            deleteMethod();
+          },
+        );
       },
     );
 

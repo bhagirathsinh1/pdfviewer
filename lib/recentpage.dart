@@ -262,23 +262,19 @@ class _RecentpageState extends State<Recentpage> {
                   Icons.delete,
                   color: Colors.black.withOpacity(0.5),
                 ),
-                onTap: () {
-                  setState(
-                    () async {
-                      Navigator.pop(context);
+                onTap: () async {
+                  Navigator.pop(context);
 
-                      await RecentSQLPDFService()
-                          .clearRecentPdfData(SqlModel.tableRecent)
-                          .whenComplete(() {
-                        setState(() {});
-                      });
-                      ScaffoldMessenger.of(context).clearSnackBars();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Recent cleared !!"),
-                        ),
-                      );
-                    },
+                  await RecentSQLPDFService()
+                      .clearRecentPdfData(SqlModel.tableRecent)
+                      .whenComplete(() {
+                    setState(() {});
+                  });
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Recent cleared !!"),
+                    ),
                   );
                 },
               ),
@@ -340,16 +336,10 @@ class _RecentpageState extends State<Recentpage> {
       File(
         snapshot.data![index].recentpdf.toString(),
       ),
-    );
+    ).whenComplete(() {});
     getFiles();
-    CircularProgressIndicator();
-    // setState(() {
     getallPDFRecent(); // });
-
-    // Navigator.pop(context);
-
     showAlertDialogRecent(context, snapshot, index);
-
     setState(() {});
   }
 

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/widget/PageView.dart';
 
-class searchPage extends StatefulWidget {
+class SearchPage extends StatefulWidget {
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<searchPage> {
+class _MyHomePageState extends State<SearchPage> {
   TextEditingController editingController = TextEditingController();
 
   var items = [];

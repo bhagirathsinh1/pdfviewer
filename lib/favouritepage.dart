@@ -343,17 +343,13 @@ class _FavouritepageState extends State<Favouritepage> {
       File(
         snapshot.data![index].pdf.toString(),
       ),
-    );
-    getFiles();
-    CircularProgressIndicator();
-    // setState(() {
-    getallPDF(); // });
+    ).whenComplete(() {
+      getFiles();
+      getallPDF();
+      showAlertDialogFavorite(context, snapshot, index);
 
-    // Navigator.pop(context);
-
-    showAlertDialogFavorite(context, snapshot, index);
-
-    setState(() {});
+      setState(() {});
+    });
   }
 
   Future<void> deleteFileFavorite(File file) async {
