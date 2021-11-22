@@ -152,13 +152,6 @@ class _HomepageState extends State<Homepage> {
                         );
                         showfiles = true;
 
-                        // initState();
-                        // initState();
-                        // getFiles();
-
-                        // // getFiles();
-                        // setState(() {});
-
                         print("......get my files bool 1....");
                       },
                       child: showfiles ? Text("Get files") : Text("Reload Pdf"),
@@ -234,12 +227,6 @@ class _HomepageState extends State<Homepage> {
             }
             print("...........files2..................");
             print(files);
-            // setState(
-            //   () {
-            //     _listItem(context);
-            //   },
-            // );
-            // initState();
           },
           child: Text("Name"),
           value: 2,
@@ -404,13 +391,14 @@ class _HomepageState extends State<Homepage> {
   }
 
   void _getDateTime(index) async {
-    File datefile = new File(
-      files[index].path.toString(),
-    );
+    Future.delayed(const Duration(seconds: 1), () async {
+      File datefile = new File(
+        files[index].path.toString(),
+      );
 
-    var lastModDate1 = await datefile.lastModified();
-    formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
-    print("File last modified @ : " + "${formattedDate.toString()}");
+      var lastModDate1 = await datefile.lastModified();
+      formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
+    });
   }
 
   Future<void> bottomNavBar(BuildContext context) {
@@ -564,8 +552,7 @@ class _HomepageState extends State<Homepage> {
 
     showAlertDialog(context);
 
-    initState();
-    initState();
+    setState(() {});
     // );
   }
 
@@ -619,7 +606,8 @@ class _HomepageState extends State<Homepage> {
           onPressed: () {
             Navigator.pop(context);
             Navigator.pop(context);
-            initState();
+            setState(() {});
+            ;
           },
         ),
       ],

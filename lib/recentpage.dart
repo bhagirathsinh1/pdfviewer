@@ -173,8 +173,9 @@ class _RecentpageState extends State<Recentpage> {
                                                         .data![index].recentpdf
                                                         .toString(),
                                                     SqlModel.tableRecent)
-                                                .whenComplete(
-                                                    () => initState());
+                                                .whenComplete(() {
+                                              setState(() {});
+                                            });
                                           },
                                         ),
                                         ListTile(
@@ -269,7 +270,9 @@ class _RecentpageState extends State<Recentpage> {
 
                       await RecentSQLPDFService()
                           .clearRecentPdfData(SqlModel.tableRecent)
-                          .whenComplete(() => initState());
+                          .whenComplete(() {
+                        setState(() {});
+                      });
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -343,8 +346,7 @@ class _RecentpageState extends State<Recentpage> {
 
     showAlertDialogRecent(context, snapshot, index);
 
-    initState();
-    initState();
+    setState(() {});
   }
 
   Future<void> deleteFileRecent(File file) async {
@@ -368,7 +370,8 @@ class _RecentpageState extends State<Recentpage> {
           child: Text("OK"),
           onPressed: () {
             Navigator.pop(context);
-            initState();
+            setState(() {});
+            ;
           },
         ),
       ],

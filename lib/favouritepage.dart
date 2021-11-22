@@ -181,7 +181,9 @@ class _FavouritepageState extends State<Favouritepage> {
                                                   snapshot.data![index].pdf
                                                       .toString(),
                                                   SqlModel.tableFavorite)
-                                              .whenComplete(() => initState());
+                                              .whenComplete(() {
+                                            setState(() {});
+                                          });
                                         },
                                       ),
                                       ListTile(
@@ -276,9 +278,9 @@ class _FavouritepageState extends State<Favouritepage> {
 
                   await SQLPDFService()
                       .clearData(SqlModel.tableFavorite)
-                      .whenComplete(
-                        () => initState(),
-                      );
+                      .whenComplete(() {
+                    setState(() {});
+                  });
                   ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("Favorite cleared !!"),
@@ -346,8 +348,7 @@ class _FavouritepageState extends State<Favouritepage> {
 
     showAlertDialogFavorite(context, snapshot, index);
 
-    initState();
-    initState();
+    setState(() {});
   }
 
   Future<void> deleteFileFavorite(File file) async {
@@ -373,7 +374,8 @@ class _FavouritepageState extends State<Favouritepage> {
           onPressed: () {
             Navigator.pop(context);
             Navigator.pop(context);
-            initState();
+            setState(() {});
+            ;
           },
         ),
       ],

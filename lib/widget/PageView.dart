@@ -1,13 +1,11 @@
 import 'dart:io';
 import 'package:pdfviewer/SQLService/add_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recentpdf_model.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:pdfviewer/SQLService/add_pdf_serrvice.dart';
+
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/SQLService/sql_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pdfviewer/homepage.dart';
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/pdfscreen.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -75,13 +73,16 @@ class _ViewPDFState extends State<ViewPDF> {
       isLoading = true;
     });
 
-    Future.delayed(const Duration(milliseconds: 500), () async {
-      _pdfViewerController = PdfViewerController();
-      _myFile = File(widget.pathPDF);
-      setState(() {
-        isLoading = false;
-      });
-    });
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () async {
+        _pdfViewerController = PdfViewerController();
+        _myFile = File(widget.pathPDF);
+        setState(() {
+          isLoading = false;
+        });
+      },
+    );
   }
 
   bool dark = true;
