@@ -1,15 +1,42 @@
 import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/recentpage.dart';
 
 class RecentSQLPDFService {
   Future<bool> insertRecentPDF(dynamic data, table) async {
     final dbClient = await SqlModel().db;
+
+    var isExist = await _checkrecordExists(data['recentpdf'].toString());
+
+    if (!isExist) {
+      try {
+        var result = await dbClient.insert(table, data);
+
+        print("result $result");
+
+        return true;
+      } catch (e) {
+        print(e);
+        return false;
+      }
+    } else {
+      throw "Added into recents";
+    }
+  }
+
+  Future<bool> _checkrecordExists(String data) async {
+    final dbClient = await SqlModel().db;
+    // var user = await SaveData().getUserData();
+
     try {
-      var result = await dbClient.insert(table, data);
+      var result = await dbClient.rawQuery(
+          """select *from ${SqlModel.tableRecent} where recentpdf= '$data'""");
 
       print("result $result");
 
-      return true;
+      if (result.isNotEmpty) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       print(e);
       return false;

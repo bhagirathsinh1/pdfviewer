@@ -31,7 +31,6 @@ class Favouritepage extends StatefulWidget {
 class _FavouritepageState extends State<Favouritepage> {
   @override
   void initState() {
-    setState(() {});
     // getallPDF();
 
     super.initState();

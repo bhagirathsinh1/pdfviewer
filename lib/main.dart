@@ -11,8 +11,6 @@ import 'package:pdfviewer/pdfscreen.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'dart:io' as io;
-
 List<File> files = [];
 List<File> duplicateItems = [];
 

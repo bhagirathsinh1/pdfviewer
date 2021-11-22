@@ -377,10 +377,10 @@ class _HomepageState extends State<Homepage> {
             //     // // recent_index = index;
             //     // bottomNavBar(context);
             //   },
-            // icon: Icon(
-            //   Icons.star,
-            //   color: favoritestar ? Colors.blue : Colors.white,
-            // ),
+            //   icon: Icon(
+            //     Icons.star,
+            //     color: Colors.blue,
+            //   ),
             // ),
             IconButton(
               onPressed: () {

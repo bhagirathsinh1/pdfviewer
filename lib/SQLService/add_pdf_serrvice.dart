@@ -19,7 +19,7 @@ class SQLPDFService {
         return false;
       }
     } else {
-      throw "---------already exists---------";
+      throw "Already added in favorite";
     }
   }
 

@@ -4,16 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/recentpdf_model.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/favouritepage.dart';
-import 'package:pdfviewer/homepage.dart';
+
 import 'package:pdfviewer/main.dart';
-import 'package:pdfviewer/pdfscreen.dart';
 import 'package:pdfviewer/widget/PageView.dart';
 import 'package:share/share.dart';
 
-List<String> recent_list = [];
 // List<String> reversed_recent_list = [];
-var recent_index;
 var arrivedataRecent;
 
 class Recentpage extends StatefulWidget {
@@ -26,7 +22,6 @@ class Recentpage extends StatefulWidget {
 class _RecentpageState extends State<Recentpage> {
   @override
   void initState() {
-    setState(() {});
     super.initState();
     // reversed_recent_list = recent_list.reversed.toList();
   }
