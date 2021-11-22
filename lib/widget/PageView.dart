@@ -356,7 +356,7 @@ class _ViewPDFState extends State<ViewPDF> {
     AlertDialog alert = AlertDialog(
       title: Text("Go to Page"),
       content: Container(
-        height: 80,
+        height: 110,
         child: Form(
           key: _formKey,
           child: Column(

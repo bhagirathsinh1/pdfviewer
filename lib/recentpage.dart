@@ -28,13 +28,16 @@ class _RecentpageState extends State<Recentpage> {
 
   Future<List<RecentListPdfModel>> getallPDFRecent() async {
     final dbClient = await SqlModel().db;
-    List<Map<String, Object?>> futurePDFList =
-        await dbClient.rawQuery("Select *from ${SqlModel.tableRecent}");
+    List<Map<String, Object?>> futurePDFList = await dbClient.rawQuery(
+      "Select *from ${SqlModel.tableRecent}",
+    );
     List<RecentListPdfModel> list = [];
 
-    futurePDFList.forEach((element) {
-      list.add(RecentListPdfModel.fromJson(element));
-    });
+    futurePDFList.forEach(
+      (element) {
+        list.add(RecentListPdfModel.fromJson(element));
+      },
+    );
     return list;
   }
 
@@ -75,6 +78,7 @@ class _RecentpageState extends State<Recentpage> {
                   return Center(child: Text("Data is empty !"));
                 } else {
                   return ListView.builder(
+                    reverse: true,
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     itemCount: snapshot.data!.length,

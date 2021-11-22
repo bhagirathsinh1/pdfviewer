@@ -90,6 +90,7 @@ class _FavouritepageState extends State<Favouritepage> {
                 return Center(child: Text("Data is empty !"));
               } else {
                 return ListView.builder(
+                  reverse: true,
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   itemCount: snapshot.data!.length,
