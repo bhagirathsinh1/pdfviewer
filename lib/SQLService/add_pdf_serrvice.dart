@@ -14,6 +14,7 @@ class SQLPDFService {
 
         return true;
       } catch (e) {
+        // throw "asd";
         print(e);
         return false;
       }
