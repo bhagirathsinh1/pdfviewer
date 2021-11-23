@@ -3,11 +3,8 @@ import 'dart:io';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
-import 'package:path_provider/path_provider.dart';
-// import 'package:flutter_file_manager/flutter_file_manager.dart';
 import 'package:path_provider_extention/path_provider_extention.dart';
-
-import 'package:pdfviewer/pdfscreen.dart';
+import 'package:pdfviewer/pdf_screen.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -46,7 +43,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool permissionGranted = false;
+  bool isPermissionGranted = false;
   bool permit = false;
   late int a;
   @override
@@ -60,14 +57,14 @@ class _MyAppState extends State<MyApp> {
   Future _getStoragePermission() async {
     if (await Permission.storage.request().isGranted) {
       setState(() {
-        permissionGranted = true;
+        isPermissionGranted = true;
       });
       getFiles();
     } else if (await Permission.storage.request().isPermanentlyDenied) {
       await openAppSettings();
     } else if (await Permission.storage.request().isDenied) {
       setState(() {
-        permissionGranted = false;
+        isPermissionGranted = false;
       });
     }
   }

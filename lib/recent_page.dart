@@ -2,15 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
-import 'package:pdfviewer/SQLService/recentpdf_model.dart';
+import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 
 import 'package:pdfviewer/main.dart';
-import 'package:pdfviewer/widget/PageView.dart';
+import 'package:pdfviewer/widget/page_view.dart';
 import 'package:share/share.dart';
 
 // List<String> reversed_recent_list = [];
-var arrivedataRecent;
+var arriveDataRecent;
 
 class Recentpage extends StatefulWidget {
   const Recentpage({Key? key}) : super(key: key);
@@ -28,10 +28,11 @@ class _RecentpageState extends State<Recentpage> {
 
   Future<List<RecentListPdfModel>> getallPDFRecent() async {
     final dbClient = await SqlModel().db;
+    List<RecentListPdfModel> list = [];
+
     List<Map<String, Object?>> futurePDFList = await dbClient.rawQuery(
       "Select *from ${SqlModel.tableRecent}",
     );
-    List<RecentListPdfModel> list = [];
 
     futurePDFList.forEach(
       (element) {
@@ -83,13 +84,16 @@ class _RecentpageState extends State<Recentpage> {
                     scrollDirection: Axis.vertical,
                     itemCount: snapshot.data!.length,
                     itemBuilder: (BuildContext context, int index) {
-                      arrivedataRecent = snapshot.data![index].recentpdf;
-                      print("dataaay is $arrivedataRecent");
+                      arriveDataRecent = snapshot.data![index].recentpdf;
+                      print("dataaay is $arriveDataRecent");
                       return Card(
                         child: ListTile(
                           title: Text(
-                              arrivedataRecent!.split('/').last.toString()),
-                          leading: Icon(Icons.picture_as_pdf),
+                              arriveDataRecent!.split('/').last.toString()),
+                          leading: Icon(
+                            Icons.picture_as_pdf,
+                            color: Colors.red,
+                          ),
                           trailing: IconButton(
                             onPressed: () {
                               showModalBottomSheet<void>(
@@ -120,8 +124,7 @@ class _RecentpageState extends State<Recentpage> {
                                             ),
                                             leading: Icon(
                                               Icons.picture_as_pdf,
-                                              color:
-                                                  Colors.black.withOpacity(0.5),
+                                              color: Colors.red,
                                             ),
                                             onTap: () {},
                                           ),

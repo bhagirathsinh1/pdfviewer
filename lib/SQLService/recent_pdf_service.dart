@@ -57,12 +57,12 @@ class RecentSQLPDFService {
     }
   }
 
-  Future<bool> removeFromRecent(arrivedataRecent, String table) async {
+  Future<bool> removeFromRecent(arriveDataRecent, String table) async {
     final dbClientRemoveFromRecent = await SqlModel().db;
     try {
       var resultRemoveFromRecent = await dbClientRemoveFromRecent.rawQuery(
         'DELETE FROM $table WHERE recentpdf = ?',
-        [arrivedataRecent],
+        [arriveDataRecent],
       );
       print("deleted in recent index $resultRemoveFromRecent");
 

@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pdfviewer/SQLService/add_pdf_serrvice.dart';
+import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 
 import 'package:pdfviewer/main.dart';
-import 'package:pdfviewer/searchPage.dart';
-import 'package:pdfviewer/widget/PageView.dart';
+import 'package:pdfviewer/search_page.dart';
+import 'package:pdfviewer/widget/page_view.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share/share.dart';
 
@@ -18,8 +18,8 @@ import 'main.dart';
 
 var favorite_index;
 enum SingingCharacter {
-  sizeAccendingRadio,
-  sizeDeccendingRadio,
+  isSizeAccendingRadio,
+  isSizeDeccendingRadio,
   nameRadio,
   dateRadio
 }
@@ -35,14 +35,14 @@ class _HomepageState extends State<Homepage> {
   SingingCharacter? _character;
 
   String? formattedDate;
-  var finalfilesize;
-  bool revsized = false;
-  bool showfiles = false;
-  bool myfiles = false;
-  bool namesort = false;
-  bool datesort = false;
-  bool sizeAccending = false;
-  bool sizeDeccending = false;
+  var finalFileSize;
+  bool isReverseSized = false;
+  bool isShowFiles = false;
+  bool isMyFiles = false;
+  bool isNameSort = false;
+  bool isDateSort = false;
+  bool isSizeAccending = false;
+  bool isSizeDeccending = false;
 
   @override
   void initState() {
@@ -152,17 +152,18 @@ class _HomepageState extends State<Homepage> {
                             return _listItem(index);
                           },
                         );
-                        showfiles = true;
+                        isShowFiles = true;
 
                         print("......get my files bool 1....");
                       },
-                      child: showfiles ? Text("Get files") : Text("Reload Pdf"),
+                      child:
+                          isShowFiles ? Text("Get files") : Text("Reload Pdf"),
                     ),
                   ],
                 ),
               )
             : ListView.builder(
-                reverse: revsized,
+                reverse: isReverseSized,
                 //if file/folder list is grabbed, then show here
                 itemCount: files.length,
                 itemBuilder: (BuildContext ctxt, index) {
@@ -185,10 +186,10 @@ class _HomepageState extends State<Homepage> {
           child: Row(
             children: [
               Radio<SingingCharacter>(
-                value: SingingCharacter.sizeAccendingRadio,
+                value: SingingCharacter.isSizeAccendingRadio,
                 groupValue: _character,
                 onChanged: (SingingCharacter? value) {
-                  if (sizeAccending == false) {
+                  if (isSizeAccending == false) {
                     try {
                       Future.delayed(
                         const Duration(milliseconds: 200),
@@ -207,11 +208,11 @@ class _HomepageState extends State<Homepage> {
                   setState(
                     () {
                       _character = value;
-                      revsized = true;
-                      sizeAccending = true;
-                      sizeDeccending = false;
-                      namesort = false;
-                      datesort = false;
+                      isReverseSized = true;
+                      isSizeAccending = true;
+                      isSizeDeccending = false;
+                      isNameSort = false;
+                      isDateSort = false;
                     },
                   );
                   Navigator.pop(context);
@@ -226,10 +227,10 @@ class _HomepageState extends State<Homepage> {
           child: Row(
             children: [
               Radio<SingingCharacter>(
-                value: SingingCharacter.sizeDeccendingRadio,
+                value: SingingCharacter.isSizeDeccendingRadio,
                 groupValue: _character,
                 onChanged: (SingingCharacter? value) {
-                  if (sizeDeccending == false) {
+                  if (isSizeDeccending == false) {
                     try {
                       Future.delayed(
                         const Duration(milliseconds: 200),
@@ -247,11 +248,11 @@ class _HomepageState extends State<Homepage> {
                   }
                   setState(() {
                     _character = value;
-                    revsized = false;
-                    sizeDeccending = true;
-                    sizeAccending = false;
-                    namesort = false;
-                    datesort = false;
+                    isReverseSized = false;
+                    isSizeDeccending = true;
+                    isSizeAccending = false;
+                    isNameSort = false;
+                    isDateSort = false;
                   });
                   Navigator.pop(context);
                 },
@@ -268,7 +269,7 @@ class _HomepageState extends State<Homepage> {
                 value: SingingCharacter.nameRadio,
                 groupValue: _character,
                 onChanged: (SingingCharacter? value) {
-                  if (namesort == false) {
+                  if (isNameSort == false) {
                     print("...........files1..................");
                     print(files);
 
@@ -293,11 +294,11 @@ class _HomepageState extends State<Homepage> {
                   setState(
                     () {
                       _character = value;
-                      revsized = false;
-                      sizeAccending = false;
-                      sizeDeccending = false;
-                      namesort = true;
-                      datesort = false;
+                      isReverseSized = false;
+                      isSizeAccending = false;
+                      isSizeDeccending = false;
+                      isNameSort = true;
+                      isDateSort = false;
                     },
                   );
                   Navigator.pop(context);
@@ -315,7 +316,7 @@ class _HomepageState extends State<Homepage> {
                 value: SingingCharacter.dateRadio,
                 groupValue: _character,
                 onChanged: (SingingCharacter? value) {
-                  if (datesort == false) {
+                  if (isDateSort == false) {
                     try {
                       Future.delayed(
                         const Duration(milliseconds: 200),
@@ -336,11 +337,11 @@ class _HomepageState extends State<Homepage> {
                   setState(
                     () {
                       _character = value;
-                      revsized = false;
-                      sizeAccending = false;
-                      sizeDeccending = false;
-                      datesort = true;
-                      namesort = false;
+                      isReverseSized = false;
+                      isSizeAccending = false;
+                      isSizeDeccending = false;
+                      isDateSort = true;
+                      isNameSort = false;
                     },
                   );
                   Navigator.pop(context);
@@ -427,8 +428,8 @@ class _HomepageState extends State<Homepage> {
     File filesize = File(
       files[index].path.toString(),
     );
-    finalfilesize = filesize.lengthSync();
-    var sizeInKb = (finalfilesize / (1024)).toStringAsFixed(2);
+    finalFileSize = filesize.lengthSync();
+    var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
 
     File datefile = new File(
       files[index].path.toString(),
@@ -445,7 +446,7 @@ class _HomepageState extends State<Homepage> {
         subtitle: sizeInKb.length < 7
             ? Text("${formattedDate.toString()}\n${sizeInKb} Kb")
             : Text(
-                "${formattedDate.toString()}\n${(finalfilesize / (1024.00 * 1024)).toStringAsFixed(2)} Mb"),
+                "${formattedDate.toString()}\n${(finalFileSize / (1024.00 * 1024)).toStringAsFixed(2)} Mb"),
         leading: Icon(
           Icons.picture_as_pdf,
           color: Colors.red,
@@ -540,7 +541,7 @@ class _HomepageState extends State<Homepage> {
                   ),
                   leading: Icon(
                     Icons.picture_as_pdf,
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.red,
                   ),
                   onTap: () {},
                 ),

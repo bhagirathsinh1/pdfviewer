@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/main.dart';
-import 'package:pdfviewer/widget/PageView.dart';
+import 'package:pdfviewer/widget/page_view.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -115,7 +115,10 @@ class _MyHomePageState extends State<SearchPage> {
     return Card(
       child: ListTile(
         title: Text(items[index].path.split('/').last),
-        leading: Icon(Icons.picture_as_pdf),
+        leading: Icon(
+          Icons.picture_as_pdf,
+          color: Colors.red,
+        ),
         // trailing: IconButton(
         //   onPressed: () {
         //     // favorite_index = index;

@@ -3,23 +3,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:pdfviewer/SQLService/add_pdf_serrvice.dart';
+import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/SQLService/sql_model.dart';
+import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
 import 'package:pdfviewer/main.dart';
-import 'package:pdfviewer/widget/PageView.dart';
+import 'package:pdfviewer/widget/page_view.dart';
 import 'package:share/share.dart';
 
-var brightness = SchedulerBinding.instance!.window.platformBrightness;
-bool isDarkMode = brightness == Brightness.dark;
-
-var bgColor = isDarkMode ? Colors.black : Colors.white;
-var arrivedata;
-
-// List<String> favorite_list = [];
-// var newindex;
-
-// List<String> reversed_favorite_list = [];
+var arriveData;
 
 class Favouritepage extends StatefulWidget {
   const Favouritepage({Key? key}) : super(key: key);
@@ -95,12 +86,15 @@ class _FavouritepageState extends State<Favouritepage> {
                   scrollDirection: Axis.vertical,
                   itemCount: snapshot.data!.length,
                   itemBuilder: (BuildContext context, int index) {
-                    arrivedata = snapshot.data![index].pdf;
-                    print("dataaay is $arrivedata");
+                    arriveData = snapshot.data![index].pdf;
+                    print("dataaay is $arriveData");
                     return Card(
                       child: ListTile(
-                        title: Text(arrivedata!.split('/').last.toString()),
-                        leading: Icon(Icons.picture_as_pdf),
+                        title: Text(arriveData!.split('/').last.toString()),
+                        leading: Icon(
+                          Icons.picture_as_pdf,
+                          color: Colors.red,
+                        ),
                         trailing: IconButton(
                           onPressed: () {
                             // newindex = index;
@@ -133,8 +127,7 @@ class _FavouritepageState extends State<Favouritepage> {
                                           ),
                                           leading: Icon(
                                             Icons.picture_as_pdf,
-                                            color:
-                                                Colors.black.withOpacity(0.5),
+                                            color: Colors.red,
                                           ),
                                           onTap: () {},
                                         ),

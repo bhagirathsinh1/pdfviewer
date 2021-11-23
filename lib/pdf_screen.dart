@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/favouritepage.dart';
-import 'package:pdfviewer/homepage.dart';
+import 'package:pdfviewer/favourite_page.dart';
+import 'package:pdfviewer/home_page.dart';
 import 'package:pdfviewer/main.dart';
-import 'package:pdfviewer/recentpage.dart';
+import 'package:pdfviewer/recent_page.dart';
 
 class Pdfscreen extends StatefulWidget {
   @override
