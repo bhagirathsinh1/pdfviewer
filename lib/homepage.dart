@@ -17,6 +17,12 @@ import 'main.dart';
 // bool favoritestar = false;
 
 var favorite_index;
+enum SingingCharacter {
+  sizeAccendingRadio,
+  sizeDeccendingRadio,
+  nameRadio,
+  dateRadio
+}
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -26,15 +32,18 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  SingingCharacter? _character;
+
   String? formattedDate;
   var finalfilesize;
+  bool revsized = false;
   bool showfiles = false;
   bool myfiles = false;
-  int order = 1;
-  bool sizedsort = false;
   bool namesort = false;
   bool datesort = false;
-  bool revsized = false;
+  bool sizeAccending = false;
+  bool sizeDeccending = false;
+
   @override
   void initState() {
     // setState(() {});
@@ -173,108 +182,174 @@ class _HomepageState extends State<Homepage> {
       color: Colors.white,
       itemBuilder: (context) => [
         PopupMenuItem(
-          onTap: () {
-            if (order == 2) {
-              setState(
-                () {
-                  revsized = true;
-                },
-              );
-            } else {
-              try {
-                Future.delayed(
-                  const Duration(milliseconds: 200),
-                  () async {
-                    files.sort(
-                      (b, a) {
-                        return a.lengthSync().compareTo(b.lengthSync());
-                      },
-                    );
-                    setState(() {
-                      order++;
-                      sizedsort = true;
+          child: Row(
+            children: [
+              Radio<SingingCharacter>(
+                value: SingingCharacter.sizeAccendingRadio,
+                groupValue: _character,
+                onChanged: (SingingCharacter? value) {
+                  if (sizeAccending == false) {
+                    try {
+                      Future.delayed(
+                        const Duration(milliseconds: 200),
+                        () async {
+                          files.sort(
+                            (b, a) {
+                              return a.lengthSync().compareTo(b.lengthSync());
+                            },
+                          );
+                        },
+                      );
+                    } catch (e) {
+                      print('-------------------> error ---> $e');
+                    }
+                  }
+                  setState(
+                    () {
+                      _character = value;
+                      revsized = true;
+                      sizeAccending = true;
+                      sizeDeccending = false;
                       namesort = false;
                       datesort = false;
-                    });
-                  },
-                );
-                order++;
-              } catch (e) {
-                print('-------------------> error ---> $e');
-              }
-            }
-          },
-          child: Text("Size"),
+                    },
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+              Text("Size : Accending")
+            ],
+          ),
           value: 1,
         ),
         PopupMenuItem(
-          onTap: () {
-            if (namesort == false) {
-              print("...........files1..................");
-              print(files);
-
-              try {
-                Future.delayed(
-                  const Duration(milliseconds: 200),
-                  () async {
-                    files.sort(
-                      (a, b) {
-                        return a.path
-                            .split('/')
-                            .last
-                            .compareTo(b.path.split('/').last);
-                      },
-                    );
-                    setState(
-                      () {
-                        order = 0;
-                        namesort = true;
-                        sizedsort = false;
-                        datesort = false;
-                      },
-                    );
-                  },
-                );
-              } catch (e) {
-                print('-------------------> error ---> $e');
-              }
-            }
-            print("...........files2..................");
-            print(files);
-          },
-          child: Text("Name"),
+          child: Row(
+            children: [
+              Radio<SingingCharacter>(
+                value: SingingCharacter.sizeDeccendingRadio,
+                groupValue: _character,
+                onChanged: (SingingCharacter? value) {
+                  if (sizeDeccending == false) {
+                    try {
+                      Future.delayed(
+                        const Duration(milliseconds: 200),
+                        () async {
+                          files.sort(
+                            (b, a) {
+                              return a.lengthSync().compareTo(b.lengthSync());
+                            },
+                          );
+                        },
+                      );
+                    } catch (e) {
+                      print('-------------------> error ---> $e');
+                    }
+                  }
+                  setState(() {
+                    _character = value;
+                    revsized = false;
+                    sizeDeccending = true;
+                    sizeAccending = false;
+                    namesort = false;
+                    datesort = false;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              Text("Size : Deccending")
+            ],
+          ),
           value: 2,
         ),
         PopupMenuItem(
-          onTap: () {
-            if (datesort == false) {
-              try {
-                Future.delayed(
-                  const Duration(milliseconds: 200),
-                  () async {
-                    files.sort(
-                      (b, a) {
-                        return a
-                            .lastModifiedSync()
-                            .compareTo(b.lastModifiedSync());
-                      },
-                    );
-                    setState(
-                      () {
-                        datesort = true;
-                        sizedsort = false;
-                        namesort = false;
-                      },
-                    );
-                  },
-                );
-              } catch (e) {
-                print('-------------------> error ---> $e');
-              }
-            }
-          },
-          child: Text("Date"),
+          child: Row(
+            children: [
+              Radio<SingingCharacter>(
+                value: SingingCharacter.nameRadio,
+                groupValue: _character,
+                onChanged: (SingingCharacter? value) {
+                  if (namesort == false) {
+                    print("...........files1..................");
+                    print(files);
+
+                    try {
+                      Future.delayed(
+                        const Duration(milliseconds: 200),
+                        () async {
+                          files.sort(
+                            (a, b) {
+                              return a.path
+                                  .split('/')
+                                  .last
+                                  .compareTo(b.path.split('/').last);
+                            },
+                          );
+                        },
+                      );
+                    } catch (e) {
+                      print('-------------------> error ---> $e');
+                    }
+                  }
+                  setState(
+                    () {
+                      _character = value;
+                      revsized = false;
+                      sizeAccending = false;
+                      sizeDeccending = false;
+                      namesort = true;
+                      datesort = false;
+                    },
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+              Text("Name")
+            ],
+          ),
           value: 3,
+        ),
+        PopupMenuItem(
+          child: Row(
+            children: [
+              Radio<SingingCharacter>(
+                value: SingingCharacter.dateRadio,
+                groupValue: _character,
+                onChanged: (SingingCharacter? value) {
+                  if (datesort == false) {
+                    try {
+                      Future.delayed(
+                        const Duration(milliseconds: 200),
+                        () async {
+                          files.sort(
+                            (b, a) {
+                              return a
+                                  .lastModifiedSync()
+                                  .compareTo(b.lastModifiedSync());
+                            },
+                          );
+                        },
+                      );
+                    } catch (e) {
+                      print('-------------------> error ---> $e');
+                    }
+                  }
+                  setState(
+                    () {
+                      _character = value;
+                      revsized = false;
+                      sizeAccending = false;
+                      sizeDeccending = false;
+                      datesort = true;
+                      namesort = false;
+                    },
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+              Text("Date")
+            ],
+          ),
+          value: 4,
         ),
       ],
     );
@@ -371,7 +446,10 @@ class _HomepageState extends State<Homepage> {
             ? Text("${formattedDate.toString()}\n${sizeInKb} Kb")
             : Text(
                 "${formattedDate.toString()}\n${(finalfilesize / (1024.00 * 1024)).toStringAsFixed(2)} Mb"),
-        leading: Icon(Icons.picture_as_pdf),
+        leading: Icon(
+          Icons.picture_as_pdf,
+          color: Colors.red,
+        ),
         trailing: Wrap(
           children: [
             // IconButton(
