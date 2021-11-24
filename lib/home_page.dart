@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
@@ -376,7 +377,29 @@ class _HomepageState extends State<Homepage> {
                   Icons.folder,
                   color: Colors.black.withOpacity(0.5),
                 ),
-                onTap: () {},
+                onTap: () async {
+                  FilePickerResult? result =
+                      await FilePicker.platform.pickFiles(
+                    type: FileType.custom,
+                    allowedExtensions: ['pdf'],
+                  );
+                  print(
+                      "------picked file--->/${result!.files.single.path.toString()}------");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ViewPDF(
+                          pathPDF: result.files.single.path.toString(),
+                        );
+
+                        //open ViewPDFHomeScreen page on click
+                      },
+                    ),
+                  );
+
+                  print("---------picked file--------->$result---------------");
+                },
               ),
               ListTile(
                 title: Text(

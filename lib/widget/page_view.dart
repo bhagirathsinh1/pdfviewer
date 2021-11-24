@@ -25,6 +25,7 @@ class _ViewPDFState extends State<ViewPDF> {
 
   TextEditingController textGotoValue = TextEditingController();
   bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
