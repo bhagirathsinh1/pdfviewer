@@ -179,7 +179,7 @@ class _HomepageState extends State<Homepage> {
                 ),
               )
             : ListView.builder(
-                reverse: isReverseSized,
+                // reverse: isReverseSized,
                 //if file/folder list is grabbed, then show here
                 itemCount: files.length,
                 itemBuilder: (BuildContext ctxt, index) {
@@ -212,11 +212,13 @@ class _HomepageState extends State<Homepage> {
                         () async {
                           files.sort(
                             (b, a) {
-                              return a.lengthSync().compareTo(b.lengthSync());
+                              return b.lengthSync().compareTo(a.lengthSync());
                             },
                           );
                         },
-                      );
+                      ).whenComplete(() {
+                        setState(() {});
+                      });
                     } catch (e) {
                       print('-------------------> error ---> $e');
                     }
@@ -257,7 +259,9 @@ class _HomepageState extends State<Homepage> {
                             },
                           );
                         },
-                      );
+                      ).whenComplete(() {
+                        setState(() {});
+                      });
                     } catch (e) {
                       print('-------------------> error ---> $e');
                     }
@@ -302,7 +306,9 @@ class _HomepageState extends State<Homepage> {
                             },
                           );
                         },
-                      );
+                      ).whenComplete(() {
+                        setState(() {});
+                      });
                     } catch (e) {
                       print('-------------------> error ---> $e');
                     }
@@ -345,7 +351,9 @@ class _HomepageState extends State<Homepage> {
                             },
                           );
                         },
-                      );
+                      ).whenComplete(() {
+                        setState(() {});
+                      });
                     } catch (e) {
                       print('-------------------> error ---> $e');
                     }
