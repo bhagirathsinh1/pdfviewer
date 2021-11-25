@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:intl/intl.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
@@ -86,11 +87,29 @@ class _FavouritepageState extends State<Favouritepage> {
                   scrollDirection: Axis.vertical,
                   itemCount: snapshot.data!.length,
                   itemBuilder: (BuildContext context, int index) {
+                    File filesize = File(
+                      snapshot.data![index].pdf.toString(),
+                    );
+                    var finalFileSize = filesize.lengthSync();
+                    var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
+
+                    File datefile = new File(
+                      snapshot.data![index].pdf.toString(),
+                    );
+
+                    var lastModDate1 = datefile.lastModifiedSync();
+                    var formattedDate =
+                        DateFormat('EEE, M/d/y').format(lastModDate1);
                     arriveData = snapshot.data![index].pdf;
                     print("dataaay is $arriveData");
                     return Card(
                       child: ListTile(
                         title: Text(arriveData!.split('/').last.toString()),
+                        subtitle: sizeInKb.length < 7
+                            ? Text(
+                                "${formattedDate.toString()}\n${sizeInKb} Kb")
+                            : Text(
+                                "${formattedDate.toString()}\n${(finalFileSize / (1024.00 * 1024)).toStringAsFixed(2)} Mb"),
                         leading: Icon(
                           Icons.picture_as_pdf,
                           color: Colors.red,

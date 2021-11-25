@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
+import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 
@@ -15,8 +17,9 @@ import 'package:share/share.dart';
 
 import 'main.dart';
 
-// bool favoritestar = false;
+late List starPDF = [];
 
+// bool favoritestar = false;
 var favorite_index;
 enum SingingCharacter {
   isSizeAccendingRadio,
@@ -34,7 +37,6 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   SingingCharacter? _character;
-
   String? formattedDate;
   var finalFileSize;
   bool isReverseSized = false;
@@ -47,9 +49,22 @@ class _HomepageState extends State<Homepage> {
 
   @override
   void initState() {
+    getallPDF();
     // setState(() {});
     super.initState();
-    print("-----------------------------> called homepage Initstate");
+  }
+
+  getallPDF() async {
+    starPDF.clear();
+
+    final dbClient = await SqlModel().db;
+
+    List<Map<String, Object?>> tempPDF =
+        await dbClient.rawQuery("Select *from ${SqlModel.tableFavorite}");
+    starPDF.addAll(tempPDF);
+    // print("------------temp pdf list----->$tempPDF--------------");
+    // print("------------star pdf list----->${starPDF[0]}--------------");
+    setState(() {});
   }
 
   @override
@@ -463,6 +478,14 @@ class _HomepageState extends State<Homepage> {
     ;
     print("....................file size.........................");
     print('Mb ${sizeInKb}');
+    print("------------check file----------${files[index]}----------------");
+    print(
+        "------------check file path----------${files[index].path}----------------");
+    print(
+        "------------check file  string----------${files[index].path.toString()}----------------");
+
+    // print("------------star pdf file----------${starPDF[0]}----------------");
+
     return Card(
       child: ListTile(
         title: Text(files[index].path.split('/').last),
@@ -476,17 +499,12 @@ class _HomepageState extends State<Homepage> {
         ),
         trailing: Wrap(
           children: [
-            // IconButton(
-            //   onPressed: () {
-            //     // favorite_index = index;
-            //     // // recent_index = index;
-            //     // bottomNavBar(context);
-            //   },
-            //   icon: Icon(
-            //     Icons.star,
-            //     color: Colors.blue,
-            //   ),
-            // ),
+            Icon(
+              Icons.star,
+              color: starPDF.toString().contains(files[index].path.toString())
+                  ? Colors.blue
+                  : Colors.white,
+            ),
             IconButton(
               onPressed: () {
                 favorite_index = index;
@@ -586,33 +604,38 @@ class _HomepageState extends State<Homepage> {
                 },
               ),
               ListTile(
-                title: Text(
-                  "Add to favorite",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.star,
-                  color: Colors.black.withOpacity(0.5),
-                ),
+                title: starPDF
+                        .toString()
+                        .contains(files[favorite_index].path.toString())
+                    ? Text(
+                        "Remove from favorite",
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.8),
+                        ),
+                      )
+                    : Text(
+                        "Add to favorite",
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.8),
+                        ),
+                      ),
+                leading: starPDF
+                        .toString()
+                        .contains(files[favorite_index].path.toString())
+                    ? Icon(
+                        Icons.star_border,
+                        color: Colors.black.withOpacity(0.5),
+                      )
+                    : Icon(
+                        Icons.star,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
                 onTap: () async {
-                  Map<String, Object> data = {
-                    'pdf': (files[favorite_index].path),
-                  };
-
-                  if (!data.isEmpty) {
-                    try {
-                      await SQLPDFService()
-                          .insertPDF(data, SqlModel.tableFavorite);
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).clearSnackBars();
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(e.toString())));
-                    }
-                    print("pdfname is--------------> $data");
-                  }
-                  Navigator.pop(context);
+                  starPDF
+                          .toString()
+                          .contains(files[favorite_index].path.toString())
+                      ? removeFromFavorite()
+                      : addFavorite();
                 },
               ),
               ListTile(
@@ -746,5 +769,34 @@ class _HomepageState extends State<Homepage> {
         return alert;
       },
     );
+  }
+
+  removeFromFavorite() async {
+    await SQLPDFService()
+        .removeFromFavorite(files[favorite_index].path.toString().toString(),
+            SqlModel.tableFavorite)
+        .whenComplete(() {
+      setState(() {});
+    });
+    Navigator.pop(context);
+    initState();
+  }
+
+  addFavorite() async {
+    Map<String, Object> data = {
+      'pdf': (files[favorite_index].path),
+    };
+    if (!data.isEmpty) {
+      try {
+        await SQLPDFService().insertPDF(data, SqlModel.tableFavorite);
+      } catch (e) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+      print("pdfname is--------------> $data");
+    }
+    Navigator.pop(context);
+    initState();
   }
 }

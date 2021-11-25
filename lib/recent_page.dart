@@ -1,9 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
+import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
+import 'package:pdfviewer/home_page.dart';
 
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/widget/page_view.dart';
@@ -22,8 +26,21 @@ class Recentpage extends StatefulWidget {
 class _RecentpageState extends State<Recentpage> {
   @override
   void initState() {
+    getallPDF();
     super.initState();
     // reversed_recent_list = recent_list.reversed.toList();
+  }
+
+  getallPDF() async {
+    starPDF.clear();
+    final dbClient = await SqlModel().db;
+
+    List<Map<String, Object?>> tempPDF =
+        await dbClient.rawQuery("Select *from ${SqlModel.tableFavorite}");
+    starPDF.addAll(tempPDF);
+    // print("------------temp pdf list----->$tempPDF--------------");
+    // print("------------star pdf list----->${starPDF[0]}--------------");
+    setState(() {});
   }
 
   Future<List<RecentListPdfModel>> getallPDFRecent() async {
@@ -84,131 +101,205 @@ class _RecentpageState extends State<Recentpage> {
                     scrollDirection: Axis.vertical,
                     itemCount: snapshot.data!.length,
                     itemBuilder: (BuildContext context, int index) {
+                      File filesize = File(
+                        snapshot.data![index].recentpdf.toString(),
+                      );
+                      var finalFileSize = filesize.lengthSync();
+                      var sizeInKb =
+                          (finalFileSize / (1024)).toStringAsFixed(2);
+
+                      File datefile = new File(
+                        snapshot.data![index].recentpdf.toString(),
+                      );
+
+                      var lastModDate1 = datefile.lastModifiedSync();
+                      var formattedDate =
+                          DateFormat('EEE, M/d/y').format(lastModDate1);
                       arriveDataRecent = snapshot.data![index].recentpdf;
                       print("dataaay is $arriveDataRecent");
                       return Card(
                         child: ListTile(
                           title: Text(
                               arriveDataRecent!.split('/').last.toString()),
+                          subtitle: sizeInKb.length < 7
+                              ? Text(
+                                  "${formattedDate.toString()}\n${sizeInKb} Kb")
+                              : Text(
+                                  "${formattedDate.toString()}\n${(finalFileSize / (1024.00 * 1024)).toStringAsFixed(2)} Mb"),
                           leading: Icon(
                             Icons.picture_as_pdf,
                             color: Colors.red,
                           ),
-                          trailing: IconButton(
-                            onPressed: () {
-                              showModalBottomSheet<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    color: Colors.white,
-                                    height: 250,
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.yellow[100],
-                                              border: Border.all(
-                                                color: Colors.grey,
-                                                width: 5,
-                                              )),
-                                          child: ListTile(
+                          trailing: Wrap(children: [
+                            Icon(
+                              Icons.star,
+                              color: starPDF.toString().contains(snapshot
+                                      .data![index].recentpdf
+                                      .toString())
+                                  ? Colors.blue
+                                  : Colors.white,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      color: Colors.white,
+                                      height: 300,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.yellow[100],
+                                                border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 5,
+                                                )),
+                                            child: ListTile(
+                                              title: Text(
+                                                snapshot.data![index].recentpdf
+                                                    .toString()
+                                                    .split('/')
+                                                    .last,
+                                                style: TextStyle(
+                                                  color: Colors.black
+                                                      .withOpacity(0.8),
+                                                ),
+                                              ),
+                                              leading: Icon(
+                                                Icons.picture_as_pdf,
+                                                color: Colors.red,
+                                              ),
+                                              onTap: () {},
+                                            ),
+                                          ),
+                                          ListTile(
                                             title: Text(
-                                              snapshot.data![index].recentpdf
-                                                  .toString()
-                                                  .split('/')
-                                                  .last,
+                                              "Share",
                                               style: TextStyle(
                                                 color: Colors.black
                                                     .withOpacity(0.8),
                                               ),
                                             ),
                                             leading: Icon(
-                                              Icons.picture_as_pdf,
-                                              color: Colors.red,
-                                            ),
-                                            onTap: () {},
-                                          ),
-                                        ),
-                                        ListTile(
-                                          title: Text(
-                                            "Share",
-                                            style: TextStyle(
+                                              Icons.share,
                                               color:
-                                                  Colors.black.withOpacity(0.8),
+                                                  Colors.black.withOpacity(0.5),
                                             ),
+                                            onTap: () {
+                                              List<String> paths = [
+                                                snapshot.data![index].recentpdf
+                                                    .toString()
+                                              ];
+                                              Share.shareFiles(paths);
+                                            },
                                           ),
-                                          leading: Icon(
-                                            Icons.share,
-                                            color:
-                                                Colors.black.withOpacity(0.5),
-                                          ),
-                                          onTap: () {
-                                            List<String> paths = [
-                                              snapshot.data![index].recentpdf
-                                                  .toString()
-                                            ];
-                                            Share.shareFiles(paths);
-                                          },
-                                        ),
-                                        ListTile(
-                                          title: Text(
-                                            "Remove from favorite",
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.8),
-                                            ),
-                                          ),
-                                          leading: Icon(
-                                            Icons.star,
-                                            color:
-                                                Colors.black.withOpacity(0.5),
-                                          ),
-                                          onTap: () async {
-                                            Navigator.pop(context);
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(builder: (context) => pdfscreen()),
-                                            // );
-                                            await RecentSQLPDFService()
-                                                .removeFromRecent(
+                                          ListTile(
+                                            title: starPDF.toString().contains(
                                                     snapshot
                                                         .data![index].recentpdf
-                                                        .toString(),
-                                                    SqlModel.tableRecent)
-                                                .whenComplete(() {
-                                              setState(() {});
-                                            });
-                                          },
-                                        ),
-                                        ListTile(
-                                          title: Text(
-                                            "Delete",
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.8),
+                                                        .toString())
+                                                ? Text(
+                                                    "Remove from favorite",
+                                                    style: TextStyle(
+                                                      color: Colors.black
+                                                          .withOpacity(0.8),
+                                                    ),
+                                                  )
+                                                : Text(
+                                                    "Add to favorite",
+                                                    style: TextStyle(
+                                                      color: Colors.black
+                                                          .withOpacity(0.8),
+                                                    ),
+                                                  ),
+                                            leading: starPDF
+                                                    .toString()
+                                                    .contains(snapshot
+                                                        .data![index].recentpdf
+                                                        .toString())
+                                                ? Icon(
+                                                    Icons.star_border,
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                  )
+                                                : Icon(
+                                                    Icons.star,
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                  ),
+                                            onTap: () async {
+                                              starPDF.toString().contains(
+                                                      snapshot.data![index]
+                                                          .recentpdf
+                                                          .toString())
+                                                  ? removeFromFavorite(
+                                                      context, snapshot, index)
+                                                  : addFavorite(
+                                                      context, snapshot, index);
+                                            },
+                                          ),
+                                          ListTile(
+                                            title: Text(
+                                              "Remove from recents",
+                                              style: TextStyle(
+                                                color: Colors.black
+                                                    .withOpacity(0.8),
+                                              ),
                                             ),
+                                            leading: Icon(
+                                              Icons.auto_delete,
+                                              color:
+                                                  Colors.black.withOpacity(0.5),
+                                            ),
+                                            onTap: () async {
+                                              Navigator.pop(context);
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(builder: (context) => pdfscreen()),
+                                              // );
+                                              await RecentSQLPDFService()
+                                                  .removeFromRecent(
+                                                      snapshot.data![index]
+                                                          .recentpdf
+                                                          .toString(),
+                                                      SqlModel.tableRecent)
+                                                  .whenComplete(() {
+                                                setState(() {});
+                                              });
+                                            },
                                           ),
-                                          leading: Icon(
-                                            Icons.delete,
-                                            color:
-                                                Colors.black.withOpacity(0.5),
+                                          ListTile(
+                                            title: Text(
+                                              "Delete",
+                                              style: TextStyle(
+                                                color: Colors.black
+                                                    .withOpacity(0.8),
+                                              ),
+                                            ),
+                                            leading: Icon(
+                                              Icons.delete,
+                                              color:
+                                                  Colors.black.withOpacity(0.5),
+                                            ),
+                                            onTap: () {
+                                              deleteDialougeRecentScreen(
+                                                  context, snapshot, index);
+                                            },
                                           ),
-                                          onTap: () {
-                                            deleteDialougeRecentScreen(
-                                                context, snapshot, index);
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            icon: Icon(
-                              Icons.more_vert,
-                              color: Colors.redAccent,
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              icon: Icon(
+                                Icons.more_vert,
+                                color: Colors.redAccent,
+                              ),
                             ),
-                          ),
+                          ]),
                           onTap: () {
                             Navigator.push(
                               context,
@@ -381,5 +472,36 @@ class _RecentpageState extends State<Recentpage> {
         return alert;
       },
     );
+  }
+
+  removeFromFavorite(BuildContext context,
+      AsyncSnapshot<List<RecentListPdfModel>> snapshot, int index) async {
+    await SQLPDFService()
+        .removeFromFavorite(
+            snapshot.data![index].recentpdf.toString(), SqlModel.tableFavorite)
+        .whenComplete(() {
+      setState(() {});
+    });
+    Navigator.pop(context);
+    initState();
+  }
+
+  addFavorite(BuildContext context,
+      AsyncSnapshot<List<RecentListPdfModel>> snapshot, int index) async {
+    Map<String, Object> data = {
+      'pdf': (snapshot.data![index].recentpdf.toString()),
+    };
+    if (!data.isEmpty) {
+      try {
+        await SQLPDFService().insertPDF(data, SqlModel.tableFavorite);
+      } catch (e) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+      print("pdfname is--------------> $data");
+    }
+    Navigator.pop(context);
+    initState();
   }
 }

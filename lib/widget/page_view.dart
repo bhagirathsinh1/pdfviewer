@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:intl/intl.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
 
@@ -90,6 +91,14 @@ class _ViewPDFState extends State<ViewPDF> {
 
   @override
   Widget build(BuildContext context) {
+    File filesize = File(widget.pathPDF.toString());
+    var finalFileSize = filesize.lengthSync();
+    var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
+
+    File datefile = new File(widget.pathPDF.toString());
+
+    var lastModDate1 = datefile.lastModifiedSync();
+    var formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
     return Stack(
       children: [
         Scaffold(
@@ -128,7 +137,7 @@ class _ViewPDFState extends State<ViewPDF> {
                       scrollDirection: Axis.vertical,
                       child: Container(
                         color: Colors.white,
-                        height: 530,
+                        height: 560,
                         child: Column(
                           children: [
                             Container(
@@ -148,6 +157,11 @@ class _ViewPDFState extends State<ViewPDF> {
                                     color: Colors.black.withOpacity(0.8),
                                   ),
                                 ),
+                                subtitle: sizeInKb.length < 7
+                                    ? Text(
+                                        "${formattedDate.toString()}\n${sizeInKb} Kb")
+                                    : Text(
+                                        "${formattedDate.toString()}\n${(finalFileSize / (1024.00 * 1024)).toStringAsFixed(2)} Mb"),
                                 leading: Icon(
                                   Icons.picture_as_pdf,
                                   color: Colors.red,
