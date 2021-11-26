@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
+import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/widget/page_view.dart';
 
@@ -12,7 +14,7 @@ class SearchPage extends StatefulWidget {
 class _MyHomePageState extends State<SearchPage> {
   TextEditingController editingController = TextEditingController();
 
-  var items = [];
+  List<File> items = [];
 
   @override
   void initState() {
@@ -119,18 +121,27 @@ class _MyHomePageState extends State<SearchPage> {
           Icons.picture_as_pdf,
           color: Colors.red,
         ),
-        // trailing: IconButton(
-        //   onPressed: () {
-        //     // favorite_index = index;
-        //     // // recent_index = index;
-        //     // bottomNavBar(context);
-        //   },
-        //   icon: Icon(
-        //     Icons.more_vert,
-        //     color: Colors.redAccent,
-        //   ),
-        // ),
-        onTap: () {
+        onTap: () async {
+          Map<String, Object> data = {
+            'recentpdf': (items[index].path),
+          };
+
+          if (!data.isEmpty) {
+            try {
+              await RecentSQLPDFService()
+                  .insertRecentPDF(data, SqlModel.tableRecent);
+            } catch (e) {
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    e.toString(),
+                  ),
+                ),
+              );
+            }
+            print("pdfname is--------------> $data");
+          }
           Navigator.push(
             context,
             MaterialPageRoute(
