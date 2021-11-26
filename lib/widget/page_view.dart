@@ -380,8 +380,8 @@ class _ViewPDFState extends State<ViewPDF> {
                 validator: (value) {
                   if (value != null && value != "") {
                     int temp = int.parse(value.toString());
-                    if (temp > _pdfViewerController.pageNumber &&
-                        temp < _pdfViewerController.pageCount) {
+                    if (temp >= _pdfViewerController.pageNumber &&
+                        temp <= _pdfViewerController.pageCount) {
                       return null;
                     } else {
                       return "please enter page no between 1  - ${_pdfViewerController.pageCount}";
