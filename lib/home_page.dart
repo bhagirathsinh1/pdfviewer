@@ -305,9 +305,11 @@ class _HomepageState extends State<Homepage> {
                           files.sort(
                             (a, b) {
                               return a.path
+                                  .toLowerCase()
                                   .split('/')
                                   .last
-                                  .compareTo(b.path.split('/').last);
+                                  .compareTo(
+                                      b.path.toLowerCase().split('/').last);
                             },
                           );
                         },
