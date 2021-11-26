@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
@@ -36,6 +39,8 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  TextEditingController textGotoValue = TextEditingController();
+
   SingingCharacter? _character;
   String? formattedDate;
   var finalFileSize;
@@ -657,7 +662,10 @@ class _HomepageState extends State<Homepage> {
                   Icons.edit,
                   color: Colors.black.withOpacity(0.5),
                 ),
-                onTap: () {},
+                onTap: () {
+                  showAlertDialogRenameFile(context);
+                  // removeFromFavorite();
+                },
               ),
               ListTile(
                 title: Text(
@@ -720,7 +728,7 @@ class _HomepageState extends State<Homepage> {
       child: Text("Continue"),
       onPressed: () {
         Future.delayed(
-          const Duration(milliseconds: 500),
+          const Duration(milliseconds: 200),
           () async {
             Navigator.pop(context);
 
@@ -786,8 +794,15 @@ class _HomepageState extends State<Homepage> {
         .whenComplete(() {
       setState(() {});
     });
-    Navigator.pop(context);
-    initState();
+  }
+
+  removeFromRecent() async {
+    await RecentSQLPDFService()
+        .removeFromRecent(files[favorite_index].path.toString().toString(),
+            SqlModel.tableRecent)
+        .whenComplete(() {
+      setState(() {});
+    });
   }
 
   addFavorite() async {
@@ -806,5 +821,118 @@ class _HomepageState extends State<Homepage> {
     }
     Navigator.pop(context);
     initState();
+  }
+
+  final _formKeyRenameFile = GlobalKey<FormState>();
+
+  showAlertDialogRenameFile(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("CANCEL"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        var newFileName = textGotoValue.text;
+
+        Future.delayed(
+          const Duration(milliseconds: 1),
+          () async {
+            changeFileNameOnly(context, newFileName);
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Rename File"),
+      content: Container(
+        height: 90,
+        child: Form(
+          key: _formKeyRenameFile,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: textGotoValue,
+                validator: (value) {
+                  if (value != null && value != "") {
+                    return null;
+                  }
+                },
+                keyboardType: TextInputType.text,
+                // Only numbers can be entered
+                decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'Enter new name here '),
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  changeFileNameOnly(BuildContext context, String newFileName) {
+    print("------------->arrived new name----$newFileName--------");
+    var pathOfFile = files[favorite_index].path.toString();
+    var lastSeparator = pathOfFile.lastIndexOf(Platform.pathSeparator);
+    var newPath =
+        pathOfFile.substring(0, lastSeparator + 1) + newFileName + ".pdf";
+    print("-------------pathOfFile---------->$pathOfFile---------");
+    print(
+        "-------------files[favorite_index]---------->${files[favorite_index]}---------");
+
+    print("-------------lastSeparator---------->$lastSeparator---------");
+    print("-------------newPath---------->$newPath---------");
+    print(
+        "-------------return data-------${files[favorite_index].rename(newPath).toString()}-------");
+
+    Future<File> temp = files[favorite_index].rename(newPath);
+    temp.then(
+      (v) {
+        print("-------------v.path data---------------- ${v.path}");
+
+        setState(
+          () {
+            files[favorite_index] = v;
+
+            print(
+                "-------------files path data---------------- ${files[favorite_index]}");
+          },
+        );
+      },
+    ).whenComplete(() {
+      getFiles();
+    }).whenComplete(() {
+      initState();
+    }).whenComplete(() {
+      removeFromFavorite();
+    }).whenComplete(() {
+      removeFromRecent();
+    }).whenComplete(() {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Renamed to  ${newFileName}")));
+      setState(() {});
+    });
   }
 }
