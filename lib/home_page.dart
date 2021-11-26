@@ -803,6 +803,8 @@ class _HomepageState extends State<Homepage> {
         .whenComplete(() {
       setState(() {});
     });
+    Navigator.pop(context);
+    initState();
   }
 
   addFavorite() async {
