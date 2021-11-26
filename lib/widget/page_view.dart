@@ -265,23 +265,23 @@ class _ViewPDFState extends State<ViewPDF> {
                                 Icons.star_border,
                                 color: Colors.black.withOpacity(0.5),
                               ),
-                              onTap: () async {
-                                Map<String, Object> data = {
-                                  'pdf': (File(widget.pathPDF).toString()),
-                                };
+                              onTap: () {
+                                // Map<String, Object> data = {
+                                //   'pdf': (File(widget.pathPDF).toString()),
+                                // };
 
-                                if (!data.isEmpty) {
-                                  try {
-                                    await SQLPDFService().insertPDF(
-                                        data, SqlModel.tableFavorite);
-                                  } catch (e) {
-                                    ScaffoldMessenger.of(context)
-                                        .clearSnackBars();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text(e.toString())));
-                                  }
-                                  print("pdfname is--------------> $data");
-                                }
+                                // if (!data.isEmpty) {
+                                //   try {
+                                //     await SQLPDFService().insertPDF(
+                                //         data, SqlModel.tableFavorite);
+                                //   } catch (e) {
+                                //     ScaffoldMessenger.of(context)
+                                //         .clearSnackBars();
+                                //     ScaffoldMessenger.of(context).showSnackBar(
+                                //         SnackBar(content: Text(e.toString())));
+                                //   }
+                                //   print("pdfname is--------------> $data");
+                                // }
                                 Navigator.pop(context);
                               },
                             ),
