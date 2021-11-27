@@ -1,35 +1,18 @@
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
-import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
-
 import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/search_page.dart';
 import 'package:pdfviewer/widget/page_view.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share/share.dart';
-
 import 'main.dart';
 
 late List starPDF = [];
-
-// bool favoritestar = false;
-var favorite_index;
-enum SingingCharacter {
-  isSizeAccendingRadio,
-  isSizeDeccendingRadio,
-  nameRadio,
-  dateRadio
-}
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -38,7 +21,16 @@ class Homepage extends StatefulWidget {
   State<Homepage> createState() => _HomepageState();
 }
 
+enum SingingCharacter {
+  isSizeAccendingRadio,
+  isSizeDeccendingRadio,
+  nameRadio,
+  dateRadio
+}
+
 class _HomepageState extends State<Homepage> {
+  var favorite_index;
+
   TextEditingController textGotoValue = TextEditingController();
 
   SingingCharacter? _character;
@@ -789,15 +781,6 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  removeFromFavorite() async {
-    await SQLPDFService()
-        .removeFromFavorite(files[favorite_index].path.toString().toString(),
-            SqlModel.tableFavorite)
-        .whenComplete(() {
-      setState(() {});
-    });
-  }
-
   removeFromRecent() async {
     await RecentSQLPDFService()
         .removeFromRecent(files[favorite_index].path.toString().toString(),
@@ -805,6 +788,17 @@ class _HomepageState extends State<Homepage> {
         .whenComplete(() {
       setState(() {});
     });
+  }
+
+  removeFromFavorite() async {
+    await SQLPDFService()
+        .removeFromFavorite(
+            files[favorite_index].path.toString(), SqlModel.tableFavorite)
+        .whenComplete(() {
+      setState(() {});
+    });
+    Navigator.pop(context);
+    initState();
   }
 
   addFavorite() async {

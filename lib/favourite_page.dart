@@ -11,7 +11,7 @@ import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/widget/page_view.dart';
 import 'package:share/share.dart';
 
-var arriveData;
+// var arriveData;
 
 class Favouritepage extends StatefulWidget {
   const Favouritepage({Key? key}) : super(key: key);
@@ -100,11 +100,13 @@ class _FavouritepageState extends State<Favouritepage> {
                     var lastModDate1 = datefile.lastModifiedSync();
                     var formattedDate =
                         DateFormat('EEE, M/d/y').format(lastModDate1);
-                    arriveData = snapshot.data![index].pdf;
-                    print("dataaay is $arriveData");
+                    print("dataaay is $snapshot.data![index].pdf");
                     return Card(
                       child: ListTile(
-                        title: Text(arriveData!.split('/').last.toString()),
+                        title: Text(snapshot.data![index].pdf!
+                            .split('/')
+                            .last
+                            .toString()),
                         subtitle: sizeInKb.length < 7
                             ? Text(
                                 "${formattedDate.toString()}\n${sizeInKb} Kb")

@@ -14,7 +14,7 @@ import 'package:pdfviewer/widget/page_view.dart';
 import 'package:share/share.dart';
 
 // List<String> reversed_recent_list = [];
-var arriveDataRecent;
+// var arriveDataRecent;
 
 class Recentpage extends StatefulWidget {
   const Recentpage({Key? key}) : super(key: key);
@@ -115,12 +115,13 @@ class _RecentpageState extends State<Recentpage> {
                       var lastModDate1 = datefile.lastModifiedSync();
                       var formattedDate =
                           DateFormat('EEE, M/d/y').format(lastModDate1);
-                      arriveDataRecent = snapshot.data![index].recentpdf;
-                      print("dataaay is $arriveDataRecent");
+                      print("dataaay is $snapshot.data![index].recentpdf");
                       return Card(
                         child: ListTile(
-                          title: Text(
-                              arriveDataRecent!.split('/').last.toString()),
+                          title: Text(snapshot.data![index].recentpdf!
+                              .split('/')
+                              .last
+                              .toString()),
                           subtitle: sizeInKb.length < 7
                               ? Text(
                                   "${formattedDate.toString()}\n${sizeInKb} Kb")
