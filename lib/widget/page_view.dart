@@ -7,8 +7,9 @@ import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/pdf_screen.dart';
+import 'package:pdfviewer/service/pdf_file_service.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ViewPDF extends StatefulWidget {
@@ -173,21 +174,20 @@ class _ViewPDFState extends State<ViewPDF> {
                               title: Text(
                                 "Continuous page",
                                 style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
+                                  color: isContinuePage
+                                      ? Colors.black.withOpacity(0.8)
+                                      : Colors.blue.withOpacity(0.8),
                                 ),
                               ),
-                              leading: IconButton(
-                                icon: new Icon(Icons.print_outlined),
-                                color: Colors.black.withOpacity(0.5),
-                                onPressed: () {},
+                              leading: Icon(
+                                Icons.print,
+                                color: isContinuePage
+                                    ? Colors.black.withOpacity(0.5)
+                                    : Colors.blue.withOpacity(0.8),
                               ),
                               onTap: () {
-                                print(
-                                    "---------continue page bool 1 $isContinuePage------------");
                                 setState(() {
                                   isContinuePage = false;
-                                  print(
-                                      "----------continue page bool 2 $isContinuePage----------");
                                 });
                                 Navigator.pop(context);
                               },
@@ -196,20 +196,20 @@ class _ViewPDFState extends State<ViewPDF> {
                               title: Text(
                                 "Page by page",
                                 style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
+                                  color: isContinuePage
+                                      ? Colors.blue.withOpacity(0.8)
+                                      : Colors.black.withOpacity(0.8),
                                 ),
                               ),
                               leading: Icon(
                                 Icons.call_to_action_rounded,
-                                color: Colors.black.withOpacity(0.5),
+                                color: isContinuePage
+                                    ? Colors.blue.withOpacity(0.8)
+                                    : Colors.black.withOpacity(0.5),
                               ),
                               onTap: () {
-                                print(
-                                    "---------continue page bool 1 $isContinuePage------------");
                                 setState(() {
                                   isContinuePage = true;
-                                  print(
-                                      "----------continue page bool 2 $isContinuePage----------");
                                 });
                                 Navigator.pop(context);
                               },
@@ -324,7 +324,9 @@ class _ViewPDFState extends State<ViewPDF> {
                               ),
                               onTap: () {
                                 deleteDialougeFavoriteScreen(
-                                    context, File(widget.pathPDF).toString());
+                                  context,
+                                  File(widget.pathPDF).toString(),
+                                );
                                 print('--------------delete clicked---------');
                               },
                             ),
@@ -464,15 +466,11 @@ class _ViewPDFState extends State<ViewPDF> {
   }
 
   deleteMethodFavoriteScreen() async {
-    await SQLPDFService().removeFromFavorite(
-        File(widget.pathPDF).toString(), SqlModel.tableFavorite);
-    deleteFileFavorite(
-      File(File(widget.pathPDF).toString()),
-    );
-    print("-------string delete 1${File(widget.pathPDF).toString()}----------");
+    Provider.of<PdfFileService>(context, listen: false)
+        .removeFromFavoriteCalled(
+            File(widget.pathPDF).toString(), SqlModel.tableFavorite);
 
-    getFiles();
-
+    Provider.of<PdfFileService>(context, listen: false).getFiles();
     showAlertDialogFavorite(context, File(widget.pathPDF).toString());
     setState(() {});
   }

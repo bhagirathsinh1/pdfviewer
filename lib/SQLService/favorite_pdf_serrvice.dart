@@ -44,36 +44,6 @@ class SQLPDFService {
     }
   }
 
-  Future<bool> clearData(String table) async {
-    final dbClientDelete = await SqlModel().db;
-    try {
-      var resultDelete =
-          await dbClientDelete.rawQuery("""DELETE FROM $table""");
-      print("deleted result $resultDelete");
-
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
-
-  Future<bool> removeFromFavorite(arrivdata, String table) async {
-    final dbClientRemoveFromFavorite = await SqlModel().db;
-    try {
-      var resultRemoveFromFav = await dbClientRemoveFromFavorite.rawQuery(
-        'DELETE FROM $table WHERE pdf = ?',
-        [arrivdata],
-      );
-      print("deleted index $resultRemoveFromFav");
-
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
-
   Future<List<Map<String, Object?>>> getAllPDF(String table) async {
     final dbClient = await SqlModel().db;
 

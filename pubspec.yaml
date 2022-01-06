@@ -58,6 +58,7 @@ dependencies:
   pdf_viewer_plugin: ^2.0.1
   file: ^6.1.2
   image_picker: ^0.8.4+4
+  provider: ^6.0.1
   # file_manager: ^1.0.0
 
 dev_dependencies:

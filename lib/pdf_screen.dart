@@ -4,8 +4,9 @@ import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/favourite_page.dart';
 import 'package:pdfviewer/home_page.dart';
-import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/recent_page.dart';
+import 'package:pdfviewer/service/pdf_file_service.dart';
+import 'package:provider/provider.dart';
 
 class Pdfscreen extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class Pdfscreen extends StatefulWidget {
 }
 
 class _PdfscreenState extends State<Pdfscreen> {
+  PdfFileService getPdfObject = new PdfFileService();
   int _currentPage = 0;
   static bool _init = false;
   get inits => _init;
@@ -22,8 +24,7 @@ class _PdfscreenState extends State<Pdfscreen> {
   TextEditingController textController = TextEditingController();
   @override
   void initState() {
-    getFiles();
-    // TODO: implement initState
+    Provider.of<PdfFileService>(context, listen: false).getFiles();
     super.initState();
   }
 
@@ -53,10 +54,12 @@ class _PdfscreenState extends State<Pdfscreen> {
           onTap: (int index) {
             _pageController.jumpToPage(index);
 
-            setState(() {
-              _init = true;
-              _currentPage = index;
-            });
+            setState(
+              () {
+                _init = true;
+                _currentPage = index;
+              },
+            );
           },
           items: <BottomBarItem>[
             BottomBarItem(
@@ -77,74 +80,6 @@ class _PdfscreenState extends State<Pdfscreen> {
           ],
         ),
       ),
-    );
-  }
-
-  Future<void> bottomNavBar(BuildContext context) {
-    return showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          color: Colors.white,
-          height: 230,
-          child: Column(
-            children: [
-              ListTile(
-                title: Text(
-                  "Brows More file",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.folder,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                title: Text(
-                  "Rate Us",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.star,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                title: Text(
-                  "Share this app",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.share,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                title: Text(
-                  "Privacy Policy",
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.8),
-                  ),
-                ),
-                leading: Icon(
-                  Icons.privacy_tip,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                onTap: () {},
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

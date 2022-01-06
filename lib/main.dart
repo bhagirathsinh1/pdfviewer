@@ -2,14 +2,11 @@ import 'dart:io';
 
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_file_manager/flutter_file_manager.dart';
-import 'package:path_provider_extention/path_provider_extention.dart';
 import 'package:pdfviewer/pdf_screen.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
+import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-List<File> files = [];
-List<File> duplicateItems = [];
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,23 +19,10 @@ void main() async {
   );
 }
 
-void getFiles() async {
-  //asyn function to get list of files
-  List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
-  var root = storageInfo[0]
-      .rootDir; //storageInfo[1] for SD card, geting the root directory
-  var fm = FileManager(root: Directory(root)); //
-  files = await fm.filesTree(
-      excludedPaths: ["/storage/emulated/0/Android"],
-      extensions: ["pdf"] //optional, to filter files, list only pdf files
-      );
-
-  print(files);
-  //update the UI
-}
-
 class MyApp extends StatefulWidget {
   @override
+  static List<File> duplicateItems = [];
+
   _MyAppState createState() => _MyAppState();
 }
 
@@ -49,23 +33,29 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _getStoragePermission();
-    files.addAll(duplicateItems);
+    // Provider.of<PdfFileService>(context, listen: false)
+    //     .files
+    //     .addAll(MyApp.duplicateItems);
 
     super.initState();
   }
 
   Future _getStoragePermission() async {
     if (await Permission.storage.request().isGranted) {
-      setState(() {
-        isPermissionGranted = true;
-      });
-      getFiles();
+      setState(
+        () {
+          isPermissionGranted = true;
+        },
+      );
+      Provider.of<PdfFileService>(context, listen: false).getFiles();
     } else if (await Permission.storage.request().isPermanentlyDenied) {
       await openAppSettings();
     } else if (await Permission.storage.request().isDenied) {
-      setState(() {
-        isPermissionGranted = false;
-      });
+      setState(
+        () {
+          isPermissionGranted = false;
+        },
+      );
     }
   }
 
@@ -73,19 +63,24 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     print("..............permit3............");
     print(permit);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: AnimatedSplashScreen(
-        splash: Icons.picture_as_pdf,
-        duration: 3500,
-        splashTransition: SplashTransition.scaleTransition,
-        // pageTransitionType: PageTransitionType.scale,
-        backgroundColor: Colors.lightBlue,
-        nextScreen: Pdfscreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<PdfFileService>(create: (_) => PdfFileService()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.lightBlue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: AnimatedSplashScreen(
+          splash: Icons.picture_as_pdf,
+          duration: 3500,
+          splashTransition: SplashTransition.scaleTransition,
+          // pageTransitionType: PageTransitionType.scale,
+          backgroundColor: Colors.lightBlue,
+          nextScreen: Pdfscreen(),
+        ),
       ),
     );
   }
