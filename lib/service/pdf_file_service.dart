@@ -22,7 +22,8 @@ class PdfFileService with ChangeNotifier {
   bool isReverseSized = false;
   SingingCharacter? _character;
 
-  List<File> files = [];
+  // List<File> files = [];
+  List<PdfListModel> files = [];
 
   starPDF() async {
     Homepage.starPDF.clear();
@@ -185,6 +186,52 @@ class PdfFileService with ChangeNotifier {
     }
   }
 
+  accendingSort() {
+    files.sort(
+      (b, a) {
+        return b.referenceFile!
+            .lengthSync()
+            .compareTo(a.referenceFile!.lengthSync());
+      },
+    );
+    notifyListeners();
+    return true;
+  }
+
+  deccendingSort() {
+    files.sort(
+      (a, b) {
+        return b.referenceFile!
+            .lengthSync()
+            .compareTo(a.referenceFile!.lengthSync());
+      },
+    );
+    notifyListeners();
+    return true;
+  }
+
+  nameSort() {
+    files.sort(
+      (a, b) {
+        return a.pdfname!.compareTo(b.pdfname!);
+      },
+    );
+    notifyListeners();
+    return true;
+  }
+
+  dateSort() {
+    files.sort(
+      (b, a) {
+        return a.referenceFile!
+            .lastModifiedSync()
+            .compareTo(b.referenceFile!.lastModifiedSync());
+      },
+    );
+    notifyListeners();
+    return true;
+  }
+
   Future<void> sortingPdfMethod(
       isReverseSized,
       isSizeAccending,
@@ -225,29 +272,30 @@ class PdfFileService with ChangeNotifier {
     var root = storageInfo[0]
         .rootDir; //storageInfo[1] for SD card, geting the root directory
     var fm = FileManager(root: Directory(root)); //
-    files = await fm.filesTree(
+    var temmpfiles = await fm.filesTree(
         excludedPaths: ["/storage/emulated/0/Android"],
         extensions: ["pdf"] //optional, to filter files, list only pdf files
         );
 
-    // files = [];
-    // for (var file in tempFiles) {
-    //   var pdfname = file.path.split('/').last;
+    files = [];
+    for (var file in temmpfiles) {
+      var pdfname = file.path.split('/').last;
 
-    //   var lastModDate1 = file.lastModifiedSync();
-    //   var formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
+      var lastModDate1 = file.lastModifiedSync();
+      var formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
 
-    //   var finalFileSize = file.lengthSync();
-    //   var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
+      var finalFileSize = file.lengthSync();
+      var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
 
-    //   var pdfmodel = PdfListModel(
-    //     pdfname: pdfname,
-    //     date: formattedDate,
-    //     size: sizeInKb,
-    //     pdfpath: file.path,
-    //   );
-    //   files.add(pdfmodel);
-    // }
+      var pdfmodel = PdfListModel(
+        referenceFile: file,
+        pdfname: pdfname,
+        date: formattedDate,
+        size: sizeInKb,
+        pdfpath: file.path,
+      );
+      files.add(pdfmodel);
+    }
 
     notifyListeners();
     print(files);

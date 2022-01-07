@@ -75,48 +75,48 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
   }
 
   changeFileNameOnly(BuildContext context, String newFileName) {
-    print("------------->arrived new name----$newFileName--------");
-    var pathOfFile = Provider.of<PdfFileService>(context, listen: false)
-        .files[widget.index]
-        .path
-        .toString();
-    var lastSeparator = pathOfFile.lastIndexOf(Platform.pathSeparator);
-    var newPath =
-        pathOfFile.substring(0, lastSeparator + 1) + newFileName + ".pdf";
+    // print("------------->arrived new name----$newFileName--------");
+    // var pathOfFile = Provider.of<PdfFileService>(context, listen: false)
+    //     .files[widget.index]
+    //     .pdfpath
+    //     .toString();
+    // var lastSeparator = pathOfFile.lastIndexOf(Platform.pathSeparator);
+    // var newPath =
+    //     pathOfFile.substring(0, lastSeparator + 1) + newFileName + ".pdf";
 
-    Future<File> temp = Provider.of<PdfFileService>(context, listen: false)
-        .files[widget.index]
-        .rename(newPath);
-    temp.then(
-      (v) {
-        print("-------------v.path data---------------- ${v.path}");
+    // Future<File> temp = Provider.of<PdfFileService>(context, listen: false)
+    //     .files[widget.index]
+    //     .rename(newPath);
+    // temp.then(
+    //   (v) {
+    //     print("-------------v.path data---------------- ${v.path}");
 
-        setState(
-          () {
-            Provider.of<PdfFileService>(context, listen: false)
-                .files[widget.index] = v;
+    //     setState(
+    //       () {
+    //         Provider.of<PdfFileService>(context, listen: false)
+    //             .files[widget.index] = v;
 
-            print(
-              "-------------MyApp.files path data---------------- ${Provider.of<PdfFileService>(context, listen: false).files[widget.index]}",
-            );
-          },
-        );
-      },
-    ).whenComplete(
-      () {
-        // FileService.getMyApp.files();
-      },
-    ).whenComplete(
-      () {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Renamed to  ${newFileName}"),
-          ),
-        );
-        // setState(() {});
-      },
-    );
+    //         print(
+    //           "-------------MyApp.files path data---------------- ${Provider.of<PdfFileService>(context, listen: false).files[widget.index]}",
+    //         );
+    //       },
+    //     );
+    //   },
+    // ).whenComplete(
+    //   () {
+    //     // FileService.getMyApp.files();
+    //   },
+    // ).whenComplete(
+    //   () {
+    //     Navigator.pop(context);
+    //     ScaffoldMessenger.of(context).clearSnackBars();
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(
+    //         content: Text("Renamed to  ${newFileName}"),
+    //       ),
+    //     );
+    //     // setState(() {});
+    //   },
+    // );
   }
 }

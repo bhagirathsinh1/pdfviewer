@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:pdfviewer/main.dart';
+import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/search_list.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,7 @@ class SearchPage extends StatefulWidget {
 class _MyHomePageState extends State<SearchPage> {
   TextEditingController editingController = TextEditingController();
 
-  List<File> items = [];
+  List<PdfListModel> items = [];
 
   @override
   void initState() {
@@ -29,16 +30,16 @@ class _MyHomePageState extends State<SearchPage> {
   }
 
   void filterSearchResults(String query) {
-    List<File> dummySearchList = [];
+    List<PdfListModel> dummySearchList = [];
     dummySearchList
         .addAll(Provider.of<PdfFileService>(context, listen: false).files);
     print("......................dummysearchlist................");
     print(dummySearchList);
     if (query.isNotEmpty) {
-      List<File> dummyListData = [];
+      List<PdfListModel> dummyListData = [];
       dummySearchList.forEach(
         (item) {
-          if (item.path.split('/').last.toLowerCase().contains(query)) {
+          if (item.pdfname!.toLowerCase().contains(query)) {
             dummyListData.add(item);
           }
         },

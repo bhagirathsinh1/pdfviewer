@@ -5,17 +5,68 @@ import 'package:pdfviewer/service/singing_character_enum.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
-class HomePopupMenu extends StatelessWidget {
+class HomePopupMenu extends StatefulWidget {
+  @override
+  State<HomePopupMenu> createState() => _HomePopupMenuState();
+}
+
+class _HomePopupMenuState extends State<HomePopupMenu> {
   SingingCharacter? _character;
 
-  bool isNameSort = false;
+  bool isNameSort = true;
+
   bool isDateSort = false;
+
   bool isSizeAccending = false;
+
   bool isSizeDeccending = false;
+
   bool isReverseSized = false;
 
   Widget build(BuildContext context) {
-    return PopupMenuButton(
+    return PopupMenuButton<SingingCharacter>(
+      onSelected: (selectedRadio) async {
+        print('--------------------------->1');
+        switch (selectedRadio) {
+          case SingingCharacter.isSizeAccendingRadio:
+            {
+              await Provider.of<PdfFileService>(context, listen: false)
+                  .accendingSort();
+              setState(() {
+                _character = selectedRadio;
+              });
+            }
+            break;
+          case SingingCharacter.isSizeDeccendingRadio:
+            {
+              await Provider.of<PdfFileService>(context, listen: false)
+                  .deccendingSort();
+              setState(() {
+                _character = selectedRadio;
+              });
+            }
+            break;
+          case SingingCharacter.nameRadio:
+            {
+              await Provider.of<PdfFileService>(context, listen: false)
+                  .nameSort();
+              setState(() {
+                _character = selectedRadio;
+              });
+            }
+            break;
+          case SingingCharacter.dateRadio:
+            {
+              await Provider.of<PdfFileService>(context, listen: false)
+                  .dateSort();
+              setState(() {
+                _character = selectedRadio;
+              });
+            }
+            break;
+          default:
+        }
+      },
       icon: Icon(
         Icons.menu,
         color: Colors.black,
@@ -23,63 +74,48 @@ class HomePopupMenu extends StatelessWidget {
       color: Colors.white,
       itemBuilder: (context) => [
         PopupMenuItem(
+          onTap: () {
+            print('--------------------------->2');
+          },
           child: Row(
             children: [
               Radio<SingingCharacter>(
                 value: SingingCharacter.isSizeAccendingRadio,
                 groupValue: _character,
-                onChanged: (SingingCharacter? value) {
-                  Provider.of<PdfFileService>(context, listen: false)
-                      .sortingPdfMethod(true, true, false, false, false,
-                          context, SingingCharacter.isSizeAccendingRadio);
+                onChanged: (SingingCharacter? value) async {
+                  print('---------------------------3');
 
-                  Text("Size : Accending");
+                  setState(() {
+                    _character = value;
+                  });
                 },
               ),
+              Text(
+                "Size : Accending",
+              )
             ],
           ),
-          value: 1,
+          value: SingingCharacter.isSizeAccendingRadio,
         ),
         PopupMenuItem(
+          onTap: () {},
           child: Row(
             children: [
               Radio<SingingCharacter>(
                 value: SingingCharacter.isSizeDeccendingRadio,
                 groupValue: _character,
-                onChanged: (SingingCharacter? value) {
+                onChanged: (SingingCharacter? value) async {
                   if (isSizeDeccending == false) {
-                    try {
-                      Future.delayed(
-                        const Duration(milliseconds: 200),
-                        () async {
-                          Provider.of<PdfFileService>(context, listen: false)
-                              .files
-                              .sort(
-                            (b, a) {
-                              return a.lengthSync().compareTo(b.lengthSync());
-                            },
-                          );
-                        },
-                      );
-                    } catch (e) {
-                      print('-------------------> error ---> $e');
-                    }
+                    setState(() {
+                      _character = value;
+                    });
                   }
-
-                  _character = value;
-                  isReverseSized = false;
-                  isSizeDeccending = true;
-                  isSizeAccending = false;
-                  isNameSort = false;
-                  isDateSort = false;
-
-                  Navigator.pop(context);
                 },
               ),
               Text("Size : Deccending")
             ],
           ),
-          value: 2,
+          value: SingingCharacter.isSizeDeccendingRadio,
         ),
         PopupMenuItem(
           child: Row(
@@ -87,48 +123,16 @@ class HomePopupMenu extends StatelessWidget {
               Radio<SingingCharacter>(
                 value: SingingCharacter.nameRadio,
                 groupValue: _character,
-                onChanged: (SingingCharacter? value) {
-                  if (isNameSort == false) {
-                    print("...........MyApp.files1..................");
-                    print(Provider.of<PdfFileService>(context, listen: false)
-                        .files);
-
-                    try {
-                      Future.delayed(
-                        const Duration(milliseconds: 200),
-                        () async {
-                          Provider.of<PdfFileService>(context, listen: false)
-                              .files
-                              .sort(
-                            (a, b) {
-                              return a.path
-                                  .toLowerCase()
-                                  .split('/')
-                                  .last
-                                  .compareTo(
-                                      b.path.toLowerCase().split('/').last);
-                            },
-                          );
-                        },
-                      );
-                    } catch (e) {
-                      print('-------------------> error ---> $e');
-                    }
-                  }
-
-                  _character = value;
-                  isReverseSized = false;
-                  isSizeAccending = false;
-                  isSizeDeccending = false;
-                  isNameSort = true;
-                  isDateSort = false;
-                  Navigator.pop(context);
+                onChanged: (SingingCharacter? value) async {
+                  setState(() {
+                    _character = value;
+                  });
                 },
               ),
               Text("Name")
             ],
           ),
-          value: 3,
+          value: SingingCharacter.nameRadio,
         ),
         PopupMenuItem(
           child: Row(
@@ -136,41 +140,16 @@ class HomePopupMenu extends StatelessWidget {
               Radio<SingingCharacter>(
                 value: SingingCharacter.dateRadio,
                 groupValue: _character,
-                onChanged: (SingingCharacter? value) {
-                  if (isDateSort == false) {
-                    try {
-                      Future.delayed(
-                        const Duration(milliseconds: 200),
-                        () async {
-                          Provider.of<PdfFileService>(context, listen: false)
-                              .files
-                              .sort(
-                            (b, a) {
-                              return a
-                                  .lastModifiedSync()
-                                  .compareTo(b.lastModifiedSync());
-                            },
-                          );
-                        },
-                      );
-                    } catch (e) {
-                      print('-------------------> error ---> $e');
-                    }
-                  }
-
-                  _character = value;
-                  isReverseSized = false;
-                  isSizeAccending = false;
-                  isSizeDeccending = false;
-                  isDateSort = true;
-                  isNameSort = false;
-                  Navigator.pop(context);
+                onChanged: (SingingCharacter? value) async {
+                  setState(() {
+                    _character = value;
+                  });
                 },
               ),
               Text("Date")
             ],
           ),
-          value: 4,
+          value: SingingCharacter.dateRadio,
         ),
       ],
     );

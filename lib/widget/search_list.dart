@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
+import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/widget/page_view.dart';
 
 class SearchList extends StatefulWidget {
   SearchList({Key? key, required this.index, required this.items})
       : super(key: key);
   int index;
-  List<File> items = [];
+  List<PdfListModel> items = [];
   @override
   _SearchListState createState() => _SearchListState();
 }
@@ -19,14 +20,16 @@ class _SearchListState extends State<SearchList> {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text(widget.items[widget.index].path.split('/').last),
+        title: Text(
+          widget.items[widget.index].pdfname.toString(),
+        ),
         leading: Icon(
           Icons.picture_as_pdf,
           color: Colors.red,
         ),
         onTap: () async {
           Map<String, Object> data = {
-            'recentpdf': (widget.items[widget.index].path),
+            'recentpdf': (widget.items[widget.index].pdfpath.toString()),
           };
 
           if (!data.isEmpty) {
@@ -50,7 +53,7 @@ class _SearchListState extends State<SearchList> {
             MaterialPageRoute(
               builder: (context) {
                 return ViewPDF(
-                  pathPDF: widget.items[widget.index].path.toString(),
+                  pathPDF: widget.items[widget.index].pdfpath.toString(),
                 );
                 //open viewPDF page on click
               },

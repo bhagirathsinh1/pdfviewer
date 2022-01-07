@@ -34,25 +34,14 @@ class _ListAllPdfState extends State<ListAllPdf> {
           //if file/folder list is grabbed, then show here
           itemCount: pdfservice.files.length,
           itemBuilder: (BuildContext ctxt, index) {
-            File filesize = File(
-              pdfservice.files[index].path.toString(),
-            );
-            finalFileSize = filesize.lengthSync();
-            var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
-
-            File datefile = new File(
-              pdfservice.files[index].path.toString(),
-            );
-
-            var lastModDate1 = datefile.lastModifiedSync();
-            formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
             return Card(
               child: ListTile(
-                title: Text(pdfservice.files[index].path.split('/').last),
-                subtitle: sizeInKb.length < 7
-                    ? Text("${formattedDate.toString()}\n${sizeInKb} Kb")
+                title: Text(pdfservice.files[index].pdfname.toString()),
+                subtitle: pdfservice.files[index].size!.length < 7
+                    ? Text(
+                        "${pdfservice.files[index].date.toString()}\n${pdfservice.files[index].size} Kb")
                     : Text(
-                        "${formattedDate.toString()}\n${(finalFileSize / (1024.00 * 1024)).toStringAsFixed(2)} Mb"),
+                        "${pdfservice.files[index].date.toString()}\n${(double.parse(pdfservice.files[index].size.toString()) / 1024).toStringAsFixed(2)} Mb"),
                 leading: Icon(
                   Icons.picture_as_pdf,
                   color: Colors.red,
@@ -61,15 +50,15 @@ class _ListAllPdfState extends State<ListAllPdf> {
                   children: [
                     Icon(
                       Icons.star,
-                      color: Homepage.starPDF
-                              .toString()
-                              .contains(pdfservice.files[index].path.toString())
+                      color: Homepage.starPDF.toString().contains(
+                              pdfservice.files[index].pdfpath.toString())
                           ? Colors.blue
                           : Colors.white,
                     ),
                     IconButton(
                       onPressed: () {
-                        var fileName = pdfservice.files[index].path;
+                        var fileName =
+                            pdfservice.files[index].pdfpath.toString();
                         Homepage.favorite_index = index;
                         print(fileName);
                         // recent_index = index;
@@ -79,7 +68,8 @@ class _ListAllPdfState extends State<ListAllPdf> {
                             var paths = Provider.of<PdfFileService>(context,
                                     listen: false)
                                 .files[Homepage.favorite_index]
-                                .path;
+                                .pdfpath
+                                .toString();
                             return Container(
                               color: Colors.white,
                               height: 350,
@@ -94,12 +84,8 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                         )),
                                     child: ListTile(
                                       title: Text(
-                                          Provider.of<PdfFileService>(context,
-                                                  listen: false)
-                                              .files[Homepage.favorite_index]
-                                              .path
-                                              .split('/')
-                                              .last,
+                                          pdfservice.files[index].pdfname
+                                              .toString(),
                                           style: TextStyle(
                                             color:
                                                 Colors.black.withOpacity(0.8),
@@ -118,10 +104,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                       paths: paths),
                                   ListTile(
                                     title: Homepage.starPDF.toString().contains(
-                                            Provider.of<PdfFileService>(context,
-                                                    listen: false)
-                                                .files[Homepage.favorite_index]
-                                                .path
+                                            pdfservice.files[index].pdfpath
                                                 .toString())
                                         ? Text(
                                             "Remove from favorite",
@@ -139,11 +122,8 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                           ),
                                     leading: Homepage.starPDF
                                             .toString()
-                                            .contains(Provider.of<
-                                                        PdfFileService>(context,
-                                                    listen: false)
-                                                .files[Homepage.favorite_index]
-                                                .path
+                                            .contains(pdfservice
+                                                .files[index].pdfpath
                                                 .toString())
                                         ? Icon(
                                             Icons.star_border,
@@ -157,12 +137,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                           ),
                                     onTap: () async {
                                       Homepage.starPDF.toString().contains(
-                                              Provider.of<PdfFileService>(
-                                                      context,
-                                                      listen: false)
-                                                  .files[
-                                                      Homepage.favorite_index]
-                                                  .path
+                                              pdfservice.files[index].pdfpath
                                                   .toString())
                                           ? removeFromFavorite()
                                           : addFavorite();
@@ -193,7 +168,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
                   // recent_index = index;
 
                   Map<String, Object> data = {
-                    'recentpdf': (pdfservice.files[index].path),
+                    'recentpdf': (pdfservice.files[index].pdfpath.toString()),
                   };
 
                   if (!data.isEmpty) {
@@ -217,7 +192,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
                     MaterialPageRoute(
                       builder: (context) {
                         return ViewPDF(
-                          pathPDF: pdfservice.files[index].path,
+                          pathPDF: pdfservice.files[index].pdfpath.toString(),
                         );
                         //open ViewPDFHomeScreen page on click
                       },
@@ -237,7 +212,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
         .removeFromFavoriteCalled(
             Provider.of<PdfFileService>(context, listen: false)
                 .files[Homepage.favorite_index]
-                .path
+                .pdfpath
                 .toString(),
             SqlModel.tableFavorite);
 
@@ -248,7 +223,8 @@ class _ListAllPdfState extends State<ListAllPdf> {
     Map<String, Object> data = {
       'pdf': (Provider.of<PdfFileService>(context, listen: false)
           .files[Homepage.favorite_index]
-          .path),
+          .pdfpath
+          .toString()),
     };
     if (!data.isEmpty) {
       try {
