@@ -2,18 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
-import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
-import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/home_page.dart';
+import 'package:pdfviewer/MainPages/home_page.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 
 import 'package:pdfviewer/widget/bottomsheet_recent.dart';
 import 'package:pdfviewer/widget/page_view.dart';
 import 'package:pdfviewer/widget/recent_clear.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
 
 // List<String> reversed_recent_list = [];
 // var arriveDataRecent;

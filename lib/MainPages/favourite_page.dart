@@ -8,7 +8,7 @@ import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/botttomsheet_fav.dart';
-import 'package:pdfviewer/widget/favorite_clear.dart';
+import 'package:pdfviewer/widget/favorite_clear_widget.dart';
 import 'package:pdfviewer/widget/page_view.dart';
 import 'package:provider/provider.dart';
 

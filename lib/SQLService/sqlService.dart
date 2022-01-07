@@ -20,6 +20,7 @@ class SqlModel {
     var taskDb = await openDatabase(path, version: 1);
 
     _db = taskDb;
+    await creatingTables();
 
     return taskDb;
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/search_page.dart';
+import 'package:pdfviewer/MainPages/search_page.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
-import 'package:pdfviewer/widget/browsmorefile.dart';
+import 'package:pdfviewer/widget/browsmorefile_dialog.dart';
 import 'package:pdfviewer/widget/homepopupmenu.dart';
-import 'package:pdfviewer/widget/listallpdf.dart';
+import 'package:pdfviewer/widget/all_pdf_screen.dart';
 import 'package:pdfviewer/widget/reloadpdf.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';

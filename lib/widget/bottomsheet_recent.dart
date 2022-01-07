@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/dialogue/delete_dialouge.dart';
-import 'package:pdfviewer/home_page.dart';
+import 'package:pdfviewer/MainPages/home_page.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
-import 'package:pdfviewer/widget/delete_file.dart';
+import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
+import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
+import 'package:pdfviewer/widget/CommonWidget/title_of_pdf.dart';
+import 'package:pdfviewer/widget/remove_from_recent.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
 
 class BotomsheetRecentPage extends StatefulWidget {
   BotomsheetRecentPage(
@@ -25,56 +27,24 @@ class BotomsheetRecentPage extends StatefulWidget {
 class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
   @override
   Widget build(BuildContext context) {
+    var paths = widget.snapshot.data![widget.index].recentpdf.toString();
+    var titlePath = paths.toString().split('/').last;
     return Container(
       color: Colors.white,
       height: 300,
       child: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.yellow[100],
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 5,
-                )),
-            child: ListTile(
-              title: Text(
-                widget.snapshot.data![widget.index].recentpdf
-                    .toString()
-                    .split('/')
-                    .last,
-                style: TextStyle(
-                  color: Colors.black.withOpacity(0.8),
-                ),
-              ),
-              leading: Icon(
-                Icons.picture_as_pdf,
-                color: Colors.red,
-              ),
-              onTap: () {},
-            ),
-          ),
+          TitleOfPdf(titlePath: titlePath),
+
+          //
+          ShareFiles(
+              fileName: widget.fileName,
+              index: widget.index,
+              snapshot: widget.snapshot,
+              paths: paths),
+
           ListTile(
-            title: Text(
-              "Share",
-              style: TextStyle(
-                color: Colors.black.withOpacity(0.8),
-              ),
-            ),
-            leading: Icon(
-              Icons.share,
-              color: Colors.black.withOpacity(0.5),
-            ),
-            onTap: () {
-              List<String> paths = [
-                widget.snapshot.data![widget.index].recentpdf.toString()
-              ];
-              Share.shareFiles(paths);
-            },
-          ),
-          ListTile(
-            title: Homepage.starPDF.toString().contains(
-                    widget.snapshot.data![widget.index].recentpdf.toString())
+            title: Homepage.starPDF.toString().contains(paths)
                 ? Text(
                     "Remove from favorite",
                     style: TextStyle(
@@ -87,8 +57,7 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
                       color: Colors.black.withOpacity(0.8),
                     ),
                   ),
-            leading: Homepage.starPDF.toString().contains(
-                    widget.snapshot.data![widget.index].recentpdf.toString())
+            leading: Homepage.starPDF.toString().contains(paths)
                 ? Icon(
                     Icons.star_border,
                     color: Colors.black.withOpacity(0.5),
@@ -99,8 +68,7 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
                   ),
             onTap: () async {
               Homepage.starPDF.toString().contains(
-                        widget.snapshot.data![widget.index].recentpdf
-                            .toString(),
+                        paths.toString(),
                       )
                   ? Provider.of<PdfFileService>(context, listen: false)
                       .removeFromFavorite(
@@ -110,41 +78,9 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
                       .addFavorite(context, widget.snapshot, widget.index);
             },
           ),
-          ListTile(
-            title: Text(
-              "Remove from recents",
-              style: TextStyle(
-                color: Colors.black.withOpacity(0.8),
-              ),
-            ),
-            leading: Icon(
-              Icons.auto_delete,
-              color: Colors.black.withOpacity(0.5),
-            ),
-            onTap: () async {
-              Navigator.pop(context);
-
-              Provider.of<PdfFileService>(context, listen: false)
-                  .removeFromRecent(
-                      widget.snapshot.data![widget.index].recentpdf.toString(),
-                      SqlModel.tableRecent);
-            },
-          ),
+          //
+          RemoveFromRecent(paths: paths),
           DeleteFileWidget(
-            onTap: () {
-              var fileName =
-                  widget.snapshot.data![widget.index].recentpdf.toString();
-
-              Navigator.pop(context);
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return new DeleteFileDialouge(
-                      index: widget.index,
-                      fileName: fileName,
-                    );
-                  });
-            },
             index: widget.index,
             fileName: widget.fileName,
           ),

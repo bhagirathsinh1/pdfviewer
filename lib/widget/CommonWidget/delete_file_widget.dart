@@ -4,13 +4,12 @@ import 'package:pdfviewer/dialogue/delete_dialouge.dart';
 class DeleteFileWidget extends StatelessWidget {
   final int index;
   final String fileName;
-  const DeleteFileWidget(
-      {Key? key,
-      required this.index,
-      required this.fileName,
-      required this.onTap})
-      : super(key: key);
-  final VoidCallback onTap;
+  const DeleteFileWidget({
+    Key? key,
+    required this.index,
+    required this.fileName,
+  }) : super(key: key);
+  // final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -24,7 +23,17 @@ class DeleteFileWidget extends StatelessWidget {
         Icons.delete,
         color: Colors.black.withOpacity(0.5),
       ),
-      onTap: onTap,
+      onTap: () {
+        Navigator.pop(context);
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return new DeleteFileDialouge(
+                index: index,
+                fileName: fileName,
+              );
+            });
+      },
     );
   }
 }

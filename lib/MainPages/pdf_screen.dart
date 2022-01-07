@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/favourite_page.dart';
-import 'package:pdfviewer/home_page.dart';
-import 'package:pdfviewer/recent_page.dart';
+import 'package:pdfviewer/MainPages/favourite_page.dart';
+import 'package:pdfviewer/MainPages/home_page.dart';
+import 'package:pdfviewer/MainPages/recent_page.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:provider/provider.dart';
 

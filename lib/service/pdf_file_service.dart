@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_manager/flutter_file_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider_extention/path_provider_extention.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/home_page.dart';
+import 'package:pdfviewer/MainPages/home_page.dart';
+import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/singing_character_enum.dart';
 import 'package:provider/provider.dart';
 
@@ -113,7 +115,7 @@ class PdfFileService with ChangeNotifier {
         .whenComplete(() {
       starPDF();
 
-      getallPDFRecent();
+      // getallPDFRecent();
       notifyListeners();
     });
     Navigator.pop(context);
@@ -129,7 +131,7 @@ class PdfFileService with ChangeNotifier {
       );
       print(
           "-----------------------------deleted index $resultRemoveFromFav--------------------------");
-      getFavoritePdf();
+      // getFavoritePdf();
       notifyListeners();
       return true;
     } catch (e) {
@@ -183,17 +185,24 @@ class PdfFileService with ChangeNotifier {
     }
   }
 
-  Future<void> sortingPdfMethod(BuildContext context, value) async {
-    if (isSizeAccending == false) {
+  Future<void> sortingPdfMethod(
+      isReverseSized,
+      isSizeAccending,
+      isSizeDeccending,
+      isNameSort,
+      isDateSort,
+      BuildContext context,
+      value) async {
+    if (isSizeAccending == true) {
       try {
         Future.delayed(
           const Duration(milliseconds: 200),
           () async {
-            Provider.of<PdfFileService>(context, listen: false).files.sort(
-              (b, a) {
-                return b.lengthSync().compareTo(a.lengthSync());
-              },
-            );
+            // Provider.of<PdfFileService>(context, listen: false).files.sort(
+            //   (b, a) {
+            //     return b.lengthSync().compareTo(a.lengthSync());
+            //   },
+            // );
             _character = value;
             isReverseSized = true;
             isSizeAccending = true;
@@ -220,6 +229,26 @@ class PdfFileService with ChangeNotifier {
         excludedPaths: ["/storage/emulated/0/Android"],
         extensions: ["pdf"] //optional, to filter files, list only pdf files
         );
+
+    // files = [];
+    // for (var file in tempFiles) {
+    //   var pdfname = file.path.split('/').last;
+
+    //   var lastModDate1 = file.lastModifiedSync();
+    //   var formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
+
+    //   var finalFileSize = file.lengthSync();
+    //   var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
+
+    //   var pdfmodel = PdfListModel(
+    //     pdfname: pdfname,
+    //     date: formattedDate,
+    //     size: sizeInKb,
+    //     pdfpath: file.path,
+    //   );
+    //   files.add(pdfmodel);
+    // }
+
     notifyListeners();
     print(files);
     //update the UI

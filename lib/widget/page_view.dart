@@ -7,7 +7,7 @@ import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pdfviewer/pdf_screen.dart';
+import 'package:pdfviewer/MainPages/pdf_screen.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';

@@ -30,11 +30,12 @@ class HomePopupMenu extends StatelessWidget {
                 groupValue: _character,
                 onChanged: (SingingCharacter? value) {
                   Provider.of<PdfFileService>(context, listen: false)
-                      .sortingPdfMethod(
+                      .sortingPdfMethod(true, true, false, false, false,
                           context, SingingCharacter.isSizeAccendingRadio);
+
+                  Text("Size : Accending");
                 },
               ),
-              Text("Size : Accending")
             ],
           ),
           value: 1,
