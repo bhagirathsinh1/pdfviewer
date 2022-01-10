@@ -83,8 +83,7 @@ class PdfFileService with ChangeNotifier {
     return list;
   }
 
-  addFavorite(BuildContext context,
-      AsyncSnapshot<List<RecentListPdfModel>> snapshot, int index) async {
+  addFavorite(BuildContext context, snapshot, int index) async {
     Map<String, Object> data = {
       'pdf': (snapshot.data![index].recentpdf.toString()),
     };
@@ -108,8 +107,7 @@ class PdfFileService with ChangeNotifier {
     Navigator.pop(context);
   }
 
-  removeFromFavorite(BuildContext context,
-      AsyncSnapshot<List<RecentListPdfModel>> snapshot, int index) async {
+  removeFromFavorite(BuildContext context, snapshot, int index) async {
     await PdfFileService()
         .removeFromFavoriteCalled(
             snapshot.data![index].recentpdf.toString(), SqlModel.tableFavorite)

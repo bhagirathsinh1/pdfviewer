@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
-import 'package:pdfviewer/main.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:provider/provider.dart';
 
@@ -75,48 +73,42 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
   }
 
   changeFileNameOnly(BuildContext context, String newFileName) {
-    // print("------------->arrived new name----$newFileName--------");
-    // var pathOfFile = Provider.of<PdfFileService>(context, listen: false)
-    //     .files[widget.index]
-    //     .pdfpath
-    //     .toString();
-    // var lastSeparator = pathOfFile.lastIndexOf(Platform.pathSeparator);
-    // var newPath =
-    //     pathOfFile.substring(0, lastSeparator + 1) + newFileName + ".pdf";
+    print("------------->arrived new name----$newFileName--------");
+    var providerService = Provider.of<PdfFileService>(context, listen: false);
 
-    // Future<File> temp = Provider.of<PdfFileService>(context, listen: false)
-    //     .files[widget.index]
-    //     .rename(newPath);
-    // temp.then(
-    //   (v) {
-    //     print("-------------v.path data---------------- ${v.path}");
+    var temp1 = providerService.files[widget.index].referenceFile!.path;
 
-    //     setState(
-    //       () {
-    //         Provider.of<PdfFileService>(context, listen: false)
-    //             .files[widget.index] = v;
+    var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);
+    var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + ".pdf";
 
-    //         print(
-    //           "-------------MyApp.files path data---------------- ${Provider.of<PdfFileService>(context, listen: false).files[widget.index]}",
-    //         );
-    //       },
-    //     );
-    //   },
-    // ).whenComplete(
-    //   () {
-    //     // FileService.getMyApp.files();
-    //   },
-    // ).whenComplete(
-    //   () {
-    //     Navigator.pop(context);
-    //     ScaffoldMessenger.of(context).clearSnackBars();
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(
-    //         content: Text("Renamed to  ${newFileName}"),
-    //       ),
-    //     );
-    //     // setState(() {});
-    //   },
-    // );
+    var filename =
+        providerService.files[widget.index].referenceFile!.rename(newPath);
+
+    filename.then(
+      (v) {
+        print("-------------v.path data---------------- ${v.path}");
+
+        providerService.files[widget.index].referenceFile = v;
+        providerService.files[widget.index].pdfpath = v.path;
+
+        providerService.files[widget.index].pdfname = v.path.split('/').last;
+
+        providerService.getFiles();
+
+        print(
+          "-------------MyApp.files path data---------------- ${Provider.of<PdfFileService>(context, listen: false).files[widget.index]}",
+        );
+      },
+    ).whenComplete(
+      () {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Renamed to  ${newFileName}"),
+          ),
+        );
+      },
+    );
   }
 }

@@ -103,9 +103,9 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                       snapshot: null,
                                       paths: paths),
                                   ListTile(
-                                    title: Homepage.starPDF.toString().contains(
-                                            pdfservice.files[index].pdfpath
-                                                .toString())
+                                    title: Homepage.starPDF
+                                            .toString()
+                                            .contains(paths)
                                         ? Text(
                                             "Remove from favorite",
                                             style: TextStyle(
@@ -122,9 +122,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                           ),
                                     leading: Homepage.starPDF
                                             .toString()
-                                            .contains(pdfservice
-                                                .files[index].pdfpath
-                                                .toString())
+                                            .contains(paths)
                                         ? Icon(
                                             Icons.star_border,
                                             color:
@@ -137,10 +135,18 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                           ),
                                     onTap: () async {
                                       Homepage.starPDF.toString().contains(
-                                              pdfservice.files[index].pdfpath
-                                                  .toString())
-                                          ? removeFromFavorite()
-                                          : addFavorite();
+                                                paths.toString(),
+                                              )
+                                          ? PdfFileService()
+                                              .removeFromFavoriteCalled(
+                                                  paths.toString(),
+                                                  SqlModel.tableFavorite)
+
+                                          //
+                                          : Provider.of<PdfFileService>(context,
+                                                  listen: false)
+                                              .addFavorite(context,
+                                                  paths.toString(), index);
                                     },
                                   ),
                                   RenameFileWidget(
@@ -207,36 +213,36 @@ class _ListAllPdfState extends State<ListAllPdf> {
     );
   }
 
-  removeFromFavorite() async {
-    Provider.of<PdfFileService>(context, listen: false)
-        .removeFromFavoriteCalled(
-            Provider.of<PdfFileService>(context, listen: false)
-                .files[Homepage.favorite_index]
-                .pdfpath
-                .toString(),
-            SqlModel.tableFavorite);
+  // removeFromFavorite() async {
+  //   Provider.of<PdfFileService>(context, listen: false)
+  //       .removeFromFavoriteCalled(
+  //           Provider.of<PdfFileService>(context, listen: false)
+  //               .files[Homepage.favorite_index]
+  //               .pdfpath
+  //               .toString(),
+  //           SqlModel.tableFavorite);
 
-    Navigator.pop(context);
-  }
+  //   Navigator.pop(context);
+  // }
 
-  addFavorite() async {
-    Map<String, Object> data = {
-      'pdf': (Provider.of<PdfFileService>(context, listen: false)
-          .files[Homepage.favorite_index]
-          .pdfpath
-          .toString()),
-    };
-    if (!data.isEmpty) {
-      try {
-        await SQLPDFService().insertPDF(data, SqlModel.tableFavorite);
-      } catch (e) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.toString())));
-      }
-      // print("pdfname is--------------> $data");
-    }
-    Navigator.pop(context);
-    // initState();
-  }
+  // addFavorite() async {
+  //   Map<String, Object> data = {
+  //     'pdf': (Provider.of<PdfFileService>(context, listen: false)
+  //         .files[Homepage.favorite_index]
+  //         .pdfpath
+  //         .toString()),
+  //   };
+  //   if (!data.isEmpty) {
+  //     try {
+  //       await SQLPDFService().insertPDF(data, SqlModel.tableFavorite);
+  //     } catch (e) {
+  //       ScaffoldMessenger.of(context).clearSnackBars();
+  //       ScaffoldMessenger.of(context)
+  //           .showSnackBar(SnackBar(content: Text(e.toString())));
+  //     }
+  //     // print("pdfname is--------------> $data");
+  //   }
+  //   Navigator.pop(context);
+  //   // initState();
+  // }
 }

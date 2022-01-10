@@ -4,8 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
-import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
-import 'package:pdfviewer/SQLService/sqlService.dart';
+
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/botttomsheet_fav.dart';
 import 'package:pdfviewer/widget/favorite_clear_widget.dart';
@@ -28,7 +27,6 @@ class _FavouritepageState extends State<Favouritepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
@@ -38,7 +36,6 @@ class _FavouritepageState extends State<Favouritepage> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              // favoriteBottomNavBar(context);
               showModalBottomSheet<void>(
                 context: context,
                 builder: (BuildContext context) {
@@ -135,7 +132,6 @@ class _FavouritepageState extends State<Favouritepage> {
                                           pathPDF: snapshot.data![index].pdf
                                               .toString(),
                                         );
-                                        //open viewPDF page on click
                                       },
                                     ),
                                   );

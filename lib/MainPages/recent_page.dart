@@ -11,9 +11,6 @@ import 'package:pdfviewer/widget/page_view.dart';
 import 'package:pdfviewer/widget/recent_clear.dart';
 import 'package:provider/provider.dart';
 
-// List<String> reversed_recent_list = [];
-// var arriveDataRecent;
-
 class Recentpage extends StatefulWidget {
   const Recentpage({Key? key}) : super(key: key);
 
@@ -26,7 +23,6 @@ class _RecentpageState extends State<Recentpage> {
   void initState() {
     Provider.of<PdfFileService>(context, listen: false).starPDF();
     super.initState();
-    // reversed_recent_list = recent_list.reversed.toList();
   }
 
   @override
@@ -39,10 +35,6 @@ class _RecentpageState extends State<Recentpage> {
             style: TextStyle(color: Colors.black),
           ),
           actions: <Widget>[
-            ///search button
-
-            ///more
-
             IconButton(
               onPressed: () {
                 showModalBottomSheet<void>(
@@ -64,6 +56,7 @@ class _RecentpageState extends State<Recentpage> {
             future: counter.getallPDFRecent(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<RecentListPdfModel>> snapshot) {
+              print("--------------------$snapshot---------------------");
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
                   print("------------------response positive-------------");
@@ -121,8 +114,7 @@ class _RecentpageState extends State<Recentpage> {
                                   var fileName = snapshot.data![index].recentpdf
                                       .toString();
 
-                                  var isFavourite =
-                                      await showModalBottomSheet<bool>(
+                                  await showModalBottomSheet<bool>(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return BotomsheetRecentPage(
@@ -131,8 +123,6 @@ class _RecentpageState extends State<Recentpage> {
                                           snapshot: snapshot);
                                     },
                                   );
-                                  // snapshot.data![index].isFavourite =
-                                  //     isFavoutite;
                                 },
                                 icon: Icon(
                                   Icons.more_vert,
@@ -149,7 +139,6 @@ class _RecentpageState extends State<Recentpage> {
                                       pathPDF: snapshot.data![index].recentpdf
                                           .toString(),
                                     );
-                                    //open viewPDF page on click
                                   },
                                 ),
                               );

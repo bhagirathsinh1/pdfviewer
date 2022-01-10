@@ -18,12 +18,6 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  // TextEditingController textGotoValue = TextEditingController();
-
-  String? formattedDate;
-  var finalFileSize;
-  bool isMyFiles = false;
-
   @override
   void initState() {
     Provider.of<PdfFileService>(context, listen: false)

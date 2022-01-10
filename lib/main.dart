@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/pdf_screen.dart';
@@ -48,9 +46,6 @@ class MainClass extends StatefulWidget {
 }
 
 class _MainClassState extends State<MainClass> {
-  bool isPermissionGranted = false;
-  bool permit = false;
-  late int a;
   @override
   void initState() {
     _getStoragePermission();
@@ -60,31 +55,24 @@ class _MainClassState extends State<MainClass> {
 
   Future _getStoragePermission() async {
     if (await Permission.storage.request().isGranted) {
-      setState(
-        () {
-          isPermissionGranted = true;
-        },
-      );
       Provider.of<PdfFileService>(context, listen: false).getFiles();
     } else if (await Permission.storage.request().isPermanentlyDenied) {
       await openAppSettings();
-    } else if (await Permission.storage.request().isDenied) {
-      setState(
-        () {
-          isPermissionGranted = false;
-        },
-      );
-    }
+    } else if (await Permission.storage.request().isDenied) {}
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
-      splash: Icons.picture_as_pdf,
+      splash: Icon(
+        Icons.picture_as_pdf,
+        size: 100,
+        color: Colors.red.shade400,
+      ),
       duration: 3500,
       splashTransition: SplashTransition.scaleTransition,
       // pageTransitionType: PageTransitionType.scale,
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: Colors.grey.shade300,
       nextScreen: Pdfscreen(),
     );
   }
