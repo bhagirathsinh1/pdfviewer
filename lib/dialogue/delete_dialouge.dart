@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 class DeleteFileDialouge extends StatefulWidget {
   final int index;
   final String fileName;
+
   DeleteFileDialouge({Key? key, required this.index, required this.fileName})
       : super(key: key);
 
@@ -17,6 +18,8 @@ class DeleteFileDialouge extends StatefulWidget {
 }
 
 class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
+  bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -41,8 +44,11 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
           child: Text("Continue"),
           onPressed: () {
             print("${widget.fileName.split('/').last}");
-
-            deleteMethod();
+            isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : deleteMethod();
           },
         )
       ],
@@ -50,20 +56,32 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
   }
 
   deleteMethod() {
-    Provider.of<PdfFileService>(context, listen: false)
-        .deleteFile(
-      File(
-        widget.fileName,
-      ),
-    )
-        .whenComplete(() {
-      Provider.of<PdfFileService>(context, listen: false)
-          .removeFromFavoriteCalled(widget.fileName, SqlModel.tableFavorite);
-      Provider.of<PdfFileService>(context, listen: false)
-          .removeFromRecent(widget.fileName, SqlModel.tableRecent);
-      Navigator.pop(context);
-      showAlertDialog(context);
+    setState(() {
+      isLoading = true;
     });
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () async {
+        Provider.of<PdfFileService>(context, listen: false)
+            .deleteFile(
+          File(
+            widget.fileName,
+          ),
+        )
+            .whenComplete(() {
+          Provider.of<PdfFileService>(context, listen: false)
+              .removeFromFavoriteCalled(
+                  widget.fileName, SqlModel.tableFavorite);
+          Provider.of<PdfFileService>(context, listen: false)
+              .removeFromRecent(widget.fileName, SqlModel.tableRecent);
+          Navigator.pop(context);
+          showAlertDialog(context);
+        });
+        setState(() {
+          isLoading = false;
+        });
+      },
+    );
 
     // );
   }

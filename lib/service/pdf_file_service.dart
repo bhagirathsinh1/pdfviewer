@@ -9,13 +9,12 @@ import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/MainPages/home_page.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/singing_character_enum.dart';
 
 class PdfFileService with ChangeNotifier {
   List starPDF = [];
-
+  bool isDeleted = false;
   bool isNameSort = false;
   bool isDateSort = false;
   bool isSizeAccending = false;
@@ -40,10 +39,9 @@ class PdfFileService with ChangeNotifier {
   Future<bool> clearRecentPdfData(String table) async {
     final dbClientDelete = await SqlModel().db;
     try {
-      var resultDelete =
-          await dbClientDelete.rawQuery("""DELETE FROM $table""");
+      var resultDelete = await dbClientDelete.rawQuery(
+          """DELETE FROM $table""").whenComplete(() => notifyListeners());
       print("deleted result $resultDelete");
-      notifyListeners();
 
       return true;
     } catch (e) {
@@ -157,11 +155,11 @@ class PdfFileService with ChangeNotifier {
   Future<bool> clearData(String table) async {
     final dbClientDelete = await SqlModel().db;
     try {
-      var resultDelete =
-          await dbClientDelete.rawQuery("""DELETE FROM $table""");
+      var resultDelete = await dbClientDelete.rawQuery(
+          """DELETE FROM $table""").whenComplete(() => notifyListeners());
       print("deleted result $resultDelete");
       // getFavoritePdf();
-      notifyListeners();
+
       return true;
     } catch (e) {
       print(e);
@@ -230,40 +228,6 @@ class PdfFileService with ChangeNotifier {
     );
     notifyListeners();
     return true;
-  }
-
-  Future<void> sortingPdfMethod(
-      isReverseSized,
-      isSizeAccending,
-      isSizeDeccending,
-      isNameSort,
-      isDateSort,
-      BuildContext context,
-      value) async {
-    if (isSizeAccending == true) {
-      try {
-        Future.delayed(
-          const Duration(milliseconds: 200),
-          () async {
-            // Provider.of<PdfFileService>(context, listen: false).files.sort(
-            //   (b, a) {
-            //     return b.lengthSync().compareTo(a.lengthSync());
-            //   },
-            // );
-            _character = value;
-            isReverseSized = true;
-            isSizeAccending = true;
-            isSizeDeccending = false;
-            isNameSort = false;
-            isDateSort = false;
-          },
-        )
-            .whenComplete(() => notifyListeners())
-            .whenComplete(() => Navigator.pop(context));
-      } catch (e) {
-        print('-------------------> error ---> $e');
-      }
-    }
   }
 
   void getFiles() async {

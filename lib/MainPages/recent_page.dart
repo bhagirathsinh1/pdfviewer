@@ -14,11 +14,11 @@ class Recentpage extends StatefulWidget {
 }
 
 class _RecentpageState extends State<Recentpage> {
-  // @override
-  // void initState() {
-  //   // Provider.of<PdfFileService>(context, listen: false).starPDFMethod();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    Provider.of<PdfFileService>(context, listen: false).starPDFMethod();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

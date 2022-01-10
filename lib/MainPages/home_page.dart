@@ -17,12 +17,13 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   @override
-  // void initState() {
-  //   super.initState();
+  void initState() {
+    super.initState();
 
-  //   Provider.of<PdfFileService>(context, listen: false)
-  //       .starPDFMethod(); // setState(() {});
-  // }
+    Provider.of<PdfFileService>(context, listen: false)
+        .starPDFMethod(); // setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<PdfFileService>(builder: (context, counter, child) {
