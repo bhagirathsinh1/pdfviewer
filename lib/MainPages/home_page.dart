@@ -10,8 +10,6 @@ import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
-  static List starPDF = [];
-  static var favorite_index;
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -21,7 +19,7 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     Provider.of<PdfFileService>(context, listen: false)
-        .starPDF(); // setState(() {});
+        .starPDFMethod(); // setState(() {});
     super.initState();
   }
 
@@ -59,7 +57,7 @@ class _HomepageState extends State<Homepage> {
                   )
                 : AppBar(
                     title: Text(
-                      " ${Provider.of<PdfFileService>(context, listen: false).files.length} pdf found !",
+                      " ${counter.files.length} pdf found !",
                       style: TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.white,
@@ -83,11 +81,7 @@ class _HomepageState extends State<Homepage> {
                       BrowsMoreFilePopUp(),
                     ],
                   ),
-            body: Provider.of<PdfFileService>(context, listen: false)
-                    .files
-                    .isEmpty
-                ? ReloadPdf()
-                : ListAllPdf()),
+            body: counter.files.isEmpty ? ReloadPdf() : ListAllPdf()),
       );
     });
   }

@@ -6,7 +6,7 @@ import 'package:pdfviewer/MainPages/home_page.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
-import 'package:pdfviewer/widget/CommonWidget/title_of_pdf.dart';
+import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
 import 'package:pdfviewer/widget/remove_from_recent.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +44,10 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
               paths: paths),
 
           ListTile(
-            title: Homepage.starPDF.toString().contains(paths)
+            title: Provider.of<PdfFileService>(context, listen: false)
+                    .starPDF
+                    .toString()
+                    .contains(paths)
                 ? Text(
                     "Remove from favorite",
                     style: TextStyle(
@@ -57,7 +60,10 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
                       color: Colors.black.withOpacity(0.8),
                     ),
                   ),
-            leading: Homepage.starPDF.toString().contains(paths)
+            leading: Provider.of<PdfFileService>(context, listen: false)
+                    .starPDF
+                    .toString()
+                    .contains(paths)
                 ? Icon(
                     Icons.star_border,
                     color: Colors.black.withOpacity(0.5),
@@ -67,7 +73,10 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
                     color: Colors.black.withOpacity(0.5),
                   ),
             onTap: () async {
-              Homepage.starPDF.toString().contains(
+              Provider.of<PdfFileService>(context, listen: false)
+                      .starPDF
+                      .toString()
+                      .contains(
                         paths.toString(),
                       )
                   ? Provider.of<PdfFileService>(context, listen: false)

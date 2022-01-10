@@ -1,11 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/dialogue/delete_dialouge.dart';
 import 'package:pdfviewer/MainPages/home_page.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
@@ -50,7 +45,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
                   children: [
                     Icon(
                       Icons.star,
-                      color: Homepage.starPDF.toString().contains(
+                      color: pdfservice.starPDF.toString().contains(
                               pdfservice.files[index].pdfpath.toString())
                           ? Colors.blue
                           : Colors.white,
@@ -59,17 +54,12 @@ class _ListAllPdfState extends State<ListAllPdf> {
                       onPressed: () {
                         var fileName =
                             pdfservice.files[index].pdfpath.toString();
-                        Homepage.favorite_index = index;
                         print(fileName);
-                        // recent_index = index;
                         showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
-                            var paths = Provider.of<PdfFileService>(context,
-                                    listen: false)
-                                .files[Homepage.favorite_index]
-                                .pdfpath
-                                .toString();
+                            var paths =
+                                pdfservice.files[index].pdfpath.toString();
                             return Container(
                               color: Colors.white,
                               height: 350,
@@ -103,7 +93,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                       snapshot: null,
                                       paths: paths),
                                   ListTile(
-                                    title: Homepage.starPDF
+                                    title: pdfservice.starPDF
                                             .toString()
                                             .contains(paths)
                                         ? Text(
@@ -120,7 +110,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                                   Colors.black.withOpacity(0.8),
                                             ),
                                           ),
-                                    leading: Homepage.starPDF
+                                    leading: pdfservice.starPDF
                                             .toString()
                                             .contains(paths)
                                         ? Icon(
@@ -134,19 +124,16 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                                 Colors.black.withOpacity(0.5),
                                           ),
                                     onTap: () async {
-                                      Homepage.starPDF.toString().contains(
+                                      pdfservice.starPDF.toString().contains(
                                                 paths.toString(),
                                               )
-                                          ? PdfFileService()
-                                              .removeFromFavoriteCalled(
-                                                  paths.toString(),
-                                                  SqlModel.tableFavorite)
+                                          ? pdfservice.removeFromFavoriteCalled(
+                                              paths.toString(),
+                                              SqlModel.tableFavorite)
 
                                           //
-                                          : Provider.of<PdfFileService>(context,
-                                                  listen: false)
-                                              .addFavorite(context,
-                                                  paths.toString(), index);
+                                          : pdfservice.addFavorite(
+                                              context, paths.toString(), index);
                                     },
                                   ),
                                   RenameFileWidget(

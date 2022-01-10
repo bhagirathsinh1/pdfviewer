@@ -5,7 +5,7 @@ import 'package:pdfviewer/dialogue/delete_dialouge.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
-import 'package:pdfviewer/widget/CommonWidget/title_of_pdf.dart';
+import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
 import 'package:provider/provider.dart';
 
 class BottomsheetFavoritePage extends StatefulWidget {

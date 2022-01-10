@@ -15,6 +15,8 @@ import 'package:pdfviewer/service/singing_character_enum.dart';
 import 'package:provider/provider.dart';
 
 class PdfFileService with ChangeNotifier {
+  List starPDF = [];
+
   bool isNameSort = false;
   bool isDateSort = false;
   bool isSizeAccending = false;
@@ -25,14 +27,14 @@ class PdfFileService with ChangeNotifier {
   // List<File> files = [];
   List<PdfListModel> files = [];
 
-  starPDF() async {
-    Homepage.starPDF.clear();
+  starPDFMethod() async {
+    starPDF.clear();
 
     final dbClient = await SqlModel().db;
 
     List<Map<String, Object?>> tempPDF =
         await dbClient.rawQuery("Select *from ${SqlModel.tableFavorite}");
-    Homepage.starPDF.addAll(tempPDF);
+    starPDF.addAll(tempPDF);
   }
 
   Future<bool> clearRecentPdfData(String table) async {
@@ -72,7 +74,7 @@ class PdfFileService with ChangeNotifier {
     List<RecentListPdfModel> list = [];
 
     List<Map<String, Object?>> futurePDFList = await dbClient.rawQuery(
-      "Select *from ${SqlModel.tableRecent}",
+      "Select *from ${SqlModel.tableRecent}  order by auto_id DESC",
     );
 
     futurePDFList.forEach(
@@ -92,7 +94,7 @@ class PdfFileService with ChangeNotifier {
         await SQLPDFService()
             .insertPDF(data, SqlModel.tableFavorite)
             .whenComplete(() {
-          starPDF();
+          starPDFMethod();
           getallPDFRecent();
           notifyListeners();
         });
@@ -112,7 +114,7 @@ class PdfFileService with ChangeNotifier {
         .removeFromFavoriteCalled(
             snapshot.data![index].recentpdf.toString(), SqlModel.tableFavorite)
         .whenComplete(() {
-      starPDF();
+      starPDFMethod();
 
       // getallPDFRecent();
       notifyListeners();
@@ -141,8 +143,8 @@ class PdfFileService with ChangeNotifier {
 
   Future<List<FavouriteListPdfModel>> getFavoritePdf() async {
     final dbClient = await SqlModel().db;
-    List<Map<String, Object?>> futurePDFList =
-        await dbClient.rawQuery("Select *from ${SqlModel.tableFavorite}");
+    List<Map<String, Object?>> futurePDFList = await dbClient.rawQuery(
+        "Select *from ${SqlModel.tableFavorite}   order by auto_id DESC");
     List<FavouriteListPdfModel> list = [];
     futurePDFList.forEach(
       (element) {
