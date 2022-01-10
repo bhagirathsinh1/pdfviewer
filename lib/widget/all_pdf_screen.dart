@@ -19,6 +19,12 @@ class ListAllPdf extends StatefulWidget {
 class _ListAllPdfState extends State<ListAllPdf> {
   var finalFileSize;
   String? formattedDate;
+  // void initState() {
+  //   super.initState();
+
+  //   Provider.of<PdfFileService>(context, listen: false)
+  //       .starPDFMethod(); // setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {

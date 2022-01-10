@@ -14,9 +14,9 @@ class Favouritepage extends StatefulWidget {
 
 class _FavouritepageState extends State<Favouritepage> {
   @override
-  void initState() {
-    super.initState();
-  }
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {

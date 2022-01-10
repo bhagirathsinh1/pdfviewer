@@ -12,7 +12,6 @@ import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/MainPages/home_page.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/singing_character_enum.dart';
-import 'package:provider/provider.dart';
 
 class PdfFileService with ChangeNotifier {
   List starPDF = [];
@@ -35,6 +34,7 @@ class PdfFileService with ChangeNotifier {
     List<Map<String, Object?>> tempPDF =
         await dbClient.rawQuery("Select *from ${SqlModel.tableFavorite}");
     starPDF.addAll(tempPDF);
+    notifyListeners();
   }
 
   Future<bool> clearRecentPdfData(String table) async {
