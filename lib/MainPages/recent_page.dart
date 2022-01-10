@@ -46,36 +46,35 @@ class _RecentpageState extends State<Recentpage> {
             ),
           ],
         ),
-        body: Consumer<PdfFileService>(builder: (context, counter, child) {
-          return FutureBuilder(
-            future: counter.getallPDFRecent(),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<RecentListPdfModel>> snapshot) {
-              print("--------------------$snapshot---------------------");
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  print("------------------response positive-------------");
+        body: FutureBuilder(
+          future: Provider.of<PdfFileService>(context, listen: false)
+              .getallPDFRecent(),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<RecentListPdfModel>> snapshot) {
+            print("--------------------$snapshot---------------------");
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                print("------------------response positive-------------");
 
-                  if (snapshot.data!.isEmpty) {
-                    return Center(child: Text("Data is empty !"));
-                  } else {
-                    return NameOfRecentPdf(snapshot: snapshot);
-                  }
-                }
-                if (snapshot.hasError) {
-                  return Text(snapshot.hasError.toString());
+                if (snapshot.data!.isEmpty) {
+                  return Center(child: Text("Data is empty !"));
                 } else {
-                  return Text("Somehting went weong");
+                  return NameOfRecentPdf(snapshot: snapshot);
                 }
-              } else {
-                return Container(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
               }
-            },
-          );
-        }));
+              if (snapshot.hasError) {
+                return Text(snapshot.hasError.toString());
+              } else {
+                return Text("Somehting went weong");
+              }
+            } else {
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+          },
+        ));
   }
 }

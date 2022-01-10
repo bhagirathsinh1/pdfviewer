@@ -33,6 +33,7 @@ class NameOfRecentPdf extends StatelessWidget {
         var lastModDate1 = datefile.lastModifiedSync();
         var formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
         print("dataaay is $snapshot.data![index].recentpdf");
+
         return Card(
           child: ListTile(
             title: Text(
@@ -46,15 +47,17 @@ class NameOfRecentPdf extends StatelessWidget {
               color: Colors.red,
             ),
             trailing: Wrap(children: [
-              Icon(
-                Icons.star,
-                color: Provider.of<PdfFileService>(context, listen: false)
-                        .starPDF
-                        .toString()
-                        .contains(snapshot.data![index].recentpdf.toString())
-                    ? Colors.blue
-                    : Colors.white,
-              ),
+              Consumer<PdfFileService>(builder: (context, counter, child) {
+                return Icon(
+                  Icons.star,
+                  color: Provider.of<PdfFileService>(context, listen: false)
+                          .starPDF
+                          .toString()
+                          .contains(snapshot.data![index].recentpdf.toString())
+                      ? Colors.blue
+                      : Colors.white,
+                );
+              }),
               IconButton(
                 onPressed: () async {
                   var fileName = snapshot.data![index].recentpdf.toString();
