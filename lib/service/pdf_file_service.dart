@@ -36,20 +36,6 @@ class PdfFileService with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> clearRecentPdfData(String table) async {
-    final dbClientDelete = await SqlModel().db;
-    try {
-      var resultDelete = await dbClientDelete.rawQuery(
-          """DELETE FROM $table""").whenComplete(() => notifyListeners());
-      print("deleted result $resultDelete");
-
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
-
   Future<List<RecentListPdfModel>> getallPDFRecent() async {
     final dbClient = await SqlModel().db;
     List<RecentListPdfModel> list = [];

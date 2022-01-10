@@ -18,4 +18,18 @@ class RecentService with ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> clearRecentPdfData(String table) async {
+    final dbClientDelete = await SqlModel().db;
+    try {
+      var resultDelete = await dbClientDelete.rawQuery(
+          """DELETE FROM $table""").whenComplete(() => notifyListeners());
+      print("deleted result $resultDelete");
+
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }
