@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/pdf_screen.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
+import 'package:pdfviewer/service/recent_screen_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<PdfFileService>(create: (_) => PdfFileService()),
+        ChangeNotifierProvider<RecentService>(create: (_) => RecentService()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

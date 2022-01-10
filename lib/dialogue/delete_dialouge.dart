@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
+import 'package:pdfviewer/service/recent_screen_service.dart';
 
 import 'package:provider/provider.dart';
 
@@ -72,7 +73,7 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
           Provider.of<PdfFileService>(context, listen: false)
               .removeFromFavoriteCalled(
                   widget.fileName, SqlModel.tableFavorite);
-          Provider.of<PdfFileService>(context, listen: false)
+          Provider.of<RecentService>(context, listen: false)
               .removeFromRecent(widget.fileName, SqlModel.tableRecent);
           Navigator.pop(context);
           showAlertDialog(context);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
+import 'package:pdfviewer/service/recent_screen_service.dart';
 import 'package:provider/provider.dart';
 
 class RemoveFromRecent extends StatelessWidget {
@@ -23,7 +24,7 @@ class RemoveFromRecent extends StatelessWidget {
       onTap: () async {
         Navigator.pop(context);
 
-        Provider.of<PdfFileService>(context, listen: false)
+        Provider.of<RecentService>(context, listen: false)
             .removeFromRecent(paths, SqlModel.tableRecent);
       },
     );

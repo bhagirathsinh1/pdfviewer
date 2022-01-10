@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
+import 'package:pdfviewer/service/recent_screen_service.dart';
 import 'package:pdfviewer/widget/name_of_recentpdf.dart';
 
 import 'package:pdfviewer/widget/recent_clear.dart';
@@ -23,30 +24,31 @@ class _RecentpageState extends State<Recentpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text(
-            "PDF Reader",
-            style: TextStyle(color: Colors.black),
-          ),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                showModalBottomSheet<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return RecentClear();
-                  },
-                );
-              },
-              icon: Icon(
-                Icons.more_vert,
-                color: Colors.black,
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          "PDF Reader",
+          style: TextStyle(color: Colors.black),
         ),
-        body: FutureBuilder(
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return RecentClear();
+                },
+              );
+            },
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      ),
+      body: Consumer<RecentService>(builder: (context, counter, child) {
+        return FutureBuilder(
           future: Provider.of<PdfFileService>(context, listen: false)
               .getallPDFRecent(),
           builder: (BuildContext context,
@@ -75,6 +77,8 @@ class _RecentpageState extends State<Recentpage> {
               );
             }
           },
-        ));
+        );
+      }),
+    );
   }
 }
