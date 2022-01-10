@@ -47,8 +47,7 @@ class _RecentpageState extends State<Recentpage> {
           ),
         ],
       ),
-      body: Consumer<RecentService>(builder: (context, counter, child) {
-        return FutureBuilder(
+      body: FutureBuilder(
           future: Provider.of<PdfFileService>(context, listen: false)
               .getallPDFRecent(),
           builder: (BuildContext context,
@@ -76,9 +75,7 @@ class _RecentpageState extends State<Recentpage> {
                 ),
               );
             }
-          },
-        );
-      }),
+          }),
     );
   }
 }

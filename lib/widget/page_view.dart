@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfviewer/MainPages/pdf_screen.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
+import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -32,32 +33,6 @@ class _ViewPDFState extends State<ViewPDF> {
   void initState() {
     super.initState();
     loading();
-  }
-
-  Future<List<FavouriteListPdfModel>> getallPDF() async {
-    final dbClient = await SqlModel().db;
-    List<Map<String, Object?>> futurePDFList =
-        await dbClient.rawQuery("Select *from ${SqlModel.tableFavorite}");
-    List<FavouriteListPdfModel> list = [];
-
-    futurePDFList.forEach(
-      (element) {
-        list.add(FavouriteListPdfModel.fromJson(element));
-      },
-    );
-    return list;
-  }
-
-  Future<List<RecentListPdfModel>> getallPDFRecent() async {
-    final dbClient = await SqlModel().db;
-    List<Map<String, Object?>> futurePDFList =
-        await dbClient.rawQuery("Select *from ${SqlModel.tableRecent}");
-    List<RecentListPdfModel> list = [];
-
-    futurePDFList.forEach((element) {
-      list.add(RecentListPdfModel.fromJson(element));
-    });
-    return list;
   }
 
   @override
@@ -239,12 +214,6 @@ class _ViewPDFState extends State<ViewPDF> {
                                 color: Colors.black.withOpacity(0.5),
                               ),
                               onTap: () {
-                                // Future.delayed(
-                                //   const Duration(seconds: 1),
-                                //   () {
-                                //     showGotoAlert(context);
-                                //   },
-                                // );
                                 showGotoAlert(context);
 
                                 // Navigator.pop(context);
@@ -266,21 +235,19 @@ class _ViewPDFState extends State<ViewPDF> {
                                 color: Colors.black.withOpacity(0.5),
                               ),
                               onTap: () async {
-                                Map<String, Object> data = {
-                                  'pdf': (File(widget.pathPDF).path.toString()),
-                                };
-                                if (!data.isEmpty) {
-                                  try {
-                                    await SQLPDFService().insertPDF(
-                                        data, SqlModel.tableFavorite);
-                                  } catch (e) {
-                                    ScaffoldMessenger.of(context)
-                                        .clearSnackBars();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text(e.toString())));
-                                  }
-                                  print("pdfname is--------------> $data");
+                                try {
+                                  await PdfFileService()
+                                      .insertIntoFavoritePdfList(
+                                          File(widget.pathPDF).path.toString(),
+                                          SqlModel.tableFavorite);
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context)
+                                      .clearSnackBars();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(e.toString())));
                                 }
+                                // print("pdfname is--------------> $data");
+
                                 Navigator.pop(context);
                                 initState();
                               },
@@ -323,10 +290,14 @@ class _ViewPDFState extends State<ViewPDF> {
                                 color: Colors.black.withOpacity(0.5),
                               ),
                               onTap: () {
-                                deleteDialougeFavoriteScreen(
-                                  context,
-                                  File(widget.pathPDF).toString(),
-                                );
+                                // DeleteFileWidget(
+                                //   index: widget.index,
+                                //   fileName: File(widget.pathPDF).toString(),
+                                // );
+                                // deleteDialougeFavoriteScreen(
+                                //   context,
+                                //   File(widget.pathPDF).toString(),
+                                // );
                                 print('--------------delete clicked---------');
                               },
                             ),
@@ -413,100 +384,6 @@ class _ViewPDFState extends State<ViewPDF> {
       actions: [
         cancelButton,
         continueButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  deleteDialougeFavoriteScreen(BuildContext context, String string) {
-    Widget cancelButton = TextButton(
-      child: Text("Cancel"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = TextButton(
-      child: Text("Continue"),
-      onPressed: () {
-        Future.delayed(
-          const Duration(milliseconds: 500),
-          () async {
-            Navigator.pop(context);
-
-            deleteMethodFavoriteScreen();
-          },
-        );
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Alert!"),
-      content: Text("Would you like to delete ${string.split('/').last}"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  deleteMethodFavoriteScreen() async {
-    Provider.of<PdfFileService>(context, listen: false)
-        .removeFromFavoriteCalled(
-            File(widget.pathPDF).toString(), SqlModel.tableFavorite);
-
-    Provider.of<PdfFileService>(context, listen: false).getFiles();
-    showAlertDialogFavorite(context, File(widget.pathPDF).toString());
-    setState(() {});
-  }
-
-  Future<void> deleteFileFavorite(File string) async {
-    print(
-        "-------string delete 2 ${File(widget.pathPDF).toString()}----------");
-    try {
-      print("-------string delete 3 ${string}----------");
-
-      if (await File(widget.pathPDF).exists()) {
-        await File(widget.pathPDF).delete();
-        print("-------string delete 4 ${string}----------");
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  showAlertDialogFavorite(BuildContext context, String string) {
-    // set up the button
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Succesfuly deleted"),
-      content: Text(string.split('/').last),
-      actions: [
-        TextButton(
-          child: Text("OK"),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Pdfscreen()),
-            );
-          },
-        ),
       ],
     );
 

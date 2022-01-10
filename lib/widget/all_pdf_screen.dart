@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/MainPages/home_page.dart';
@@ -130,16 +131,25 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                                 Colors.black.withOpacity(0.5),
                                           ),
                                     onTap: () async {
-                                      pdfservice.starPDF.toString().contains(
+                                      print("------------------$paths-------");
+                                      if (pdfservice.starPDF
+                                          .toString()
+                                          .contains(paths)) {
+                                        Provider.of<PdfFileService>(context,
+                                                listen: false)
+                                            .removeFromFavoritePdfList(
                                                 paths.toString(),
-                                              )
-                                          ? pdfservice.removeFromFavoriteCalled(
-                                              paths.toString(),
-                                              SqlModel.tableFavorite)
-
-                                          //
-                                          : pdfservice.addFavorite(
-                                              context, paths.toString(), index);
+                                                SqlModel.tableFavorite)
+                                            .whenComplete(
+                                                () => Navigator.pop(context));
+                                      } else {
+                                        Provider.of<PdfFileService>(context,
+                                                listen: false)
+                                            .insertIntoFavoritePdfList(
+                                                paths, SqlModel.tableFavorite)
+                                            .whenComplete(
+                                                () => Navigator.pop(context));
+                                      }
                                     },
                                   ),
                                   RenameFileWidget(
@@ -172,7 +182,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
 
                   if (!data.isEmpty) {
                     try {
-                      var value = await RecentSQLPDFService()
+                      await RecentSQLPDFService()
                           .insertRecentPDF(data, SqlModel.tableRecent);
                     } catch (e) {
                       ScaffoldMessenger.of(context).clearSnackBars();
@@ -208,7 +218,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
 
   // removeFromFavorite() async {
   //   Provider.of<PdfFileService>(context, listen: false)
-  //       .removeFromFavoriteCalled(
+  //       .removeFromFavoritePdfList(
   //           Provider.of<PdfFileService>(context, listen: false)
   //               .files[Homepage.favorite_index]
   //               .pdfpath
@@ -227,7 +237,7 @@ class _ListAllPdfState extends State<ListAllPdf> {
   //   };
   //   if (!data.isEmpty) {
   //     try {
-  //       await SQLPDFService().insertPDF(data, SqlModel.tableFavorite);
+  //       await SQLPDFService().insertIntoFavoritePdfList(data, SqlModel.tableFavorite);
   //     } catch (e) {
   //       ScaffoldMessenger.of(context).clearSnackBars();
   //       ScaffoldMessenger.of(context)

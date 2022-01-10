@@ -71,9 +71,9 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
         )
             .whenComplete(() {
           Provider.of<PdfFileService>(context, listen: false)
-              .removeFromFavoriteCalled(
+              .removeFromFavoritePdfList(
                   widget.fileName, SqlModel.tableFavorite);
-          Provider.of<RecentService>(context, listen: false)
+          Provider.of<PdfFileService>(context, listen: false)
               .removeFromRecent(widget.fileName, SqlModel.tableRecent);
           Navigator.pop(context);
           showAlertDialog(context);

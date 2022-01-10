@@ -34,7 +34,7 @@ class _RecentClearState extends State<RecentClear> {
             onTap: () async {
               Navigator.pop(context);
 
-              Provider.of<RecentService>(context, listen: false)
+              Provider.of<PdfFileService>(context, listen: false)
                   .clearRecentPdfData(SqlModel.tableRecent);
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(

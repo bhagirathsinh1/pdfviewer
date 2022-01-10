@@ -47,7 +47,7 @@ class _FavouritepageState extends State<Favouritepage> {
       body: Consumer<PdfFileService>(
         builder: (context, counter, child) {
           return FutureBuilder(
-            future: counter.getFavoritePdf(),
+            future: counter.getFavoritePdfList(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<FavouriteListPdfModel>> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {

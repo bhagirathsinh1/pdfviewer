@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/dialogue/delete_dialouge.dart';
-import 'package:pdfviewer/MainPages/home_page.dart';
+
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
@@ -73,18 +72,23 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
                     color: Colors.black.withOpacity(0.5),
                   ),
             onTap: () async {
-              Provider.of<PdfFileService>(context, listen: false)
-                      .starPDF
-                      .toString()
-                      .contains(
-                        paths.toString(),
-                      )
-                  ? Provider.of<PdfFileService>(context, listen: false)
-                      .removeFromFavorite(
-                          context, widget.snapshot, widget.index)
-                  //
-                  : Provider.of<PdfFileService>(context, listen: false)
-                      .addFavorite(context, widget.snapshot, widget.index);
+              print(
+                  "-------------${widget.snapshot.data![widget.index].recentpdf.toString()}-------------");
+              if (Provider.of<PdfFileService>(context, listen: false)
+                  .starPDF
+                  .toString()
+                  .contains(
+                    paths,
+                  )) {
+                Provider.of<PdfFileService>(context, listen: false)
+                    .removeFromFavoritePdfList(
+                        paths.toString(), SqlModel.tableFavorite)
+                    .whenComplete(() => Navigator.pop(context));
+              } else {
+                Provider.of<PdfFileService>(context, listen: false)
+                    .insertIntoFavoritePdfList(paths, SqlModel.tableFavorite)
+                    .whenComplete(() => Navigator.pop(context));
+              }
             },
           ),
           //

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:pdfviewer/widget/page_view.dart';
 
 class BrowsMoreFilePopUp extends StatefulWidget {
-  BrowsMoreFilePopUp({Key? key}) : super(key: key);
+  BrowsMoreFilePopUp({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _BrowsMoreFilePopUpState createState() => _BrowsMoreFilePopUpState();

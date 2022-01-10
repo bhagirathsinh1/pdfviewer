@@ -24,7 +24,7 @@ class RemoveFromRecent extends StatelessWidget {
       onTap: () async {
         Navigator.pop(context);
 
-        Provider.of<RecentService>(context, listen: false)
+        Provider.of<PdfFileService>(context, listen: false)
             .removeFromRecent(paths, SqlModel.tableRecent);
       },
     );

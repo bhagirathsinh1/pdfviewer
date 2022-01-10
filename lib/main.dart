@@ -27,7 +27,6 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<PdfFileService>(create: (_) => PdfFileService()),
-        ChangeNotifierProvider<RecentService>(create: (_) => RecentService()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

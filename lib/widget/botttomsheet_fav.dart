@@ -60,7 +60,7 @@ class _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {
               Navigator.pop(context);
               // Navigator.push(
               Provider.of<PdfFileService>(context, listen: false)
-                  .removeFromFavoriteCalled(
+                  .removeFromFavoritePdfList(
                       widget.snapshot.data![widget.index].pdf.toString(),
                       SqlModel.tableFavorite);
             },
