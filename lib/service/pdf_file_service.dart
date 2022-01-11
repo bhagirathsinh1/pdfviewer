@@ -6,7 +6,6 @@ import 'package:flutter_file_manager/flutter_file_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider_extention/path_provider_extention.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
-import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
@@ -24,6 +23,7 @@ class PdfFileService with ChangeNotifier {
 
   // List<File> files = [];
   List<PdfListModel> files = [];
+
   Future<bool> removeFromRecent(arriveDataRecent, String table) async {
     final dbClientRemoveFromRecent = await SqlModel().db;
     try {
@@ -47,6 +47,7 @@ class PdfFileService with ChangeNotifier {
       var resultDelete = await dbClientDelete.rawQuery(
           """DELETE FROM $table""").whenComplete(() => notifyListeners());
       print("deleted result $resultDelete");
+      notifyListeners();
 
       return true;
     } catch (e) {
@@ -66,7 +67,7 @@ class PdfFileService with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<RecentListPdfModel>> getallPDFRecent() async {
+  Future<List<RecentListPdfModel>> getAllRecentPdf() async {
     final dbClient = await SqlModel().db;
     List<RecentListPdfModel> list = [];
 
@@ -101,8 +102,7 @@ class PdfFileService with ChangeNotifier {
           print("----------insert 1");
 
           starPDFMethod();
-          getallPDFRecent();
-          // notifyListeners();
+          getAllRecentPdf();
         });
         return true;
       } catch (e) {
@@ -144,8 +144,6 @@ class PdfFileService with ChangeNotifier {
         [arrivdata],
       ).whenComplete(() {
         starPDFMethod();
-        // notifyListeners();
-        // notifyListeners();
       });
       print(
           "-----------------------------deleted index $resultRemoveFromFav--------------------------");
@@ -170,14 +168,14 @@ class PdfFileService with ChangeNotifier {
     return list;
   }
 
-  Future<bool> clearData(String table) async {
+  Future<bool> clearFavoritePdfList(String table) async {
     final dbClientDelete = await SqlModel().db;
     try {
       var resultDelete = await dbClientDelete.rawQuery(
           """DELETE FROM $table""").whenComplete(() => notifyListeners());
       print("deleted result $resultDelete");
       // getFavoritePdfList();
-
+      notifyListeners();
       return true;
     } catch (e) {
       print(e);

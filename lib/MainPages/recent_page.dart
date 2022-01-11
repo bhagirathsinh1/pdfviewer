@@ -23,59 +23,61 @@ class _RecentpageState extends State<Recentpage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          "PDF Reader",
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              showModalBottomSheet<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return RecentClear();
-                },
-              );
-            },
-            icon: Icon(
-              Icons.more_vert,
-              color: Colors.black,
-            ),
+    return Consumer<PdfFileService>(builder: (context, counter, child) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text(
+            "PDF Reader",
+            style: TextStyle(color: Colors.black),
           ),
-        ],
-      ),
-      body: FutureBuilder(
-          future: Provider.of<PdfFileService>(context, listen: false)
-              .getallPDFRecent(),
-          builder: (BuildContext context,
-              AsyncSnapshot<List<RecentListPdfModel>> snapshot) {
-            print("--------------------$snapshot---------------------");
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                print("------------------response positive-------------");
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                showModalBottomSheet<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return RecentClear();
+                  },
+                );
+              },
+              icon: Icon(
+                Icons.more_vert,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+        body: FutureBuilder(
+            future: Provider.of<PdfFileService>(context, listen: false)
+                .getAllRecentPdf(),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<RecentListPdfModel>> snapshot) {
+              print("--------------------$snapshot---------------------");
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  print("------------------response positive-------------");
 
-                if (snapshot.data!.isEmpty) {
-                  return Center(child: Text("Data is empty !"));
-                } else {
-                  return NameOfRecentPdf(snapshot: snapshot);
+                  if (snapshot.data!.isEmpty) {
+                    return Center(child: Text("Data is empty !"));
+                  } else {
+                    return NameOfRecentPdf(snapshot: snapshot);
+                  }
                 }
-              }
-              if (snapshot.hasError) {
-                return Text(snapshot.hasError.toString());
+                if (snapshot.hasError) {
+                  return Text(snapshot.hasError.toString());
+                } else {
+                  return Text("Somehting went weong");
+                }
               } else {
-                return Text("Somehting went weong");
+                return Container(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               }
-            } else {
-              return Container(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-          }),
-    );
+            }),
+      );
+    });
   }
 }
