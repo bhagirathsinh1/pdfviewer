@@ -22,7 +22,7 @@ class _MyHomePageState extends State<SearchPage> {
     print(items.length);
     super.initState();
     print(".....items length........${items.length}..................");
-    print(items);
+    print(items);      
   }
 
   void filterSearchResults(String query) {

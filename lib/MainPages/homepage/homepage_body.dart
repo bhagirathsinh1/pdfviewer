@@ -10,22 +10,16 @@ import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';
 import 'package:provider/provider.dart';
 
-class ListAllPdf extends StatefulWidget {
-  ListAllPdf({Key? key}) : super(key: key);
+class HomepageBody extends StatefulWidget {
+  HomepageBody({Key? key}) : super(key: key);
 
   @override
-  _ListAllPdfState createState() => _ListAllPdfState();
+  _HomepageBodyState createState() => _HomepageBodyState();
 }
 
-class _ListAllPdfState extends State<ListAllPdf> {
+class _HomepageBodyState extends State<HomepageBody> {
   var finalFileSize;
   String? formattedDate;
-  // void initState() {
-  //   super.initState();
-
-  //   Provider.of<PdfFileService>(context, listen: false)
-  //       .starPDFMethod(); // setState(() {});
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -217,37 +211,4 @@ class _ListAllPdfState extends State<ListAllPdf> {
       },
     );
   }
-
-  // removeFromFavorite() async {
-  //   Provider.of<PdfFileService>(context, listen: false)
-  //       .removeFromFavoritePdfList(
-  //           Provider.of<PdfFileService>(context, listen: false)
-  //               .files[Homepage.favorite_index]
-  //               .pdfpath
-  //               .toString(),
-  //           SqlModel.tableFavorite);
-
-  //   Navigator.pop(context);
-  // }
-
-  // addFavorite() async {
-  //   Map<String, Object> data = {
-  //     'pdf': (Provider.of<PdfFileService>(context, listen: false)
-  //         .files[Homepage.favorite_index]
-  //         .pdfpath
-  //         .toString()),
-  //   };
-  //   if (!data.isEmpty) {
-  //     try {
-  //       await SQLPDFService().insertIntoFavoritePdfList(data, SqlModel.tableFavorite);
-  //     } catch (e) {
-  //       ScaffoldMessenger.of(context).clearSnackBars();
-  //       ScaffoldMessenger.of(context)
-  //           .showSnackBar(SnackBar(content: Text(e.toString())));
-  //     }
-  //     // print("pdfname is--------------> $data");
-  //   }
-  //   Navigator.pop(context);
-  //   // initState();
-  // }
 }

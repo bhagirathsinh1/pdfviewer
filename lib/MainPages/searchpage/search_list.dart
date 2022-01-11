@@ -5,7 +5,10 @@ import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
+import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
+import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';
+import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
 import 'package:provider/provider.dart';
 
 class SearchList extends StatefulWidget {
@@ -34,6 +37,124 @@ class _SearchListState extends State<SearchList> {
           leading: Icon(
             Icons.picture_as_pdf,
             color: Colors.red,
+          ),
+          trailing: Wrap(
+            children: [
+              Icon(
+                Icons.star,
+                color: pdfservice.starPDF.toString().contains(
+                        pdfservice.files[widget.index].pdfpath.toString())
+                    ? Colors.blue
+                    : Colors.white,
+              ),
+              IconButton(
+                onPressed: () {
+                  var fileName =
+                      pdfservice.files[widget.index].pdfpath.toString();
+                  print(fileName);
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      var paths =
+                          pdfservice.files[widget.index].pdfpath.toString();
+                      return Container(
+                        color: Colors.white,
+                        height: 350,
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow[100],
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 5,
+                                  )),
+                              child: ListTile(
+                                title: Text(
+                                    pdfservice.files[widget.index].pdfname
+                                        .toString(),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                    )),
+                                leading: Icon(
+                                  Icons.picture_as_pdf,
+                                  color: Colors.red,
+                                ),
+                                onTap: () {},
+                              ),
+                            ),
+                            ShareFiles(
+                                fileName: fileName,
+                                index: widget.index,
+                                paths: paths),
+                            ListTile(
+                              title: pdfservice.starPDF
+                                      .toString()
+                                      .contains(paths)
+                                  ? Text(
+                                      "Remove from favorite",
+                                      style: TextStyle(
+                                        color: Colors.black.withOpacity(0.8),
+                                      ),
+                                    )
+                                  : Text(
+                                      "Add to favorite",
+                                      style: TextStyle(
+                                        color: Colors.black.withOpacity(0.8),
+                                      ),
+                                    ),
+                              leading:
+                                  pdfservice.starPDF.toString().contains(paths)
+                                      ? Icon(
+                                          Icons.star_border,
+                                          color: Colors.black.withOpacity(0.5),
+                                        )
+                                      : Icon(
+                                          Icons.star,
+                                          color: Colors.black.withOpacity(0.5),
+                                        ),
+                              onTap: () async {
+                                print("------------------$paths-------");
+                                if (pdfservice.starPDF
+                                    .toString()
+                                    .contains(paths)) {
+                                  Provider.of<PdfFileService>(context,
+                                          listen: false)
+                                      .removeFromFavoritePdfList(
+                                          paths.toString(),
+                                          SqlModel.tableFavorite)
+                                      .whenComplete(
+                                          () => Navigator.pop(context));
+                                } else {
+                                  Provider.of<PdfFileService>(context,
+                                          listen: false)
+                                      .insertIntoFavoritePdfList(
+                                          paths, SqlModel.tableFavorite)
+                                      .whenComplete(
+                                          () => Navigator.pop(context));
+                                }
+                              },
+                            ),
+                            RenameFileWidget(
+                              index: widget.index,
+                              fileName: fileName,
+                            ),
+                            DeleteFileWidget(
+                              index: widget.index,
+                              fileName: fileName,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                icon: Icon(
+                  Icons.more_vert,
+                  color: Colors.redAccent,
+                ),
+              ),
+            ],
           ),
           onTap: () async {
             Map<String, Object> data = {
