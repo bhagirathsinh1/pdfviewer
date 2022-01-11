@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/MainPages/home_page.dart';
+import 'package:pdfviewer/MainPages/homepage/home_page.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
-import 'package:pdfviewer/widget/page_view.dart';
+import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';
 import 'package:provider/provider.dart';
 

@@ -5,7 +5,7 @@ import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
-import 'package:pdfviewer/widget/page_view.dart';
+import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 import 'package:provider/provider.dart';
 
 class SearchList extends StatefulWidget {

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/avd.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
-import 'package:pdfviewer/widget/botttomsheet_fav.dart';
-import 'package:pdfviewer/widget/favorite_clear_widget.dart';
+import 'package:pdfviewer/MainPages/favoritepage/botttomsheet_favoritepage.dart';
+import 'package:pdfviewer/MainPages/favoritepage/favoritelist_clear_widget.dart';
 
-import 'package:pdfviewer/widget/page_view.dart';
+import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

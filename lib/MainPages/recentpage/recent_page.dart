@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:pdfviewer/service/pdf_file_service.dart';
-import 'package:pdfviewer/widget/bottomsheet_recent.dart';
+import 'package:pdfviewer/MainPages/recentpage/bottomsheet_recentpage.dart';
 
-import 'package:pdfviewer/widget/page_view.dart';
+import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 
-import 'package:pdfviewer/widget/recent_clear.dart';
+import 'package:pdfviewer/MainPages/recentpage/recentlist_clear_widget.dart';
 import 'package:provider/provider.dart';
 
 class Recentpage extends StatefulWidget {

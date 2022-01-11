@@ -1,6 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/MainPages/pdf_screen.dart';
+import 'package:pdfviewer/MainPages/recentpage/pdf_screen.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:permission_handler/permission_handler.dart';
