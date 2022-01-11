@@ -5,12 +5,12 @@ import 'package:pdfviewer/service/singing_character_enum.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
-class HomePopupMenu extends StatefulWidget {
+class Shorting extends StatefulWidget {
   @override
-  State<HomePopupMenu> createState() => _HomePopupMenuState();
+  State<Shorting> createState() => _ShortingState();
 }
 
-class _HomePopupMenuState extends State<HomePopupMenu> {
+class _ShortingState extends State<Shorting> {
   SingingCharacter? _character;
 
   bool isNameSort = true;
