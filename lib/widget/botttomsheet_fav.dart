@@ -9,15 +9,13 @@ import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
 import 'package:provider/provider.dart';
 
 class BottomsheetFavoritePage extends StatefulWidget {
-  BottomsheetFavoritePage(
-      {Key? key,
-      required this.index,
-      required this.fileName,
-      required this.snapshot})
-      : super(key: key);
+  BottomsheetFavoritePage({
+    Key? key,
+    required this.index,
+    required this.fileName,
+  }) : super(key: key);
   final int index;
   final String fileName;
-  final snapshot;
 
   @override
   _BottomsheetFavoritePageState createState() =>
@@ -27,9 +25,9 @@ class BottomsheetFavoritePage extends StatefulWidget {
 class _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {
   @override
   Widget build(BuildContext context) {
-    var titlePath =
-        widget.snapshot.data![widget.index].pdf.toString().split('/').last;
-    var paths = widget.snapshot.data![widget.index].pdf;
+    var paths = widget.fileName;
+
+    var titlePath = paths.toString().split('/').last;
     return Container(
       color: Colors.white,
       height: 250,
@@ -39,10 +37,7 @@ class _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {
 
           //
           ShareFiles(
-              fileName: widget.fileName,
-              index: widget.index,
-              snapshot: widget.snapshot,
-              paths: paths),
+              fileName: widget.fileName, index: widget.index, paths: paths),
 
           //
           ListTile(
@@ -61,8 +56,7 @@ class _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {
               // Navigator.push(
               Provider.of<PdfFileService>(context, listen: false)
                   .removeFromFavoritePdfList(
-                      widget.snapshot.data![widget.index].pdf.toString(),
-                      SqlModel.tableFavorite);
+                      paths.toString(), SqlModel.tableFavorite);
             },
           ),
           DeleteFileWidget(

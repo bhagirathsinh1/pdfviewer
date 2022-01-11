@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pdfviewer/MainPages/home_page.dart';
+
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/bottomsheet_recent.dart';
 import 'package:pdfviewer/widget/page_view.dart';
@@ -66,7 +66,7 @@ class NameOfRecentPdf extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return BotomsheetRecentPage(
-                          fileName: fileName, index: index, snapshot: snapshot);
+                          fileName: fileName, index: index);
                     },
                   );
                 },

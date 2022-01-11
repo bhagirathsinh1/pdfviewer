@@ -21,7 +21,7 @@ class _ReloadPdfState extends State<ReloadPdf> {
           children: [
             TextButton(
               onPressed: () {
-                counter.getFiles();
+                counter.getStorageFilleMethod();
                 isShowFiles = true;
 
                 print("......get my files bool 1....");

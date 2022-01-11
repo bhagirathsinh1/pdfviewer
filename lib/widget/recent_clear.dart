@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
-import 'package:pdfviewer/service/recent_screen_service.dart';
 import 'package:provider/provider.dart';
 
 class RecentClear extends StatefulWidget {
@@ -35,11 +33,11 @@ class _RecentClearState extends State<RecentClear> {
               Navigator.pop(context);
 
               Provider.of<PdfFileService>(context, listen: false)
-                  .clearRecentPdfData(SqlModel.tableRecent);
+                  .clearRecentPdfList(SqlModel.tableRecent);
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text("Recent cleared !!"),
+                  content: Text("Recent list cleared !!"),
                 ),
               );
             },

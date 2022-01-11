@@ -93,7 +93,7 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
 
         providerService.files[widget.index].pdfname = v.path.split('/').last;
 
-        providerService.getFiles();
+        providerService.getStorageFilleMethod();
 
         print(
           "-------------MyApp.files path data---------------- ${Provider.of<PdfFileService>(context, listen: false).files[widget.index]}",

@@ -37,7 +37,7 @@ class _FavoriteClearState extends State<FavoriteClear> with ChangeNotifier {
                   .clearFavoritePdfList(SqlModel.tableFavorite);
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Favorite cleared !!"),
+                content: Text("Favorite list cleared !!"),
               ));
             },
           ),

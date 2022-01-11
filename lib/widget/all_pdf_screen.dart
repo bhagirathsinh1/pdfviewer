@@ -97,7 +97,6 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                   ShareFiles(
                                       fileName: fileName,
                                       index: index,
-                                      snapshot: null,
                                       paths: paths),
                                   ListTile(
                                     title: pdfservice.starPDF
@@ -184,6 +183,9 @@ class _ListAllPdfState extends State<ListAllPdf> {
                     try {
                       await RecentSQLPDFService()
                           .insertRecentPDF(data, SqlModel.tableRecent);
+
+                      Provider.of<PdfFileService>(context, listen: false)
+                          .getRecentPdfList();
                     } catch (e) {
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(

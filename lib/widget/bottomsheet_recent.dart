@@ -10,15 +10,13 @@ import 'package:pdfviewer/widget/remove_from_recent.dart';
 import 'package:provider/provider.dart';
 
 class BotomsheetRecentPage extends StatefulWidget {
-  BotomsheetRecentPage(
-      {Key? key,
-      required this.index,
-      required this.fileName,
-      required this.snapshot})
-      : super(key: key);
+  BotomsheetRecentPage({
+    Key? key,
+    required this.index,
+    required this.fileName,
+  }) : super(key: key);
   final int index;
   final String fileName;
-  final snapshot;
   @override
   _BotomsheetRecentPageState createState() => _BotomsheetRecentPageState();
 }
@@ -26,7 +24,7 @@ class BotomsheetRecentPage extends StatefulWidget {
 class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
   @override
   Widget build(BuildContext context) {
-    var paths = widget.snapshot.data![widget.index].recentpdf.toString();
+    var paths = widget.fileName;
     var titlePath = paths.toString().split('/').last;
     return Container(
       color: Colors.white,
@@ -39,7 +37,7 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
           ShareFiles(
               fileName: widget.fileName,
               index: widget.index,
-              snapshot: widget.snapshot,
+              // snapshot: widget.snapshot,
               paths: paths),
 
           ListTile(
@@ -72,8 +70,8 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
                     color: Colors.black.withOpacity(0.5),
                   ),
             onTap: () async {
-              print(
-                  "-------------${widget.snapshot.data![widget.index].recentpdf.toString()}-------------");
+              // print(
+              //     "-------------${widget.snapshot.data![widget.index].recentpdf.toString()}-------------");
               if (Provider.of<PdfFileService>(context, listen: false)
                   .starPDF
                   .toString()
@@ -92,7 +90,7 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
             },
           ),
           //
-          RemoveFromRecent(paths: paths),
+          removeFromRecentPdfList(paths: paths),
           DeleteFileWidget(
             index: widget.index,
             fileName: widget.fileName,

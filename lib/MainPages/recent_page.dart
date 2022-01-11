@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
+import 'package:intl/intl.dart';
+
 import 'package:pdfviewer/service/pdf_file_service.dart';
-import 'package:pdfviewer/service/recent_screen_service.dart';
-import 'package:pdfviewer/widget/name_of_recentpdf.dart';
+import 'package:pdfviewer/widget/bottomsheet_recent.dart';
+
+import 'package:pdfviewer/widget/page_view.dart';
 
 import 'package:pdfviewer/widget/recent_clear.dart';
 import 'package:provider/provider.dart';
@@ -23,61 +27,140 @@ class _RecentpageState extends State<Recentpage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PdfFileService>(builder: (context, counter, child) {
+    return Consumer<PdfFileService>(builder: (context, pdfservice, child) {
       return Scaffold(
-        appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Text(
-            "PDF Reader",
-            style: TextStyle(color: Colors.black),
-          ),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                showModalBottomSheet<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return RecentClear();
-                  },
-                );
-              },
-              icon: Icon(
-                Icons.more_vert,
-                color: Colors.black,
-              ),
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            title: Text(
+              "PDF Reader",
+              style: TextStyle(color: Colors.black),
             ),
-          ],
-        ),
-        body: FutureBuilder(
-            future: Provider.of<PdfFileService>(context, listen: false)
-                .getAllRecentPdf(),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<RecentListPdfModel>> snapshot) {
-              print("--------------------$snapshot---------------------");
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  print("------------------response positive-------------");
+            actions: <Widget>[
+              IconButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return RecentClear();
+                    },
+                  );
+                },
+                icon: Icon(
+                  Icons.more_vert,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          body: pdfservice.recentPdfList.isEmpty
+              ? Center(
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                        height: 200,
+                        width: 200,
+                        decoration: new BoxDecoration(
+                            image: new DecorationImage(
+                          image: new AssetImage("assets/icon/empty_image.gif"),
+                          fit: BoxFit.fill,
+                        ))),
+                    Text(
+                      "No Recent pdf found!!",
+                      style: TextStyle(color: Colors.grey.shade600),
+                    )
+                  ],
+                ))
+              : ListView.builder(
+                  // reverse: true,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: pdfservice.recentPdfList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    File filesize = File(
+                        pdfservice.recentPdfList[index].recentpdf.toString());
+                    var finalFileSize = filesize.lengthSync();
+                    var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
 
-                  if (snapshot.data!.isEmpty) {
-                    return Center(child: Text("Data is empty !"));
-                  } else {
-                    return NameOfRecentPdf(snapshot: snapshot);
-                  }
-                }
-                if (snapshot.hasError) {
-                  return Text(snapshot.hasError.toString());
-                } else {
-                  return Text("Somehting went weong");
-                }
-              } else {
-                return Container(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
-            }),
-      );
+                    File datefile = new File(
+                        pdfservice.recentPdfList[index].recentpdf.toString());
+
+                    var lastModDate1 = datefile.lastModifiedSync();
+                    var formattedDate =
+                        DateFormat('EEE, M/d/y').format(lastModDate1);
+
+                    return Card(
+                      child: ListTile(
+                        title: Text(pdfservice.recentPdfList[index].recentpdf!
+                            .toString()
+                            .split("/")
+                            .last),
+                        subtitle: sizeInKb.length < 7
+                            ? Text(
+                                "${formattedDate.toString()}\n${sizeInKb} Kb")
+                            : Text(
+                                "${formattedDate.toString()}\n${(finalFileSize / (1024.00 * 1024)).toStringAsFixed(2)} Mb"),
+                        leading: Icon(
+                          Icons.picture_as_pdf,
+                          color: Colors.red,
+                        ),
+                        trailing: Wrap(children: [
+                          Consumer<PdfFileService>(
+                              builder: (context, counter, child) {
+                            return Icon(
+                              Icons.star,
+                              color: Provider.of<PdfFileService>(context,
+                                          listen: false)
+                                      .starPDF
+                                      .toString()
+                                      .contains(pdfservice
+                                          .recentPdfList[index].recentpdf
+                                          .toString())
+                                  ? Colors.blue
+                                  : Colors.white,
+                            );
+                          }),
+                          IconButton(
+                            onPressed: () async {
+                              var fileName = pdfservice
+                                  .recentPdfList[index].recentpdf
+                                  .toString();
+
+                              await showModalBottomSheet<bool>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return BotomsheetRecentPage(
+                                    fileName: fileName,
+                                    index: index,
+                                  );
+                                },
+                              );
+                            },
+                            icon: Icon(
+                              Icons.more_vert,
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        ]),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ViewPDF(
+                                  pathPDF: pdfservice
+                                      .recentPdfList[index].recentpdf
+                                      .toString(),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ));
     });
   }
 }

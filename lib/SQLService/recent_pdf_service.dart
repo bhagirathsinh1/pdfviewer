@@ -1,3 +1,4 @@
+import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 
 class RecentSQLPDFService {

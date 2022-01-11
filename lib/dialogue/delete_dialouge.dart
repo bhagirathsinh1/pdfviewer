@@ -74,7 +74,7 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
               .removeFromFavoritePdfList(
                   widget.fileName, SqlModel.tableFavorite);
           Provider.of<PdfFileService>(context, listen: false)
-              .removeFromRecent(widget.fileName, SqlModel.tableRecent);
+              .removeFromRecentPdfList(widget.fileName, SqlModel.tableRecent);
           Navigator.pop(context);
           showAlertDialog(context);
         });

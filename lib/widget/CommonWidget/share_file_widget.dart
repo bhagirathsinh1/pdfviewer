@@ -6,12 +6,12 @@ class ShareFiles extends StatefulWidget {
       {Key? key,
       required this.index,
       required this.fileName,
-      required this.snapshot,
+      // required this.snapshot,
       required this.paths})
       : super(key: key);
   final int index;
   final String fileName;
-  final snapshot;
+  // final snapshot;
   final String paths;
   @override
   State<ShareFiles> createState() => _ShareFilesState();

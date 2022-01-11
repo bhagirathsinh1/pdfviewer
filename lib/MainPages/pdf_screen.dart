@@ -24,7 +24,7 @@ class _PdfscreenState extends State<Pdfscreen> {
   TextEditingController textController = TextEditingController();
   @override
   void initState() {
-    Provider.of<PdfFileService>(context, listen: false).getFiles();
+    Provider.of<PdfFileService>(context, listen: false).getStorageFilleMethod();
     super.initState();
   }
 
@@ -35,6 +35,7 @@ class _PdfscreenState extends State<Pdfscreen> {
         return exit(0);
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: PageView(
           controller: _pageController,
           children: [

@@ -50,7 +50,7 @@ class NameOfFavoritePDF extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) {
                     return BottomsheetFavoritePage(
-                        fileName: fileName, index: index, snapshot: snapshot);
+                        fileName: fileName, index: index);
                   },
                 );
               },

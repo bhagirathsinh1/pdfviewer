@@ -21,17 +21,50 @@ class PdfFileService with ChangeNotifier {
   bool isReverseSized = false;
   SingingCharacter? _character;
 
-  // List<File> files = [];
+  List<RecentListPdfModel> recentPdfList = [];
+  List<FavouriteListPdfModel> favoritePdfList = [];
   List<PdfListModel> files = [];
 
-  Future<bool> removeFromRecent(arriveDataRecent, String table) async {
-    final dbClientRemoveFromRecent = await SqlModel().db;
+  Future getRecentPdfList() async {
+    final dbClient = await SqlModel().db;
+
+    List<Map<String, Object?>> futurePDFList = await dbClient.rawQuery(
+      "Select *from ${SqlModel.tableRecent}  order by auto_id DESC",
+    );
+
+    recentPdfList = [];
+
+    futurePDFList.forEach(
+      (element) {
+        recentPdfList.add(RecentListPdfModel.fromJson(element));
+      },
+    );
+    notifyListeners();
+  }
+
+  Future getFavoritePdfList() async {
+    final dbClient = await SqlModel().db;
+    List<Map<String, Object?>> futurePDFList = await dbClient.rawQuery(
+        "Select *from ${SqlModel.tableFavorite}   order by auto_id DESC");
+    favoritePdfList = [];
+    futurePDFList.forEach(
+      (element) {
+        favoritePdfList.add(FavouriteListPdfModel.fromJson(element));
+      },
+    );
+    notifyListeners();
+  }
+
+  Future<bool> removeFromRecentPdfList(arriveDataRecent, String table) async {
+    final dbClientremoveFromRecentPdfList = await SqlModel().db;
     try {
-      var resultRemoveFromRecent = await dbClientRemoveFromRecent.rawQuery(
+      var resultremoveFromRecentPdfList =
+          await dbClientremoveFromRecentPdfList.rawQuery(
         'DELETE FROM $table WHERE recentpdf = ?',
         [arriveDataRecent],
       );
-      print("deleted in recent index $resultRemoveFromRecent");
+      print("deleted in recent index $resultremoveFromRecentPdfList");
+      getRecentPdfList();
       notifyListeners();
 
       return true;
@@ -41,14 +74,53 @@ class PdfFileService with ChangeNotifier {
     }
   }
 
-  Future<bool> clearRecentPdfData(String table) async {
+  Future<bool> removeFromFavoritePdfList(arrivdata, String table) async {
+    print("-----------remove from favorite called------------");
+    final dbClientRemoveFromFavorite = await SqlModel().db;
+    try {
+      var resultRemoveFromFav = await dbClientRemoveFromFavorite.rawQuery(
+        'DELETE FROM $table WHERE pdf = ?',
+        [arrivdata],
+      ).whenComplete(() {
+        starPDFMethod();
+        getFavoritePdfList();
+        notifyListeners();
+      });
+      print(
+          "-----------------------------deleted index $resultRemoveFromFav--------------------------");
+      // getFavoritePdfList();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> clearRecentPdfList(String table) async {
     final dbClientDelete = await SqlModel().db;
     try {
       var resultDelete = await dbClientDelete.rawQuery(
           """DELETE FROM $table""").whenComplete(() => notifyListeners());
       print("deleted result $resultDelete");
+      getRecentPdfList();
       notifyListeners();
 
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> clearFavoritePdfList(String table) async {
+    final dbClientDelete = await SqlModel().db;
+    try {
+      var resultDelete = await dbClientDelete.rawQuery(
+          """DELETE FROM $table""").whenComplete(() => notifyListeners());
+      print("deleted result $resultDelete");
+      getFavoritePdfList();
+      // getFavoritePdfList();
+      notifyListeners();
       return true;
     } catch (e) {
       print(e);
@@ -65,22 +137,6 @@ class PdfFileService with ChangeNotifier {
         await dbClient.rawQuery("Select *from ${SqlModel.tableFavorite}");
     starPDF.addAll(tempPDF);
     notifyListeners();
-  }
-
-  Future<List<RecentListPdfModel>> getAllRecentPdf() async {
-    final dbClient = await SqlModel().db;
-    List<RecentListPdfModel> list = [];
-
-    List<Map<String, Object?>> futurePDFList = await dbClient.rawQuery(
-      "Select *from ${SqlModel.tableRecent}  order by auto_id DESC",
-    );
-
-    futurePDFList.forEach(
-      (element) {
-        list.add(RecentListPdfModel.fromJson(element));
-      },
-    );
-    return list;
   }
 
   Future<bool> insertIntoFavoritePdfList(String pdfPath, table) async {
@@ -100,9 +156,9 @@ class PdfFileService with ChangeNotifier {
           throw error.toString();
         }).whenComplete(() {
           print("----------insert 1");
-
+          getFavoritePdfList();
           starPDFMethod();
-          getAllRecentPdf();
+          getRecentPdfList();
         });
         return true;
       } catch (e) {
@@ -135,54 +191,6 @@ class PdfFileService with ChangeNotifier {
     }
   }
 
-  Future<bool> removeFromFavoritePdfList(arrivdata, String table) async {
-    print("-----------remove from favorite called------------");
-    final dbClientRemoveFromFavorite = await SqlModel().db;
-    try {
-      var resultRemoveFromFav = await dbClientRemoveFromFavorite.rawQuery(
-        'DELETE FROM $table WHERE pdf = ?',
-        [arrivdata],
-      ).whenComplete(() {
-        starPDFMethod();
-      });
-      print(
-          "-----------------------------deleted index $resultRemoveFromFav--------------------------");
-      // getFavoritePdfList();
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
-
-  Future<List<FavouriteListPdfModel>> getFavoritePdfList() async {
-    final dbClient = await SqlModel().db;
-    List<Map<String, Object?>> futurePDFList = await dbClient.rawQuery(
-        "Select *from ${SqlModel.tableFavorite}   order by auto_id DESC");
-    List<FavouriteListPdfModel> list = [];
-    futurePDFList.forEach(
-      (element) {
-        list.add(FavouriteListPdfModel.fromJson(element));
-      },
-    );
-    return list;
-  }
-
-  Future<bool> clearFavoritePdfList(String table) async {
-    final dbClientDelete = await SqlModel().db;
-    try {
-      var resultDelete = await dbClientDelete.rawQuery(
-          """DELETE FROM $table""").whenComplete(() => notifyListeners());
-      print("deleted result $resultDelete");
-      // getFavoritePdfList();
-      notifyListeners();
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
-
   Future<void> deleteFile(File file) async {
     try {
       if (await file.exists()) {
@@ -190,7 +198,7 @@ class PdfFileService with ChangeNotifier {
       }
       print("-------------------file name ${file}---------------------------");
       // removeFromFavorite(file, SqlModel.tableFavorite);
-      getFiles();
+      getStorageFilleMethod();
       getFavoritePdfList();
       notifyListeners();
       print(
@@ -246,7 +254,7 @@ class PdfFileService with ChangeNotifier {
     return true;
   }
 
-  void getFiles() async {
+  void getStorageFilleMethod() async {
     //asyn function to get list of files
     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
     var root = storageInfo[0]

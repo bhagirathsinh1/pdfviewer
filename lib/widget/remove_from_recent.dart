@@ -4,10 +4,11 @@ import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/service/recent_screen_service.dart';
 import 'package:provider/provider.dart';
 
-class RemoveFromRecent extends StatelessWidget {
+class removeFromRecentPdfList extends StatelessWidget {
   final String paths;
 
-  const RemoveFromRecent({Key? key, required this.paths}) : super(key: key);
+  const removeFromRecentPdfList({Key? key, required this.paths})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -25,7 +26,7 @@ class RemoveFromRecent extends StatelessWidget {
         Navigator.pop(context);
 
         Provider.of<PdfFileService>(context, listen: false)
-            .removeFromRecent(paths, SqlModel.tableRecent);
+            .removeFromRecentPdfList(paths, SqlModel.tableRecent);
       },
     );
   }
