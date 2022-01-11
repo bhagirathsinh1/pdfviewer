@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
-import 'package:pdfviewer/service/recent_screen_service.dart';
 
 import 'package:provider/provider.dart';
 
@@ -57,11 +56,15 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
   }
 
   deleteMethod() {
+    Provider.of<PdfFileService>(context, listen: false)
+        .removeFromFavoritePdfList(widget.fileName, SqlModel.tableFavorite);
+    Provider.of<PdfFileService>(context, listen: false)
+        .removeFromRecentPdfList(widget.fileName, SqlModel.tableRecent);
     setState(() {
       isLoading = true;
     });
     Future.delayed(
-      const Duration(milliseconds: 500),
+      const Duration(milliseconds: 300),
       () async {
         Provider.of<PdfFileService>(context, listen: false)
             .deleteFile(
@@ -70,11 +73,6 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
           ),
         )
             .whenComplete(() {
-          Provider.of<PdfFileService>(context, listen: false)
-              .removeFromFavoritePdfList(
-                  widget.fileName, SqlModel.tableFavorite);
-          Provider.of<PdfFileService>(context, listen: false)
-              .removeFromRecentPdfList(widget.fileName, SqlModel.tableRecent);
           Navigator.pop(context);
           showAlertDialog(context);
         });
