@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
@@ -21,7 +20,6 @@ class ListAllPdf extends StatefulWidget {
 class _ListAllPdfState extends State<ListAllPdf> {
   var finalFileSize;
   String? formattedDate;
-
   // void initState() {
   //   super.initState();
 
@@ -100,11 +98,59 @@ class _ListAllPdfState extends State<ListAllPdf> {
                                       fileName: fileName,
                                       index: index,
                                       paths: paths),
-                                  AddRemoveWidget(
-                                      title: pdfservice.starPDF
+                                  ListTile(
+                                    title: pdfservice.starPDF
+                                            .toString()
+                                            .contains(paths)
+                                        ? Text(
+                                            "Remove from favorite",
+                                            style: TextStyle(
+                                              color:
+                                                  Colors.black.withOpacity(0.8),
+                                            ),
+                                          )
+                                        : Text(
+                                            "Add to favorite",
+                                            style: TextStyle(
+                                              color:
+                                                  Colors.black.withOpacity(0.8),
+                                            ),
+                                          ),
+                                    leading: pdfservice.starPDF
+                                            .toString()
+                                            .contains(paths)
+                                        ? Icon(
+                                            Icons.star_border,
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                          )
+                                        : Icon(
+                                            Icons.star,
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                          ),
+                                    onTap: () async {
+                                      print("------------------$paths-------");
+                                      if (pdfservice.starPDF
                                           .toString()
-                                          .contains(paths),
-                                      paths: paths),
+                                          .contains(paths)) {
+                                        Provider.of<PdfFileService>(context,
+                                                listen: false)
+                                            .removeFromFavoritePdfList(
+                                                paths.toString(),
+                                                SqlModel.tableFavorite)
+                                            .whenComplete(
+                                                () => Navigator.pop(context));
+                                      } else {
+                                        Provider.of<PdfFileService>(context,
+                                                listen: false)
+                                            .insertIntoFavoritePdfList(
+                                                paths, SqlModel.tableFavorite)
+                                            .whenComplete(
+                                                () => Navigator.pop(context));
+                                      }
+                                    },
+                                  ),
                                   RenameFileWidget(
                                     index: index,
                                     fileName: fileName,
