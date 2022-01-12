@@ -25,6 +25,9 @@ class _PdfscreenState extends State<Pdfscreen> {
   @override
   void initState() {
     Provider.of<PdfFileService>(context, listen: false).getStorageFilleMethod();
+    Provider.of<PdfFileService>(context, listen: false).getRecentPdfList();
+    Provider.of<PdfFileService>(context, listen: false).getFavoritePdfList();
+
     super.initState();
   }
 
