@@ -56,31 +56,27 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
   }
 
   deleteMethod() {
+    setState(() {
+      isLoading = true;
+    });
     Provider.of<PdfFileService>(context, listen: false)
         .removeFromFavoritePdfList(widget.fileName, SqlModel.tableFavorite);
     Provider.of<PdfFileService>(context, listen: false)
         .removeFromRecentPdfList(widget.fileName, SqlModel.tableRecent);
-    setState(() {
-      isLoading = true;
+
+    Provider.of<PdfFileService>(context, listen: false)
+        .deleteFile(
+      File(
+        widget.fileName,
+      ),
+    )
+        .whenComplete(() {
+      Navigator.pop(context);
+      showAlertDialog(context);
     });
-    Future.delayed(
-      const Duration(milliseconds: 300),
-      () async {
-        Provider.of<PdfFileService>(context, listen: false)
-            .deleteFile(
-          File(
-            widget.fileName,
-          ),
-        )
-            .whenComplete(() {
-          Navigator.pop(context);
-          showAlertDialog(context);
-        });
-        setState(() {
-          isLoading = false;
-        });
-      },
-    );
+    setState(() {
+      isLoading = false;
+    });
 
     // );
   }

@@ -59,7 +59,7 @@ class _ViewPDFState extends State<ViewPDF> {
     });
 
     Future.delayed(
-      const Duration(milliseconds: 500),
+      const Duration(milliseconds: 300),
       () async {
         _pdfViewerController = PdfViewerController();
         _myFile = File(widget.pathPDF);
@@ -89,13 +89,16 @@ class _ViewPDFState extends State<ViewPDF> {
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : SfPdfViewer.file(
-                    _myFile,
-                    key: _pdfViewerKey,
-                    controller: _pdfViewerController,
-                    pageLayoutMode: isContinuePage
-                        ? PdfPageLayoutMode.single
-                        : PdfPageLayoutMode.continuous,
+                : Theme(
+                    data: ThemeData.light(),
+                    child: SfPdfViewer.file(
+                      _myFile,
+                      key: _pdfViewerKey,
+                      controller: _pdfViewerController,
+                      pageLayoutMode: isContinuePage
+                          ? PdfPageLayoutMode.single
+                          : PdfPageLayoutMode.continuous,
+                    ),
                   ),
           ),
           Positioned(

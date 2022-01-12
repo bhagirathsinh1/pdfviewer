@@ -24,6 +24,11 @@ class _SearchListState extends State<SearchList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<PdfFileService>(builder: (context, pdfservice, child) {
+      var filePath = pdfservice.files[widget.index].pdfpath.toString();
+      var fileDate = pdfservice.files[widget.index].date.toString();
+      var fileSize = pdfservice.files[widget.index].size.toString();
+      var fileTitle = pdfservice.files[widget.index].pdfname.toString();
+
       var isfav = pdfservice.favoritePdfList.where((element) =>
           element.pdfpath == pdfservice.files[widget.index].pdfpath.toString());
       return Card(
@@ -31,11 +36,10 @@ class _SearchListState extends State<SearchList> {
           title: Text(
             widget.items[widget.index].pdfname.toString(),
           ),
-          subtitle: pdfservice.files[widget.index].size!.length < 7
-              ? Text(
-                  "${pdfservice.files[widget.index].date.toString()}\n${pdfservice.files[widget.index].size} Kb")
+          subtitle: fileSize.length < 7
+              ? Text("${fileDate}\n${fileSize} Kb")
               : Text(
-                  "${pdfservice.files[widget.index].date.toString()}\n${(double.parse(pdfservice.files[widget.index].size.toString()) / 1024).toStringAsFixed(2)} Mb"),
+                  "${fileDate}\n${(double.parse(fileSize.toString()) / 1024).toStringAsFixed(2)} Mb"),
           leading: Icon(
             Icons.picture_as_pdf,
             color: Colors.red,
@@ -48,14 +52,9 @@ class _SearchListState extends State<SearchList> {
               ),
               IconButton(
                 onPressed: () {
-                  var fileName =
-                      pdfservice.files[widget.index].pdfpath.toString();
-                  print(fileName);
                   showModalBottomSheet<void>(
                     context: context,
                     builder: (BuildContext context) {
-                      var paths =
-                          pdfservice.files[widget.index].pdfpath.toString();
                       return Container(
                         color: Colors.white,
                         height: 350,
@@ -83,7 +82,7 @@ class _SearchListState extends State<SearchList> {
                               ),
                             ),
                             ShareFiles(
-                              fileName: fileName,
+                              fileName: filePath,
                               index: widget.index,
                             ),
                             ListTile(
@@ -110,18 +109,18 @@ class _SearchListState extends State<SearchList> {
                                       color: Colors.black.withOpacity(0.5),
                                     ),
                               onTap: () async {
-                                print("------------------$paths-------");
+                                print("------------------$filePath-------");
                                 if (!isfav.isEmpty) {
                                   pdfservice
                                       .removeFromFavoritePdfList(
-                                          paths.toString(),
+                                          filePath.toString(),
                                           SqlModel.tableFavorite)
                                       .whenComplete(
                                           () => Navigator.pop(context));
                                 } else {
                                   pdfservice
                                       .insertIntoFavoritePdfList(
-                                          paths, SqlModel.tableFavorite)
+                                          filePath, SqlModel.tableFavorite)
                                       .whenComplete(
                                           () => Navigator.pop(context));
                                 }
@@ -129,11 +128,11 @@ class _SearchListState extends State<SearchList> {
                             ),
                             RenameFileWidget(
                               index: widget.index,
-                              fileName: fileName,
+                              fileName: filePath,
                             ),
                             DeleteFileWidget(
                               index: widget.index,
-                              fileName: fileName,
+                              fileName: filePath,
                             ),
                           ],
                         ),
@@ -150,7 +149,7 @@ class _SearchListState extends State<SearchList> {
           ),
           onTap: () async {
             Map<String, Object> data = {
-              'recentpdf': (widget.items[widget.index].pdfpath.toString()),
+              'recentpdf': (filePath),
             };
 
             if (!data.isEmpty) {
@@ -173,16 +172,13 @@ class _SearchListState extends State<SearchList> {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  // return ViewPDF(
-                  //   pathPDF: widget.items[widget.index].pdfpath.toString(),
-                  // );
                   return ViewPDF(
                       pathPDF: widget.items[widget.index].pdfpath.toString(),
-                      fileDate: null,
-                      fileTitle: null,
-                      fileSize: null,
-                      filePath: null,
-                      index: null);
+                      fileDate: fileDate,
+                      fileTitle: fileTitle,
+                      fileSize: fileSize,
+                      filePath: filePath,
+                      index: widget.index);
                   //open viewPDF page on click
                 },
               ),
