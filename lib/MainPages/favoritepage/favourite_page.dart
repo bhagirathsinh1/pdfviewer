@@ -77,28 +77,22 @@ class _FavouritepageState extends State<Favouritepage> {
                   scrollDirection: Axis.vertical,
                   itemCount: pdfservice.favoritePdfList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    File filesize =
-                        File(pdfservice.favoritePdfList[index].pdf.toString());
-                    var finalFileSize = filesize.lengthSync();
-                    var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
+                    var filePath =
+                        pdfservice.favoritePdfList[index].pdfpath.toString();
+                    var fileDate =
+                        pdfservice.favoritePdfList[index].date.toString();
+                    var fileSize =
+                        pdfservice.favoritePdfList[index].size.toString();
+                    var fileTitle =
+                        pdfservice.favoritePdfList[index].pdfname.toString();
 
-                    File datefile = new File(
-                        pdfservice.favoritePdfList[index].pdf.toString());
-
-                    var lastModDate1 = datefile.lastModifiedSync();
-                    var formattedDate =
-                        DateFormat('EEE, M/d/y').format(lastModDate1);
                     return Card(
                       child: ListTile(
-                        title: Text(pdfservice.favoritePdfList[index].pdf!
-                            .split('/')
-                            .last
-                            .toString()),
-                        subtitle: sizeInKb.length < 7
-                            ? Text(
-                                "${formattedDate.toString()}\n${sizeInKb} Kb")
+                        title: Text(fileTitle),
+                        subtitle: fileSize.length < 7
+                            ? Text("${fileDate}\n${fileSize} Kb")
                             : Text(
-                                "${formattedDate.toString()}\n${(finalFileSize / (1024.00 * 1024)).toStringAsFixed(2)} Mb"),
+                                "${fileDate}\n${(double.parse(fileSize) / 1024).toStringAsFixed(2)} Mb"),
                         leading: Icon(
                           Icons.picture_as_pdf,
                           color: Colors.red,
@@ -106,7 +100,8 @@ class _FavouritepageState extends State<Favouritepage> {
                         trailing: IconButton(
                           onPressed: () {
                             // newindex = index;
-                            var fileName = pdfservice.favoritePdfList[index].pdf
+                            var fileName = pdfservice
+                                .favoritePdfList[index].pdfpath
                                 .toString();
 
                             showModalBottomSheet<void>(
@@ -134,7 +129,7 @@ class _FavouritepageState extends State<Favouritepage> {
                                   builder: (context) {
                                     return ViewPDF(
                                       pathPDF: pdfservice
-                                          .favoritePdfList[index].pdf
+                                          .favoritePdfList[index].pdfpath
                                           .toString(),
                                     );
                                   },

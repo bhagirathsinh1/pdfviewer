@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
@@ -18,49 +19,53 @@ class HomepageBody extends StatefulWidget {
 }
 
 class _HomepageBodyState extends State<HomepageBody> {
-  var finalFileSize;
-  String? formattedDate;
-
   @override
   Widget build(BuildContext context) {
     return Consumer<PdfFileService>(
       builder: (context, pdfservice, child) {
         return ListView.builder(
-          // reverse: isReverse Sized,
-          //if file/folder list is grabbed, then show here
           itemCount: pdfservice.files.length,
           itemBuilder: (BuildContext ctxt, index) {
+            var filePath = pdfservice.files[index].pdfpath.toString();
+            var fileDate = pdfservice.files[index].date.toString();
+            var fileSize = pdfservice.files[index].size.toString();
+            var fileTitle = pdfservice.files[index].pdfname.toString();
+
+            var isfav = pdfservice.favoritePdfList
+                .where((element) => element.pdfpath == filePath);
             return Card(
               child: ListTile(
-                title: Text(pdfservice.files[index].pdfname.toString()),
-                subtitle: pdfservice.files[index].size!.length < 7
-                    ? Text(
-                        "${pdfservice.files[index].date.toString()}\n${pdfservice.files[index].size} Kb")
+                title: Text(fileTitle),
+                subtitle: fileSize.length < 7
+                    ? Text("${fileDate}\n${fileSize} Kb")
                     : Text(
-                        "${pdfservice.files[index].date.toString()}\n${(double.parse(pdfservice.files[index].size.toString()) / 1024).toStringAsFixed(2)} Mb"),
+                        "${fileDate}\n${(double.parse(fileSize) / 1024).toStringAsFixed(2)} Mb"),
                 leading: Icon(
                   Icons.picture_as_pdf,
                   color: Colors.red,
                 ),
                 trailing: Wrap(
+                  alignment: WrapAlignment.center,
                   children: [
-                    Icon(
-                      Icons.star,
-                      color: pdfservice.starPDF.toString().contains(
-                              pdfservice.files[index].pdfpath.toString())
-                          ? Colors.blue
-                          : Colors.white,
+                    IconButton(
+                      onPressed: () async {},
+                      constraints: BoxConstraints(),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                      icon: Icon(
+                        Icons.star,
+                        color: !isfav.isEmpty ? Colors.blue : Colors.white,
+                      ),
                     ),
                     IconButton(
+                      constraints: BoxConstraints(),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                       onPressed: () {
-                        var fileName =
-                            pdfservice.files[index].pdfpath.toString();
-                        print(fileName);
+                        print(filePath);
                         showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
-                            var paths =
-                                pdfservice.files[index].pdfpath.toString();
                             return Container(
                               color: Colors.white,
                               height: 350,
@@ -89,69 +94,17 @@ class _HomepageBodyState extends State<HomepageBody> {
                                     ),
                                   ),
                                   ShareFiles(
-                                      fileName: fileName,
-                                      index: index,
-                                      paths: paths),
-                                  ListTile(
-                                    title: pdfservice.starPDF
-                                            .toString()
-                                            .contains(paths)
-                                        ? Text(
-                                            "Remove from favorite",
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.8),
-                                            ),
-                                          )
-                                        : Text(
-                                            "Add to favorite",
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.8),
-                                            ),
-                                          ),
-                                    leading: pdfservice.starPDF
-                                            .toString()
-                                            .contains(paths)
-                                        ? Icon(
-                                            Icons.star_border,
-                                            color:
-                                                Colors.black.withOpacity(0.5),
-                                          )
-                                        : Icon(
-                                            Icons.star,
-                                            color:
-                                                Colors.black.withOpacity(0.5),
-                                          ),
-                                    onTap: () async {
-                                      print("------------------$paths-------");
-                                      if (pdfservice.starPDF
-                                          .toString()
-                                          .contains(paths)) {
-                                        Provider.of<PdfFileService>(context,
-                                                listen: false)
-                                            .removeFromFavoritePdfList(
-                                                paths.toString(),
-                                                SqlModel.tableFavorite)
-                                            .whenComplete(
-                                                () => Navigator.pop(context));
-                                      } else {
-                                        Provider.of<PdfFileService>(context,
-                                                listen: false)
-                                            .insertIntoFavoritePdfList(
-                                                paths, SqlModel.tableFavorite)
-                                            .whenComplete(
-                                                () => Navigator.pop(context));
-                                      }
-                                    },
+                                    fileName: filePath,
+                                    index: index,
                                   ),
+                                  AddRemoveWidget(paths: filePath),
                                   RenameFileWidget(
                                     index: index,
-                                    fileName: fileName,
+                                    fileName: filePath,
                                   ),
                                   DeleteFileWidget(
                                     index: index,
-                                    fileName: fileName,
+                                    fileName: filePath,
                                   ),
                                 ],
                               ),
@@ -170,7 +123,7 @@ class _HomepageBodyState extends State<HomepageBody> {
                   // recent_index = index;
 
                   Map<String, Object> data = {
-                    'recentpdf': (pdfservice.files[index].pdfpath.toString()),
+                    'recentpdf': (filePath),
                   };
 
                   if (!data.isEmpty) {
@@ -197,7 +150,7 @@ class _HomepageBodyState extends State<HomepageBody> {
                     MaterialPageRoute(
                       builder: (context) {
                         return ViewPDF(
-                          pathPDF: pdfservice.files[index].pdfpath.toString(),
+                          pathPDF: filePath,
                         );
                         //open ViewPDFHomeScreen page on click
                       },

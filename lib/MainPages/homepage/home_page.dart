@@ -20,8 +20,8 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
 
-    Provider.of<PdfFileService>(context, listen: false)
-        .starPDFMethod(); // setState(() {});
+    // Provider.of<PdfFileService>(context, listen: false)
+    //     .getFavoritePdfList(); // setState(() {});
   }
 
   @override

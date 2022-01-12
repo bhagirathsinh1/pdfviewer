@@ -26,6 +26,9 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
   Widget build(BuildContext context) {
     var paths = widget.fileName;
     var titlePath = paths.toString().split('/').last;
+    var isfav = Provider.of<PdfFileService>(context, listen: false)
+        .favoritePdfList
+        .where((element) => element.pdfpath == paths);
     return Container(
       color: Colors.white,
       height: 300,
@@ -35,16 +38,13 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
 
           //
           ShareFiles(
-              fileName: widget.fileName,
-              index: widget.index,
-              // snapshot: widget.snapshot,
-              paths: paths),
+            fileName: widget.fileName,
+            index: widget.index,
+            // snapshot: widget.snapshot,
+          ),
 
           ListTile(
-            title: Provider.of<PdfFileService>(context, listen: false)
-                    .starPDF
-                    .toString()
-                    .contains(paths)
+            title: !isfav.isEmpty
                 ? Text(
                     "Remove from favorite",
                     style: TextStyle(
@@ -57,10 +57,7 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
                       color: Colors.black.withOpacity(0.8),
                     ),
                   ),
-            leading: Provider.of<PdfFileService>(context, listen: false)
-                    .starPDF
-                    .toString()
-                    .contains(paths)
+            leading: !isfav.isEmpty
                 ? Icon(
                     Icons.star_border,
                     color: Colors.black.withOpacity(0.5),
@@ -72,12 +69,7 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
             onTap: () async {
               // print(
               //     "-------------${widget.snapshot.data![widget.index].recentpdf.toString()}-------------");
-              if (Provider.of<PdfFileService>(context, listen: false)
-                  .starPDF
-                  .toString()
-                  .contains(
-                    paths,
-                  )) {
+              if (!isfav.isEmpty) {
                 Provider.of<PdfFileService>(context, listen: false)
                     .removeFromFavoritePdfList(
                         paths.toString(), SqlModel.tableFavorite)

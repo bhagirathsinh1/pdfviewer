@@ -21,7 +21,7 @@ class Recentpage extends StatefulWidget {
 class _RecentpageState extends State<Recentpage> {
   @override
   void initState() {
-    Provider.of<PdfFileService>(context, listen: false).starPDFMethod();
+    // Provider.of<PdfFileService>(context, listen: false).getFavoritePdfList();
     super.initState();
   }
 
@@ -78,60 +78,50 @@ class _RecentpageState extends State<Recentpage> {
                   scrollDirection: Axis.vertical,
                   itemCount: pdfservice.recentPdfList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    File filesize = File(
-                        pdfservice.recentPdfList[index].recentpdf.toString());
-                    var finalFileSize = filesize.lengthSync();
-                    var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
-
-                    File datefile = new File(
-                        pdfservice.recentPdfList[index].recentpdf.toString());
-
-                    var lastModDate1 = datefile.lastModifiedSync();
-                    var formattedDate =
-                        DateFormat('EEE, M/d/y').format(lastModDate1);
-
+                    var filePath =
+                        pdfservice.recentPdfList[index].pdfpath.toString();
+                    var fileDate =
+                        pdfservice.recentPdfList[index].date.toString();
+                    var fileSize =
+                        pdfservice.recentPdfList[index].size.toString();
+                    var fileTitle =
+                        pdfservice.recentPdfList[index].pdfname.toString();
+                    var isfav = pdfservice.favoritePdfList
+                        .where((element) => element.pdfpath == filePath);
                     return Card(
                       child: ListTile(
-                        title: Text(pdfservice.recentPdfList[index].recentpdf!
-                            .toString()
-                            .split("/")
-                            .last),
-                        subtitle: sizeInKb.length < 7
-                            ? Text(
-                                "${formattedDate.toString()}\n${sizeInKb} Kb")
+                        title: Text(fileTitle),
+                        subtitle: fileSize.length < 7
+                            ? Text("${fileDate}\n${fileSize} Kb")
                             : Text(
-                                "${formattedDate.toString()}\n${(finalFileSize / (1024.00 * 1024)).toStringAsFixed(2)} Mb"),
+                                "${fileDate}\n${(double.parse(fileSize) / 1024).toStringAsFixed(2)} Mb"),
                         leading: Icon(
                           Icons.picture_as_pdf,
                           color: Colors.red,
                         ),
-                        trailing: Wrap(children: [
-                          Consumer<PdfFileService>(
-                              builder: (context, counter, child) {
-                            return Icon(
-                              Icons.star,
-                              color: Provider.of<PdfFileService>(context,
-                                          listen: false)
-                                      .starPDF
-                                      .toString()
-                                      .contains(pdfservice
-                                          .recentPdfList[index].recentpdf
-                                          .toString())
-                                  ? Colors.blue
-                                  : Colors.white,
-                            );
-                          }),
+                        trailing:
+                            Wrap(alignment: WrapAlignment.center, children: [
                           IconButton(
+                            onPressed: () async {},
+                            constraints: BoxConstraints(),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 10),
+                            icon: Icon(
+                              Icons.star,
+                              color:
+                                  !isfav.isEmpty ? Colors.blue : Colors.white,
+                            ),
+                          ),
+                          IconButton(
+                            constraints: BoxConstraints(),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 10),
                             onPressed: () async {
-                              var fileName = pdfservice
-                                  .recentPdfList[index].recentpdf
-                                  .toString();
-
                               await showModalBottomSheet<bool>(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return BotomsheetRecentPage(
-                                    fileName: fileName,
+                                    fileName: filePath.toString(),
                                     index: index,
                                   );
                                 },
@@ -149,9 +139,7 @@ class _RecentpageState extends State<Recentpage> {
                             MaterialPageRoute(
                               builder: (context) {
                                 return ViewPDF(
-                                  pathPDF: pdfservice
-                                      .recentPdfList[index].recentpdf
-                                      .toString(),
+                                  pathPDF: filePath,
                                 );
                               },
                             ),

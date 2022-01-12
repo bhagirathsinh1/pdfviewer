@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 
 class ShareFiles extends StatefulWidget {
-  const ShareFiles(
-      {Key? key,
-      required this.index,
-      required this.fileName,
-      // required this.snapshot,
-      required this.paths})
-      : super(key: key);
+  const ShareFiles({
+    Key? key,
+    required this.index,
+    required this.fileName,
+    // required this.snapshot,
+  }) : super(key: key);
   final int index;
   final String fileName;
   // final snapshot;
-  final String paths;
+
   @override
   State<ShareFiles> createState() => _ShareFilesState();
 }
@@ -32,7 +31,7 @@ class _ShareFilesState extends State<ShareFiles> {
         color: Colors.black.withOpacity(0.5),
       ),
       onTap: () {
-        Share.shareFiles([widget.paths]);
+        Share.shareFiles([widget.fileName]);
       },
     );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/dialogue/delete_dialouge.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
@@ -36,8 +35,7 @@ class _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {
           TitleOfPdf(titlePath: titlePath),
 
           //
-          ShareFiles(
-              fileName: widget.fileName, index: widget.index, paths: paths),
+          ShareFiles(fileName: widget.fileName, index: widget.index),
 
           //
           ListTile(

@@ -24,6 +24,8 @@ class _SearchListState extends State<SearchList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<PdfFileService>(builder: (context, pdfservice, child) {
+      var isfav = pdfservice.favoritePdfList.where((element) =>
+          element.pdfpath == pdfservice.files[widget.index].pdfpath.toString());
       return Card(
         child: ListTile(
           title: Text(
@@ -42,10 +44,7 @@ class _SearchListState extends State<SearchList> {
             children: [
               Icon(
                 Icons.star,
-                color: pdfservice.starPDF.toString().contains(
-                        pdfservice.files[widget.index].pdfpath.toString())
-                    ? Colors.blue
-                    : Colors.white,
+                color: !isfav.isEmpty ? Colors.blue : Colors.white,
               ),
               IconButton(
                 onPressed: () {
@@ -84,13 +83,11 @@ class _SearchListState extends State<SearchList> {
                               ),
                             ),
                             ShareFiles(
-                                fileName: fileName,
-                                index: widget.index,
-                                paths: paths),
+                              fileName: fileName,
+                              index: widget.index,
+                            ),
                             ListTile(
-                              title: pdfservice.starPDF
-                                      .toString()
-                                      .contains(paths)
+                              title: !isfav.isEmpty
                                   ? Text(
                                       "Remove from favorite",
                                       style: TextStyle(
@@ -103,31 +100,26 @@ class _SearchListState extends State<SearchList> {
                                         color: Colors.black.withOpacity(0.8),
                                       ),
                                     ),
-                              leading:
-                                  pdfservice.starPDF.toString().contains(paths)
-                                      ? Icon(
-                                          Icons.star_border,
-                                          color: Colors.black.withOpacity(0.5),
-                                        )
-                                      : Icon(
-                                          Icons.star,
-                                          color: Colors.black.withOpacity(0.5),
-                                        ),
+                              leading: !isfav.isEmpty
+                                  ? Icon(
+                                      Icons.star_border,
+                                      color: Colors.black.withOpacity(0.5),
+                                    )
+                                  : Icon(
+                                      Icons.star,
+                                      color: Colors.black.withOpacity(0.5),
+                                    ),
                               onTap: () async {
                                 print("------------------$paths-------");
-                                if (pdfservice.starPDF
-                                    .toString()
-                                    .contains(paths)) {
-                                  Provider.of<PdfFileService>(context,
-                                          listen: false)
+                                if (!isfav.isEmpty) {
+                                  pdfservice
                                       .removeFromFavoritePdfList(
                                           paths.toString(),
                                           SqlModel.tableFavorite)
                                       .whenComplete(
                                           () => Navigator.pop(context));
                                 } else {
-                                  Provider.of<PdfFileService>(context,
-                                          listen: false)
+                                  pdfservice
                                       .insertIntoFavoritePdfList(
                                           paths, SqlModel.tableFavorite)
                                       .whenComplete(

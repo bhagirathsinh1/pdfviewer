@@ -4,10 +4,8 @@ import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:provider/provider.dart';
 
 class AddRemoveWidget extends StatefulWidget {
-  AddRemoveWidget({Key? key, required this.title, required this.paths})
-      : super(key: key);
-  final title;
-  final paths;
+  AddRemoveWidget({Key? key, required this.paths}) : super(key: key);
+  final String paths;
   @override
   _AddRemoveWidgetState createState() => _AddRemoveWidgetState();
 }
@@ -15,8 +13,11 @@ class AddRemoveWidget extends StatefulWidget {
 class _AddRemoveWidgetState extends State<AddRemoveWidget> {
   @override
   Widget build(BuildContext context) {
+    var isfav = Provider.of<PdfFileService>(context, listen: false)
+        .favoritePdfList
+        .where((element) => element.pdfpath == widget.paths);
     return ListTile(
-      title: widget.title
+      title: !isfav.isEmpty
           ? Text(
               "Remove from favorite",
               style: TextStyle(
@@ -29,7 +30,7 @@ class _AddRemoveWidgetState extends State<AddRemoveWidget> {
                 color: Colors.black.withOpacity(0.8),
               ),
             ),
-      leading: widget.title
+      leading: !isfav.isEmpty
           ? Icon(
               Icons.star_border,
               color: Colors.black.withOpacity(0.5),
@@ -39,7 +40,7 @@ class _AddRemoveWidgetState extends State<AddRemoveWidget> {
               color: Colors.black.withOpacity(0.5),
             ),
       onTap: () async {
-        if (widget.title) {
+        if (!isfav.isEmpty) {
           Provider.of<PdfFileService>(context, listen: false)
               .removeFromFavoritePdfList(
                   widget.paths.toString(), SqlModel.tableFavorite)

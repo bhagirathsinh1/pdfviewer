@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,7 @@ import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/singing_character_enum.dart';
 
 class PdfFileService with ChangeNotifier {
-  List starPDF = [];
+  // List starPDF = [];
   bool isDeleted = false;
   bool isNameSort = false;
   bool isDateSort = false;
@@ -21,9 +22,10 @@ class PdfFileService with ChangeNotifier {
   bool isReverseSized = false;
   SingingCharacter? _character;
 
-  List<RecentListPdfModel> recentPdfList = [];
-  List<FavouriteListPdfModel> favoritePdfList = [];
+  // List<RecentListPdfModel> recentPdfList = [];
+  List<PdfListModel> favoritePdfList = [];
   List<PdfListModel> files = [];
+  List<PdfListModel> recentPdfList = [];
 
   Future getRecentPdfList() async {
     final dbClient = await SqlModel().db;
@@ -32,13 +34,30 @@ class PdfFileService with ChangeNotifier {
       "Select *from ${SqlModel.tableRecent}  order by auto_id DESC",
     );
 
+    var tempValue = recentListPdfModelFromJson(jsonEncode(futurePDFList));
+    print(tempValue);
     recentPdfList = [];
 
-    futurePDFList.forEach(
-      (element) {
-        recentPdfList.add(RecentListPdfModel.fromJson(element));
-      },
-    );
+    for (var file in tempValue) {
+      File filePath = File(file.recentpdf.toString());
+      var pdfname = filePath.path.split('/').last;
+
+      var lastModDate1 = filePath.lastModifiedSync();
+      var formattedDate1 = DateFormat('EEE, M/d/y').format(lastModDate1);
+
+      var finalFileSize = filePath.lengthSync();
+      var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
+      var pdfmodel = PdfListModel(
+        referenceFile: filePath,
+        pdfname: pdfname,
+        date: formattedDate1,
+        size: sizeInKb,
+        pdfpath: filePath.path,
+      );
+
+      recentPdfList.add(pdfmodel);
+    }
+
     notifyListeners();
   }
 
@@ -46,12 +65,29 @@ class PdfFileService with ChangeNotifier {
     final dbClient = await SqlModel().db;
     List<Map<String, Object?>> futurePDFList = await dbClient.rawQuery(
         "Select *from ${SqlModel.tableFavorite}   order by auto_id DESC");
+
+    var tempValue = favouriteListPdfModelFromJson(jsonEncode(futurePDFList));
+    print(tempValue);
     favoritePdfList = [];
-    futurePDFList.forEach(
-      (element) {
-        favoritePdfList.add(FavouriteListPdfModel.fromJson(element));
-      },
-    );
+    for (var file in tempValue) {
+      File filePath = File(file.pdf.toString());
+      var pdfname = filePath.path.split('/').last;
+
+      var lastModDate1 = filePath.lastModifiedSync();
+      var formattedDate1 = DateFormat('EEE, M/d/y').format(lastModDate1);
+
+      var finalFileSize = filePath.lengthSync();
+      var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
+      var pdfmodel = PdfListModel(
+        referenceFile: filePath,
+        pdfname: pdfname,
+        date: formattedDate1,
+        size: sizeInKb,
+        pdfpath: filePath.path,
+      );
+
+      favoritePdfList.add(pdfmodel);
+    }
     notifyListeners();
   }
 
@@ -82,7 +118,6 @@ class PdfFileService with ChangeNotifier {
         'DELETE FROM $table WHERE pdf = ?',
         [arrivdata],
       ).whenComplete(() {
-        starPDFMethod();
         getFavoritePdfList();
         notifyListeners();
       });
@@ -128,17 +163,6 @@ class PdfFileService with ChangeNotifier {
     }
   }
 
-  starPDFMethod() async {
-    starPDF.clear();
-
-    final dbClient = await SqlModel().db;
-
-    List<Map<String, Object?>> tempPDF =
-        await dbClient.rawQuery("Select *from ${SqlModel.tableFavorite}");
-    starPDF.addAll(tempPDF);
-    notifyListeners();
-  }
-
   Future<bool> insertIntoFavoritePdfList(String pdfPath, table) async {
     final dbClient = await SqlModel().db;
 
@@ -149,17 +173,9 @@ class PdfFileService with ChangeNotifier {
         Map<String, Object> data = {
           'pdf': (pdfPath),
         };
-        await dbClient.insert(table, data).catchError((e) {
-          print("e--------------->$e");
-        }).onError((error, stackTrace) {
-          print('e---------------> $error');
-          throw error.toString();
-        }).whenComplete(() {
-          print("----------insert 1");
-          getFavoritePdfList();
-          starPDFMethod();
-          getRecentPdfList();
-        });
+        await dbClient.insert(table, data);
+        getFavoritePdfList();
+        getRecentPdfList();
         return true;
       } catch (e) {
         // throw "asd";
@@ -274,7 +290,6 @@ class PdfFileService with ChangeNotifier {
 
       var finalFileSize = file.lengthSync();
       var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
-
       var pdfmodel = PdfListModel(
         referenceFile: file,
         pdfname: pdfname,
