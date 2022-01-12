@@ -138,9 +138,16 @@ class _RecentpageState extends State<Recentpage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
+                                // return ViewPDF(
+                                //   pathPDF: filePath,
+                                // );
                                 return ViewPDF(
-                                  pathPDF: filePath,
-                                );
+                                    pathPDF: filePath,
+                                    fileDate: fileDate,
+                                    fileTitle: fileTitle,
+                                    fileSize: fileSize,
+                                    filePath: filePath,
+                                    index: index);
                               },
                             ),
                           );

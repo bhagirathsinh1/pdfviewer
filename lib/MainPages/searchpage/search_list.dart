@@ -173,9 +173,16 @@ class _SearchListState extends State<SearchList> {
               context,
               MaterialPageRoute(
                 builder: (context) {
+                  // return ViewPDF(
+                  //   pathPDF: widget.items[widget.index].pdfpath.toString(),
+                  // );
                   return ViewPDF(
-                    pathPDF: widget.items[widget.index].pdfpath.toString(),
-                  );
+                      pathPDF: widget.items[widget.index].pdfpath.toString(),
+                      fileDate: null,
+                      fileTitle: null,
+                      fileSize: null,
+                      filePath: null,
+                      index: null);
                   //open viewPDF page on click
                 },
               ),

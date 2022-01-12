@@ -150,8 +150,15 @@ class _HomepageBodyState extends State<HomepageBody> {
                     MaterialPageRoute(
                       builder: (context) {
                         return ViewPDF(
-                          pathPDF: filePath,
-                        );
+                            pathPDF: filePath,
+                            fileDate: fileDate,
+                            fileTitle: fileTitle,
+                            fileSize: fileSize,
+                            filePath: filePath,
+                            index: index);
+                        // return ViewPDF(
+                        //   pathPDF: filePath,
+                        // );
                         //open ViewPDFHomeScreen page on click
                       },
                     ),

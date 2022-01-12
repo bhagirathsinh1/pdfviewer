@@ -51,10 +51,17 @@ class _BrowsMoreFilePopUpState extends State<BrowsMoreFilePopUp> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
+                                // return ViewPDF(
+                                //   pathPDF: result.files.single.path.toString(),
+                                // );
                                 return ViewPDF(
-                                  pathPDF: result.files.single.path.toString(),
-                                );
-
+                                    pathPDF:
+                                        result.files.single.path.toString(),
+                                    fileDate: null,
+                                    fileTitle: null,
+                                    fileSize: null,
+                                    filePath: null,
+                                    index: null);
                                 //open ViewPDFHomeScreen page on click
                               },
                             ),

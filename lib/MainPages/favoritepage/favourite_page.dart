@@ -127,11 +127,17 @@ class _FavouritepageState extends State<Favouritepage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
+                                    var pathPdf = pdfservice
+                                        .favoritePdfList[index].pdfpath
+                                        .toString();
+                                    //
                                     return ViewPDF(
-                                      pathPDF: pdfservice
-                                          .favoritePdfList[index].pdfpath
-                                          .toString(),
-                                    );
+                                        pathPDF: pathPdf,
+                                        fileDate: fileDate,
+                                        fileTitle: fileTitle,
+                                        fileSize: fileSize,
+                                        filePath: filePath,
+                                        index: index);
                                   },
                                 ),
                               );
