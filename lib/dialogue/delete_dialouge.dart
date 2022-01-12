@@ -41,14 +41,14 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
           },
         ),
         TextButton(
-          child: Text("Continue"),
+          child: isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Text("Continue"),
           onPressed: () {
             print("${widget.fileName.split('/').last}");
-            isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : deleteMethod();
+            deleteMethod();
           },
         )
       ],

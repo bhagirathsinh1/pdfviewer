@@ -24,15 +24,12 @@ class BottomsheetFavoritePage extends StatefulWidget {
 class _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {
   @override
   Widget build(BuildContext context) {
-    var paths = widget.fileName;
-
-    var titlePath = paths.toString().split('/').last;
     return Container(
       color: Colors.white,
       height: 250,
       child: Column(
         children: [
-          TitleOfPdf(titlePath: titlePath),
+          TitleOfPdf(titlePath: widget.fileName),
 
           //
           ShareFiles(fileName: widget.fileName, index: widget.index),
@@ -54,7 +51,7 @@ class _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {
               // Navigator.push(
               Provider.of<PdfFileService>(context, listen: false)
                   .removeFromFavoritePdfList(
-                      paths.toString(), SqlModel.tableFavorite);
+                      widget.fileName.toString(), SqlModel.tableFavorite);
             },
           ),
           DeleteFileWidget(
