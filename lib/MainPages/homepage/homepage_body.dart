@@ -26,10 +26,11 @@ class _HomepageBodyState extends State<HomepageBody> {
         return ListView.builder(
           itemCount: pdfservice.files.length,
           itemBuilder: (BuildContext ctxt, index) {
-            var filePath = pdfservice.files[index].pdfpath.toString();
-            var fileDate = pdfservice.files[index].date.toString();
-            var fileSize = pdfservice.files[index].size.toString();
-            var fileTitle = pdfservice.files[index].pdfname.toString();
+            var fileIndex = pdfservice.files[index];
+            var filePath = fileIndex.pdfpath.toString();
+            var fileDate = fileIndex.date.toString();
+            var fileSize = fileIndex.size.toString();
+            var fileTitle = fileIndex.pdfname.toString();
 
             // why here ?
             var isfav = pdfservice.favoritePdfList
@@ -63,15 +64,14 @@ class _HomepageBodyState extends State<HomepageBody> {
                               height: 350,
                               child: Column(
                                 children: [
-                                  TitleOfPdf(
-                                      titlePath: pdfservice.files[index].pdfname
-                                          .toString()),
+                                  TitleOfPdf(titlePath: fileTitle),
                                   ShareFiles(
                                     fileName: filePath,
                                     index: index,
                                   ),
                                   AddRemoveWidget(paths: filePath),
                                   RenameFileWidget(
+                                    
                                     index: index,
                                     fileName: filePath,
                                   ),

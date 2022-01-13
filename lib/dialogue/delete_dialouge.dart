@@ -56,15 +56,15 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
   }
 
   deleteMethod() {
+    var pdfService = Provider.of<PdfFileService>(context, listen: false);
     setState(() {
       isLoading = true;
     });
-    Provider.of<PdfFileService>(context, listen: false)
-        .removeFromFavoritePdfList(widget.fileName, SqlModel.tableFavorite);
-    Provider.of<PdfFileService>(context, listen: false)
-        .removeFromRecentPdfList(widget.fileName, SqlModel.tableRecent);
+    pdfService.removeFromFavoritePdfList(
+        widget.fileName, SqlModel.tableFavorite);
+    pdfService.removeFromRecentPdfList(widget.fileName, SqlModel.tableRecent);
 
-    Provider.of<PdfFileService>(context, listen: false)
+    pdfService
         .deleteFile(
       File(
         widget.fileName,

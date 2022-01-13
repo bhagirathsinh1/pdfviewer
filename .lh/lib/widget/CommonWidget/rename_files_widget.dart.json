@@ -1,0 +1,26 @@
+{
+    "sourceFile": "lib/widget/CommonWidget/rename_files_widget.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1642076081081,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642076449932,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,15 +1,19 @@\n import 'package:flutter/material.dart';\r\n import 'package:pdfviewer/dialogue/rename_dialouge.dart';\r\n+import 'package:pdfviewer/model/pdf_list_model.dart';\r\n \r\n class RenameFileWidget extends StatelessWidget {\r\n   //remove index\r\n   final int index;\r\n   final String fileName;\r\n+  final PdfListModel pdfmodel;\r\n+\r\n   const RenameFileWidget({\r\n     Key? key,\r\n     required this.index,\r\n     required this.fileName,\r\n+    required this.pdfmodel,\r\n   }) : super(key: key);\r\n \r\n   @override\r\n   Widget build(BuildContext context) {\r\n"
+                },
+                {
+                    "date": 1642076687013,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,19 +1,15 @@\n import 'package:flutter/material.dart';\r\n import 'package:pdfviewer/dialogue/rename_dialouge.dart';\r\n-import 'package:pdfviewer/model/pdf_list_model.dart';\r\n \r\n class RenameFileWidget extends StatelessWidget {\r\n   //remove index\r\n   final int index;\r\n   final String fileName;\r\n-  final PdfListModel pdfmodel;\r\n-\r\n   const RenameFileWidget({\r\n     Key? key,\r\n     required this.index,\r\n     required this.fileName,\r\n-    required this.pdfmodel,\r\n   }) : super(key: key);\r\n \r\n   @override\r\n   Widget build(BuildContext context) {\r\n"
+                }
+            ],
+            "date": 1642076081081,
+            "name": "Commit-0",
+            "content": "import 'package:flutter/material.dart';\r\nimport 'package:pdfviewer/dialogue/rename_dialouge.dart';\r\n\r\nclass RenameFileWidget extends StatelessWidget {\r\n  //remove index\r\n  final int index;\r\n  final String fileName;\r\n  const RenameFileWidget({\r\n    Key? key,\r\n    required this.index,\r\n    required this.fileName,\r\n  }) : super(key: key);\r\n\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return ListTile(\r\n      title: Text(\r\n        \"Rename\",\r\n        style: TextStyle(\r\n          color: Colors.black.withOpacity(0.8),\r\n        ),\r\n      ),\r\n      leading: Icon(\r\n        Icons.edit,\r\n        color: Colors.black.withOpacity(0.5),\r\n      ),\r\n      onTap: () {\r\n        showDialog(\r\n          context: context,\r\n          builder: (BuildContext context) {\r\n            return new RenameFileDialouge(\r\n              index: index, // remove index\r\n              fileName: fileName,\r\n            );\r\n          },\r\n        );\r\n      },\r\n    );\r\n  }\r\n}\r\n"
+        }
+    ]
+}

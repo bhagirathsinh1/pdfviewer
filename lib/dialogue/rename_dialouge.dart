@@ -75,21 +75,20 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
   changeFileNameOnly(BuildContext context, String newFileName) async {
     print("------------->arrived new name----$newFileName--------");
     var providerService = Provider.of<PdfFileService>(context, listen: false);
-
-    var temp1 = providerService.files[widget.index].referenceFile!.path;
+    var pdfServiceIndex = providerService.files[widget.index];
+    var temp1 = pdfServiceIndex.referenceFile!.path;
 
     var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);
     var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + ".pdf";
 
-    var filename = await providerService.files[widget.index].referenceFile!
-        .rename(newPath);
+    var filename = await pdfServiceIndex.referenceFile!.rename(newPath);
 
     print("-------------v.path data---------------- ${filename.path}");
 
-    providerService.files[widget.index].referenceFile = filename;
-    providerService.files[widget.index].pdfpath = filename.path;
+    pdfServiceIndex.referenceFile = filename;
+    pdfServiceIndex.pdfpath = filename.path;
 
-    providerService.files[widget.index].pdfname = filename.path.split('/').last;
+    pdfServiceIndex.pdfname = filename.path.split('/').last;
 
     providerService.getStorageFilleMethod();
 

@@ -13,8 +13,8 @@ class AddRemoveWidget extends StatefulWidget {
 class _AddRemoveWidgetState extends State<AddRemoveWidget> {
   @override
   Widget build(BuildContext context) {
-    var isfav = Provider.of<PdfFileService>(context, listen: false)
-        .favoritePdfList
+    var pdfService = Provider.of<PdfFileService>(context, listen: false);
+    var isfav = pdfService.favoritePdfList
         .where((element) => element.pdfpath == widget.paths);
     return ListTile(
       title: !isfav.isEmpty
@@ -41,12 +41,12 @@ class _AddRemoveWidgetState extends State<AddRemoveWidget> {
             ),
       onTap: () async {
         if (!isfav.isEmpty) {
-          Provider.of<PdfFileService>(context, listen: false)
+          pdfService
               .removeFromFavoritePdfList(
                   widget.paths.toString(), SqlModel.tableFavorite)
               .whenComplete(() => Navigator.pop(context));
         } else {
-          Provider.of<PdfFileService>(context, listen: false)
+          pdfService
               .insertIntoFavoritePdfList(widget.paths, SqlModel.tableFavorite)
               .whenComplete(() => Navigator.pop(context));
         }

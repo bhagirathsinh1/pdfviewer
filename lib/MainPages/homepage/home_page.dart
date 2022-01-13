@@ -26,7 +26,6 @@ class _HomepageState extends State<Homepage> {
     return Consumer<PdfFileService>(builder: (context, counter, child) {
       return Scaffold(
           appBar: AppBar(
-            // kai samjanu nai
             title: Permission.storage.request().isGranted == true
                 ? Text(
                     "PDF Reader",

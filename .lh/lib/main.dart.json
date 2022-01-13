@@ -1,0 +1,18 @@
+{
+    "sourceFile": "lib/main.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1642075582614,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1642075582614,
+            "name": "Commit-0",
+            "content": "import 'package:animated_splash_screen/animated_splash_screen.dart';\r\nimport 'package:flutter/material.dart';\r\nimport 'package:pdfviewer/MainPages/pdfscreen/pdf_screen.dart';\r\nimport 'package:pdfviewer/SQLService/sqlService.dart';\r\nimport 'package:pdfviewer/service/pdf_file_service.dart';\r\nimport 'package:permission_handler/permission_handler.dart';\r\nimport 'package:provider/provider.dart';\r\n\r\nvoid main() async {\r\n  WidgetsFlutterBinding.ensureInitialized();\r\n\r\n  await SqlModel().initDb();\r\n  runApp(\r\n    MyApp(),\r\n  );\r\n}\r\n\r\nclass MyApp extends StatefulWidget {\r\n  @override\r\n  _MyAppState createState() => _MyAppState();\r\n}\r\n\r\nclass _MyAppState extends State<MyApp> {\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return MultiProvider(\r\n      providers: [\r\n        ChangeNotifierProvider<PdfFileService>(create: (_) => PdfFileService()),\r\n      ],\r\n      child: MaterialApp(\r\n          debugShowCheckedModeBanner: false,\r\n          theme: ThemeData(\r\n            primarySwatch: Colors.lightBlue,\r\n            visualDensity: VisualDensity.adaptivePlatformDensity,\r\n          ),\r\n          home: MainClass()),\r\n    );\r\n  }\r\n}\r\n\r\nclass MainClass extends StatefulWidget {\r\n  const MainClass({Key? key}) : super(key: key);\r\n\r\n  @override\r\n  _MainClassState createState() => _MainClassState();\r\n}\r\n\r\nclass _MainClassState extends State<MainClass> {\r\n  @override\r\n  void initState() {\r\n    _getStoragePermission();\r\n\r\n    super.initState();\r\n  }\r\n\r\n  Future _getStoragePermission() async {\r\n    if (await Permission.storage.request().isGranted) {\r\n      Provider.of<PdfFileService>(context, listen: false)\r\n          .getStorageFilleMethod();\r\n    } else if (await Permission.storage.request().isPermanentlyDenied) {\r\n      await openAppSettings();\r\n    } else if (await Permission.storage.request().isDenied) {}\r\n  }\r\n\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return AnimatedSplashScreen(\r\n      splash: Icon(\r\n        Icons.picture_as_pdf,\r\n        size: 100,\r\n        color: Colors.red.shade400,\r\n      ),\r\n      duration: 3500,\r\n      splashTransition: SplashTransition.scaleTransition,\r\n      // pageTransitionType: PageTransitionType.scale,\r\n      backgroundColor: Colors.grey.shade300,\r\n      nextScreen: Pdfscreen(),\r\n    );\r\n  }\r\n}\r\n"
+        }
+    ]
+}

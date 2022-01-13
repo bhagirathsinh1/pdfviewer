@@ -1,0 +1,22 @@
+{
+    "sourceFile": "lib/MainPages/pdfscreen/pdf_screen.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1642075579463,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642077902534,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,8 +23,13 @@\n   final _pageController = PageController(keepPage: false);\r\n   TextEditingController textController = TextEditingController();\r\n   @override\r\n   void initState() {\r\n+    var pdfService = Provider.of<PdfFileService>(context, listen: false);\r\n+    pdfService.items.addAll(pdfService.files);\r\n+    pdfService.getStorageFilleMethod();\r\n+    pdfService.getRecentPdfList();\r\n+    pdfService.getFavoritePdfList();\r\n     super.initState();\r\n   }\r\n \r\n   @override\r\n"
+                }
+            ],
+            "date": 1642075579463,
+            "name": "Commit-0",
+            "content": "import 'dart:io';\r\n\r\nimport 'package:bottom_bar/bottom_bar.dart';\r\nimport 'package:flutter/material.dart';\r\nimport 'package:pdfviewer/MainPages/favoritepage/favourite_page.dart';\r\nimport 'package:pdfviewer/MainPages/homepage/home_page.dart';\r\nimport 'package:pdfviewer/MainPages/recentpage/recent_page.dart';\r\nimport 'package:pdfviewer/service/pdf_file_service.dart';\r\nimport 'package:provider/provider.dart';\r\n\r\nclass Pdfscreen extends StatefulWidget {\r\n  @override\r\n  State<Pdfscreen> createState() => _PdfscreenState();\r\n}\r\n\r\nclass _PdfscreenState extends State<Pdfscreen> {\r\n  PdfFileService getPdfObject = new PdfFileService();\r\n  int _currentPage = 0;\r\n  static bool _init = false;\r\n  get inits => _init;\r\n  bool willpop = false;\r\n\r\n  final _pageController = PageController(keepPage: false);\r\n  TextEditingController textController = TextEditingController();\r\n  @override\r\n  void initState() {\r\n    super.initState();\r\n  }\r\n\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return WillPopScope(\r\n      onWillPop: () {\r\n        return exit(0);\r\n      },\r\n      child: Scaffold(\r\n        backgroundColor: Colors.white,\r\n        body: PageView(\r\n          controller: _pageController,\r\n          children: [\r\n            Homepage(),\r\n            Recentpage(),\r\n            Favouritepage(),\r\n          ],\r\n          onPageChanged: (index) {\r\n            _init = true;\r\n            setState(\r\n              () => _currentPage = index,\r\n            );\r\n          },\r\n        ),\r\n        bottomNavigationBar: BottomBar(\r\n          selectedIndex: _currentPage,\r\n          onTap: (int index) {\r\n            _pageController.jumpToPage(index);\r\n\r\n            setState(\r\n              () {\r\n                _init = true;\r\n                _currentPage = index;\r\n              },\r\n            );\r\n          },\r\n          items: <BottomBarItem>[\r\n            BottomBarItem(\r\n              icon: Icon(Icons.home),\r\n              title: Text('Home'),\r\n              activeColor: Colors.blue,\r\n            ),\r\n            BottomBarItem(\r\n              icon: Icon(Icons.lock_clock),\r\n              title: Text('Recent'),\r\n              activeColor: Colors.blue,\r\n            ),\r\n            BottomBarItem(\r\n              icon: Icon(Icons.favorite),\r\n              title: Text('Favorites'),\r\n              activeColor: Colors.blue,\r\n            ),\r\n          ],\r\n        ),\r\n      ),\r\n    );\r\n  }\r\n}\r\n"
+        }
+    ]
+}

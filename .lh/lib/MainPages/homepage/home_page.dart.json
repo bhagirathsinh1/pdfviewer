@@ -1,0 +1,30 @@
+{
+    "sourceFile": "lib/MainPages/homepage/home_page.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 3,
+            "patches": [
+                {
+                    "date": 1642075682618,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642075748076,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,14 +17,13 @@\n \r\n class _HomepageState extends State<Homepage> {\r\n   @override\r\n   void initState() {\r\n-    Provider.of<PdfFileService>(context, listen: false)\r\n-        .items\r\n-        .addAll(Provider.of<PdfFileService>(context, listen: false).files);\r\n-    Provider.of<PdfFileService>(context, listen: false).getStorageFilleMethod();\r\n-    Provider.of<PdfFileService>(context, listen: false).getRecentPdfList();\r\n-    Provider.of<PdfFileService>(context, listen: false).getFavoritePdfList();\r\n+    var pdfService = Provider.of<PdfFileService>(context, listen: false);\r\n+    pdfService.items.addAll(pdfService.files);\r\n+    pdfService.getStorageFilleMethod();\r\n+    pdfService.getRecentPdfList();\r\n+    pdfService.getFavoritePdfList();\r\n     super.initState();\r\n   }\r\n \r\n   @override\r\n"
+                },
+                {
+                    "date": 1642075768441,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -30,9 +30,8 @@\n   Widget build(BuildContext context) {\r\n     return Consumer<PdfFileService>(builder: (context, counter, child) {\r\n       return Scaffold(\r\n           appBar: AppBar(\r\n-            // kai samjanu nai\r\n             title: Permission.storage.request().isGranted == true\r\n                 ? Text(\r\n                     \"PDF Reader\",\r\n                     style: TextStyle(color: Colors.black),\r\n"
+                },
+                {
+                    "date": 1642077906317,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,13 +17,8 @@\n \r\n class _HomepageState extends State<Homepage> {\r\n   @override\r\n   void initState() {\r\n-    var pdfService = Provider.of<PdfFileService>(context, listen: false);\r\n-    pdfService.items.addAll(pdfService.files);\r\n-    pdfService.getStorageFilleMethod();\r\n-    pdfService.getRecentPdfList();\r\n-    pdfService.getFavoritePdfList();\r\n     super.initState();\r\n   }\r\n \r\n   @override\r\n"
+                }
+            ],
+            "date": 1642075682618,
+            "name": "Commit-0",
+            "content": "import 'package:flutter/material.dart';\r\nimport 'package:pdfviewer/MainPages/homepage/sorting_doalog.dart';\r\nimport 'package:pdfviewer/MainPages/searchpage/search_page.dart';\r\nimport 'package:pdfviewer/service/pdf_file_service.dart';\r\nimport 'package:pdfviewer/MainPages/homepage/browsmorefile_dialog.dart';\r\nimport 'package:pdfviewer/MainPages/homepage/homepage_body.dart';\r\nimport 'package:pdfviewer/MainPages/homepage/reloadpdf.dart';\r\nimport 'package:permission_handler/permission_handler.dart';\r\nimport 'package:provider/provider.dart';\r\n\r\nclass Homepage extends StatefulWidget {\r\n  const Homepage({Key? key}) : super(key: key);\r\n\r\n  @override\r\n  State<Homepage> createState() => _HomepageState();\r\n}\r\n\r\nclass _HomepageState extends State<Homepage> {\r\n  @override\r\n  void initState() {\r\n    Provider.of<PdfFileService>(context, listen: false)\r\n        .items\r\n        .addAll(Provider.of<PdfFileService>(context, listen: false).files);\r\n    Provider.of<PdfFileService>(context, listen: false).getStorageFilleMethod();\r\n    Provider.of<PdfFileService>(context, listen: false).getRecentPdfList();\r\n    Provider.of<PdfFileService>(context, listen: false).getFavoritePdfList();\r\n    super.initState();\r\n  }\r\n\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return Consumer<PdfFileService>(builder: (context, counter, child) {\r\n      return Scaffold(\r\n          appBar: AppBar(\r\n            // kai samjanu nai\r\n            title: Permission.storage.request().isGranted == true\r\n                ? Text(\r\n                    \"PDF Reader\",\r\n                    style: TextStyle(color: Colors.black),\r\n                  )\r\n                : Text(\r\n                    \" ${counter.files.length} pdf found !\",\r\n                    style: TextStyle(color: Colors.black),\r\n                  ),\r\n            backgroundColor: Colors.white,\r\n            actions: <Widget>[\r\n              ///search button\r\n              IconButton(\r\n                onPressed: () {\r\n                  Navigator.push(\r\n                    context,\r\n                    MaterialPageRoute(builder: (context) => SearchPage()),\r\n                  );\r\n                },\r\n                icon: Icon(\r\n                  Icons.search,\r\n                  size: 26.0,\r\n                  color: Colors.black,\r\n                ),\r\n              ),\r\n              Shorting(),\r\n              BrowsMoreFilePopUp(),\r\n            ],\r\n          ),\r\n          body: counter.files.isEmpty ? ReloadPdf() : HomepageBody());\r\n    });\r\n  }\r\n}\r\n"
+        }
+    ]
+}

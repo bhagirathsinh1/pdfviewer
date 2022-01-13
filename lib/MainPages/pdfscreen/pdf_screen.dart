@@ -24,10 +24,11 @@ class _PdfscreenState extends State<Pdfscreen> {
   TextEditingController textController = TextEditingController();
   @override
   void initState() {
-    Provider.of<PdfFileService>(context, listen: false).getStorageFilleMethod();
-    Provider.of<PdfFileService>(context, listen: false).getRecentPdfList();
-    Provider.of<PdfFileService>(context, listen: false).getFavoritePdfList();
-
+    var pdfService = Provider.of<PdfFileService>(context, listen: false);
+    pdfService.items.addAll(pdfService.files);
+    pdfService.getStorageFilleMethod();
+    pdfService.getRecentPdfList();
+    pdfService.getFavoritePdfList();
     super.initState();
   }
 

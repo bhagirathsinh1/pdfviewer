@@ -25,9 +25,6 @@ class RenameFileWidget extends StatelessWidget {
         color: Colors.black.withOpacity(0.5),
       ),
       onTap: () {
-        // showAlertDialogRenameFile(context);
-        // removeFromFavorite();
-        //remove index
         showDialog(
           context: context,
           builder: (BuildContext context) {
