@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FavoriteStarIcon extends StatefulWidget {
-  final bool isfav;
+  var isfav;
   FavoriteStarIcon({Key? key, required this.isfav}) : super(key: key);
 
   @override
@@ -17,7 +17,7 @@ class _FavoriteStarIconState extends State<FavoriteStarIcon> {
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       icon: Icon(
         Icons.star,
-        color: widget.isfav ? Colors.blue : Colors.white,
+        color: widget.isfav.isEmpty ? Colors.white : Colors.blue,
       ),
     );
   }

@@ -101,8 +101,7 @@ class _RecentpageState extends State<Recentpage> {
                         ),
                         trailing:
                             Wrap(alignment: WrapAlignment.center, children: [
-                          FavoriteStarIcon(
-                              isfav: pdfservice.recentPdfList[index].isFav),
+                          FavoriteStarIcon(isfav: isfav),
                           IconButton(
                             constraints: BoxConstraints(),
                             padding: EdgeInsets.symmetric(

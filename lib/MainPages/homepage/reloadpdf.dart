@@ -10,6 +10,8 @@ class ReloadPdf extends StatefulWidget {
 }
 
 class _ReloadPdfState extends State<ReloadPdf> {
+  bool isShowFiles = false;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<PdfFileService>(builder: (context, counter, child) {
@@ -20,8 +22,11 @@ class _ReloadPdfState extends State<ReloadPdf> {
             TextButton(
               onPressed: () {
                 counter.getStorageFilleMethod();
+                isShowFiles = true;
+
+                print("......get my files bool 1....");
               },
-              child: Text("Reload Pdf"),
+              child: isShowFiles ? Text("Get files") : Text("Reload Pdf"),
             ),
           ],
         ),

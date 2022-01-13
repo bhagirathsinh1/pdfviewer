@@ -12,10 +12,15 @@ class Shorting extends StatefulWidget {
 
 class _ShortingState extends State<Shorting> {
   SingingCharacter? _character;
+
   bool isNameSort = true;
+
   bool isDateSort = false;
+
   bool isSizeAccending = false;
+
   bool isSizeDeccending = false;
+
   bool isReverseSized = false;
 
   Widget build(BuildContext context) {
