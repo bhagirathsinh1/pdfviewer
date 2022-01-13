@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
+import 'package:pdfviewer/commonmethod/commonmwthod.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
@@ -26,14 +27,12 @@ class _HomepageBodyState extends State<HomepageBody> {
         return ListView.builder(
           itemCount: pdfservice.files.length,
           itemBuilder: (BuildContext ctxt, index) {
-            var filePath = pdfservice.files[index].pdfpath.toString();
-            var fileDate = pdfservice.files[index].date.toString();
-            var fileSize = pdfservice.files[index].size.toString();
-            var fileTitle = pdfservice.files[index].pdfname.toString();
+            var fileIndex = pdfservice.files[index];
+            var filePath = fileIndex.pdfpath.toString();
+            var fileDate = fileIndex.date.toString();
+            var fileSize = fileIndex.size.toString();
+            var fileTitle = fileIndex.pdfname.toString();
 
-            // why here ?
-            var isfav = pdfservice.favoritePdfList
-                .where((element) => element.pdfpath == filePath);
             return Card(
               child: ListTile(
                 title: Text(fileTitle),
@@ -48,7 +47,7 @@ class _HomepageBodyState extends State<HomepageBody> {
                 trailing: Wrap(
                   alignment: WrapAlignment.center,
                   children: [
-                    FavoriteStarIcon(isfav: isfav),
+                    FavoriteStarIcon(isfav: pdfservice.files[index].isFav),
                     IconButton(
                       constraints: BoxConstraints(),
                       padding:
@@ -64,8 +63,7 @@ class _HomepageBodyState extends State<HomepageBody> {
                               child: Column(
                                 children: [
                                   TitleOfPdf(
-                                      titlePath: pdfservice.files[index].pdfname
-                                          .toString()),
+                                      titlePath: fileIndex.pdfname.toString()),
                                   ShareFiles(
                                     fileName: filePath,
                                     index: index,
@@ -93,41 +91,8 @@ class _HomepageBodyState extends State<HomepageBody> {
                   ],
                 ),
                 onTap: () async {
-                  // recent_index = index;
-
-                  Map<String, Object> data = {
-                    'recentpdf': (filePath),
-                  };
-
-                  if (!data.isEmpty) {
-                    try {
-                      await RecentSQLPDFService()
-                          .insertRecentPDF(data, SqlModel.tableRecent);
-
-                      Provider.of<PdfFileService>(context, listen: false)
-                          .getRecentPdfList();
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).clearSnackBars();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            e.toString(),
-                          ),
-                        ),
-                      );
-                    }
-                    print("pdfname is--------------> $data");
-                  }
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ViewPDF(
-                          pdfmodel: pdfservice.files[index],
-                        );
-                      },
-                    ),
-                  );
+                  CommonAddIntoRecent().commonAddIntoRecent(
+                      filePath, context, pdfservice, index);
                 },
               ),
             );

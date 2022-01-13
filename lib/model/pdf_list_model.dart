@@ -29,7 +29,7 @@ class PdfListModel {
   String? date;
   String? size;
   File? referenceFile;
-  final bool isFav;
+  bool isFav;
   factory PdfListModel.fromJson(Map<String, dynamic> json) => PdfListModel(
         isFav: false,
         pdfname: json["pdfname"] == null ? null : json["pdfname"],

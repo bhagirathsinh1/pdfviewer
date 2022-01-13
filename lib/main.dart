@@ -55,8 +55,11 @@ class _MainClassState extends State<MainClass> {
 
   Future _getStoragePermission() async {
     if (await Permission.storage.request().isGranted) {
-      Provider.of<PdfFileService>(context, listen: false)
-          .getStorageFilleMethod();
+      var pdfService = Provider.of<PdfFileService>(context, listen: false);
+      pdfService.items.addAll(pdfService.files);
+      pdfService.getFavoritePdfList();
+      pdfService.getRecentPdfList();
+      pdfService.getStorageFilleMethod();
     } else if (await Permission.storage.request().isPermanentlyDenied) {
       await openAppSettings();
     } else if (await Permission.storage.request().isDenied) {}

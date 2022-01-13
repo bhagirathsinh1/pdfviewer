@@ -117,15 +117,18 @@ class PdfFileService with ChangeNotifier {
     }
   }
 
-  Future<bool> removeFromFavoritePdfList(arrivdata, String table) async {
+  Future<bool> removeFromFavoritePdfList(String path, String table) async {
     print("-----------remove from favorite called------------");
     final dbClientRemoveFromFavorite = await SqlModel().db;
     try {
       var resultRemoveFromFav = await dbClientRemoveFromFavorite.rawQuery(
         'DELETE FROM $table WHERE pdf = ?',
-        [arrivdata],
+        [path],
       ).whenComplete(() {
         getFavoritePdfList();
+        var tempIndex = files.indexWhere((element) => element.pdfpath == path);
+
+        files[tempIndex].isFav = false;
         notifyListeners();
       });
       print(
@@ -182,7 +185,15 @@ class PdfFileService with ChangeNotifier {
         };
         await dbClient.insert(table, data);
         getFavoritePdfList();
+
+        var tempIndex =
+            files.indexWhere((element) => element.pdfpath == pdfPath);
+
+        files[tempIndex].isFav = true;
+
         getRecentPdfList();
+        notifyListeners();
+        // getStorageFilleMethod();
         return true;
       } catch (e) {
         // throw "asd";

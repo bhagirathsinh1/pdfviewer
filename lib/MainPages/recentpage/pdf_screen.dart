@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/favoritepage/favourite_page.dart';
 import 'package:pdfviewer/MainPages/homepage/home_page.dart';
 import 'package:pdfviewer/MainPages/recentpage/recent_page.dart';
+import 'package:pdfviewer/MainPages/searchpage/search_list.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:provider/provider.dart';
 
@@ -24,9 +25,11 @@ class _PdfscreenState extends State<Pdfscreen> {
   TextEditingController textController = TextEditingController();
   @override
   void initState() {
-    Provider.of<PdfFileService>(context, listen: false).getStorageFilleMethod();
-    Provider.of<PdfFileService>(context, listen: false).getRecentPdfList();
-    Provider.of<PdfFileService>(context, listen: false).getFavoritePdfList();
+    var pdfService = Provider.of<PdfFileService>(context, listen: false);
+    pdfService.items.addAll(pdfService.files);
+    pdfService.getFavoritePdfList();
+    pdfService.getRecentPdfList();
+    pdfService.getStorageFilleMethod();
 
     super.initState();
   }

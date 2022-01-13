@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/homepage/sorting_doalog.dart';
+import 'package:pdfviewer/MainPages/searchpage/search_icon.dart';
 import 'package:pdfviewer/MainPages/searchpage/search_page.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/MainPages/homepage/browsmorefile_dialog.dart';
@@ -26,7 +27,6 @@ class _HomepageState extends State<Homepage> {
     return Consumer<PdfFileService>(builder: (context, counter, child) {
       return Scaffold(
           appBar: AppBar(
-            // kai samjanu nai
             title: Permission.storage.request().isGranted == true
                 ? Text(
                     "PDF Reader",
@@ -39,19 +39,7 @@ class _HomepageState extends State<Homepage> {
             backgroundColor: Colors.white,
             actions: <Widget>[
               ///search button
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SearchPage()),
-                  );
-                },
-                icon: Icon(
-                  Icons.search,
-                  size: 26.0,
-                  color: Colors.black,
-                ),
-              ),
+              SearchIcon(),
               Shorting(),
               BrowsMoreFilePopUp(),
             ],
