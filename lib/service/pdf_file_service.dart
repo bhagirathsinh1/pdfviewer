@@ -23,6 +23,8 @@ class PdfFileService with ChangeNotifier {
   SingingCharacter? _character;
 
   // List<RecentListPdfModel> recentPdfList = [];
+  List<PdfListModel> items = [];
+
   List<PdfListModel> favoritePdfList = [];
   List<PdfListModel> files = [];
   List<PdfListModel> recentPdfList = [];
@@ -48,12 +50,14 @@ class PdfFileService with ChangeNotifier {
       var finalFileSize = filePath.lengthSync();
       var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
       var pdfmodel = PdfListModel(
-        referenceFile: filePath,
-        pdfname: pdfname,
-        date: formattedDate1,
-        size: sizeInKb,
-        pdfpath: filePath.path,
-      );
+          referenceFile: filePath,
+          pdfname: pdfname,
+          date: formattedDate1,
+          size: sizeInKb,
+          pdfpath: filePath.path,
+          isFav: favoritePdfList
+              .where((element) => element.pdfpath == filePath)
+              .isNotEmpty);
 
       recentPdfList.add(pdfmodel);
     }
@@ -84,6 +88,9 @@ class PdfFileService with ChangeNotifier {
         date: formattedDate1,
         size: sizeInKb,
         pdfpath: filePath.path,
+        isFav: favoritePdfList
+            .where((element) => element.pdfpath == filePath)
+            .isNotEmpty,
       );
 
       favoritePdfList.add(pdfmodel);
@@ -296,6 +303,9 @@ class PdfFileService with ChangeNotifier {
         date: formattedDate,
         size: sizeInKb,
         pdfpath: file.path,
+        isFav: favoritePdfList
+            .where((element) => element.pdfpath == file.path)
+            .isNotEmpty,
       );
       files.add(pdfmodel);
     }

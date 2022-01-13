@@ -47,27 +47,20 @@ class _BrowsMoreFilePopUpState extends State<BrowsMoreFilePopUp> {
                         } else {
                           print(
                               "------picked file--->/${result.files.single.path.toString()}------");
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                // return ViewPDF(
-                                //   pathPDF: result.files.single.path.toString(),
-                                // );
-                                return ViewPDF(
-                                    pathPDF:
-                                        result.files.single.path.toString(),
-                                    fileDate: null,
-                                    fileTitle: null,
-                                    fileSize: null,
-                                    filePath: null,
-                                    index: null);
-                                //open ViewPDFHomeScreen page on click
-                              },
-                            ),
-                          );
-
-                          // print("---------picked file--------->$result---------------");
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) {
+                          //       // return ViewPDF(
+                          //       //   pathPDF: result.files.single.path.toString(),
+                          //       // );
+                          //       return ViewPDF(
+                          //           pathPDF:
+                          //               result.files.single.path.toString(),
+                          //           );
+                          //     },
+                          //   ),
+                          // );
                         }
                       },
                     ),

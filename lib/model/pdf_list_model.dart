@@ -13,13 +13,15 @@ String pdfListModelToJson(List<PdfListModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class PdfListModel {
-  PdfListModel(
-      {this.pdfname,
-      this.pdfpath,
-      this.pdfindex,
-      this.date,
-      this.size,
-      this.referenceFile});
+  PdfListModel({
+    required this.isFav,
+    this.pdfname,
+    this.pdfpath,
+    this.pdfindex,
+    this.date,
+    this.size,
+    this.referenceFile,
+  });
 
   String? pdfname;
   String? pdfpath;
@@ -27,8 +29,9 @@ class PdfListModel {
   String? date;
   String? size;
   File? referenceFile;
-
+  final bool isFav;
   factory PdfListModel.fromJson(Map<String, dynamic> json) => PdfListModel(
+        isFav: false,
         pdfname: json["pdfname"] == null ? null : json["pdfname"],
         pdfpath: json["pdfpath"] == null ? null : json["pdfpath"],
         pdfindex: json["pdfindex"] == null ? null : json["pdfindex"],

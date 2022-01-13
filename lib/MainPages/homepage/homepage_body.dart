@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
-import 'package:pdfviewer/SQLService/favorite_pdf_serrvice.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/MainPages/homepage/home_page.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
@@ -31,6 +29,7 @@ class _HomepageBodyState extends State<HomepageBody> {
             var fileSize = pdfservice.files[index].size.toString();
             var fileTitle = pdfservice.files[index].pdfname.toString();
 
+            // why here ?
             var isfav = pdfservice.favoritePdfList
                 .where((element) => element.pdfpath == filePath);
             return Card(
@@ -150,14 +149,15 @@ class _HomepageBodyState extends State<HomepageBody> {
                     MaterialPageRoute(
                       builder: (context) {
                         return ViewPDF(
-                            pathPDF: filePath,
-                            fileDate: fileDate,
-                            fileTitle: fileTitle,
-                            fileSize: fileSize,
-                            filePath: filePath,
-                            index: index);
+                          pathPDF: filePath,
+                          fileDate: fileDate,
+                          fileTitle: fileTitle,
+                          fileSize: fileSize,
+                          filePath: filePath,
+                          index: index,
+                        );
                         // return ViewPDF(
-                        //   pathPDF: filePath,
+                        // PdfListModel: pdfservice.files[index],
                         // );
                         //open ViewPDFHomeScreen page on click
                       },

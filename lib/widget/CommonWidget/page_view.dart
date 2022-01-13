@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 import 'package:flutter/material.dart';
@@ -10,19 +11,21 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ViewPDF extends StatefulWidget {
   String pathPDF = "";
-  var fileDate;
-  var fileTitle;
-  var fileSize;
-  var filePath;
+  // var nai hale
+  String fileDate;
+  String fileTitle;
+  String fileSize;
+  String filePath;
+
+  // remove index
   var index;
-  ViewPDF({
-    required this.pathPDF,
-    required this.fileDate,
-    required this.fileTitle,
-    required this.fileSize,
-    required this.filePath,
-    required this.index,
-  });
+  ViewPDF(
+      {required this.pathPDF,
+      required this.fileDate,
+      required this.fileTitle,
+      required this.fileSize,
+      required this.filePath,
+      required this.index});
 
   @override
   State<ViewPDF> createState() => _ViewPDFState();
@@ -210,8 +213,6 @@ class _ViewPDFState extends State<ViewPDF> {
                                 ),
                                 onTap: () {
                                   showGotoAlert(context);
-
-                                  // Navigator.pop(context);
                                 },
                               ),
                               Divider(
@@ -220,6 +221,7 @@ class _ViewPDFState extends State<ViewPDF> {
                               ),
                               AddRemoveWidget(paths: widget.filePath),
                               RenameFileWidget(
+                                //remove index
                                 index: widget.index,
                                 fileName: widget.filePath,
                               ),

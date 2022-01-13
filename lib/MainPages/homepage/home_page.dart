@@ -19,71 +19,44 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-
-    // Provider.of<PdfFileService>(context, listen: false)
-    //     .getFavoritePdfList(); // setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<PdfFileService>(builder: (context, counter, child) {
-      return Center(
-        child: Scaffold(
-            appBar: Permission.storage.request().isGranted == true
-                ? AppBar(
-                    title: Text(
-                      "PDF Reader",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.white,
-                    actions: <Widget>[
-                      ///search button
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SearchPage()),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.search,
-                          size: 26.0,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Shorting(),
-                      BrowsMoreFilePopUp(),
-                    ],
+      return Scaffold(
+          appBar: AppBar(
+            // kai samjanu nai
+            title: Permission.storage.request().isGranted == true
+                ? Text(
+                    "PDF Reader",
+                    style: TextStyle(color: Colors.black),
                   )
-                : AppBar(
-                    title: Text(
-                      " ${counter.files.length} pdf found !",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.white,
-                    actions: <Widget>[
-                      ///search button
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SearchPage()),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.search,
-                          size: 26.0,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Shorting(),
-                      BrowsMoreFilePopUp(),
-                    ],
+                : Text(
+                    " ${counter.files.length} pdf found !",
+                    style: TextStyle(color: Colors.black),
                   ),
-            body: counter.files.isEmpty ? ReloadPdf() : HomepageBody()),
-      );
+            backgroundColor: Colors.white,
+            actions: <Widget>[
+              ///search button
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SearchPage()),
+                  );
+                },
+                icon: Icon(
+                  Icons.search,
+                  size: 26.0,
+                  color: Colors.black,
+                ),
+              ),
+              Shorting(),
+              BrowsMoreFilePopUp(),
+            ],
+          ),
+          body: counter.files.isEmpty ? ReloadPdf() : HomepageBody());
     });
   }
 }

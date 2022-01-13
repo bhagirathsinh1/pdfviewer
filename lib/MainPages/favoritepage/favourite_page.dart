@@ -9,7 +9,6 @@ import 'package:pdfviewer/MainPages/favoritepage/favoritelist_clear_widget.dart'
 
 import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class Favouritepage extends StatefulWidget {
   const Favouritepage({Key? key}) : super(key: key);
@@ -20,10 +19,6 @@ class Favouritepage extends StatefulWidget {
 
 class _FavouritepageState extends State<Favouritepage> {
   @override
-  // void initState() {
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<PdfFileService>(builder: (context, pdfservice, child) {
@@ -99,16 +94,11 @@ class _FavouritepageState extends State<Favouritepage> {
                         ),
                         trailing: IconButton(
                           onPressed: () {
-                            // newindex = index;
-                            var fileName = pdfservice
-                                .favoritePdfList[index].pdfpath
-                                .toString();
-
                             showModalBottomSheet<void>(
                               context: context,
                               builder: (BuildContext context) {
                                 return BottomsheetFavoritePage(
-                                  fileName: fileName,
+                                  fileName: filePath,
                                   index: index,
                                 );
                               },
@@ -132,12 +122,13 @@ class _FavouritepageState extends State<Favouritepage> {
                                         .toString();
                                     //
                                     return ViewPDF(
-                                        pathPDF: pathPdf,
-                                        fileDate: fileDate,
-                                        fileTitle: fileTitle,
-                                        fileSize: fileSize,
-                                        filePath: filePath,
-                                        index: index);
+                                      pathPDF: pathPdf,
+                                      fileDate: fileDate,
+                                      fileTitle: fileTitle,
+                                      fileSize: fileSize,
+                                      filePath: filePath,
+                                      index: index,
+                                    );
                                   },
                                 ),
                               );
