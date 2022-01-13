@@ -3,29 +3,27 @@ import 'dart:io';
 import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';
+import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ViewPDF extends StatefulWidget {
-  String pathPDF = "";
-  // var nai hale
-  String fileDate;
-  String fileTitle;
-  String fileSize;
-  String filePath;
-
+  // String pathPDF = "";
+  // // var nai hale
+  // String fileDate;
+  // String fileTitle;
+  // String fileSize;
+  // String filePath;
+  PdfListModel pdfmodel;
   // remove index
   var index;
-  ViewPDF(
-      {required this.pathPDF,
-      required this.fileDate,
-      required this.fileTitle,
-      required this.fileSize,
-      required this.filePath,
-      required this.index});
+  ViewPDF({
+    required this.pdfmodel,
+  });
 
   @override
   State<ViewPDF> createState() => _ViewPDFState();
@@ -65,7 +63,7 @@ class _ViewPDFState extends State<ViewPDF> {
       const Duration(milliseconds: 300),
       () async {
         _pdfViewerController = PdfViewerController();
-        _myFile = File(widget.pathPDF);
+        _myFile = File(widget.pdfmodel.pdfpath.toString());
         setState(() {
           isLoading = false;
         });
@@ -122,27 +120,9 @@ class _ViewPDFState extends State<ViewPDF> {
                           height: 560,
                           child: Column(
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.yellow[100],
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 5,
-                                    )),
-                                child: ListTile(
-                                  title: Text(widget.fileTitle),
-                                  subtitle: widget.fileSize.length < 7
-                                      ? Text(
-                                          "${widget.fileDate}\n${widget.fileSize} Kb")
-                                      : Text(
-                                          "${widget.fileDate}\n${(double.parse(widget.fileSize) / 1024).toStringAsFixed(2)} Mb"),
-                                  leading: Icon(
-                                    Icons.picture_as_pdf,
-                                    color: Colors.red,
-                                  ),
-                                  onTap: () {},
-                                ),
-                              ),
+                              TitleOfPdf(
+                                  titlePath:
+                                      widget.pdfmodel.pdfname.toString()),
                               ListTile(
                                 title: Text(
                                   "Continuous page",
@@ -219,11 +199,11 @@ class _ViewPDFState extends State<ViewPDF> {
                                 height: 5,
                                 color: Colors.grey,
                               ),
-                              AddRemoveWidget(paths: widget.filePath),
+                              AddRemoveWidget(
+                                  paths: widget.pdfmodel.pdfpath.toString()),
                               RenameFileWidget(
-                                //remove index
                                 index: widget.index,
-                                fileName: widget.filePath,
+                                fileName: widget.pdfmodel.pdfpath.toString(),
                               ),
                               ListTile(
                                 title: Text(
@@ -240,7 +220,7 @@ class _ViewPDFState extends State<ViewPDF> {
                               ),
                               DeleteFileWidget(
                                 index: widget.index,
-                                fileName: widget.filePath,
+                                fileName: widget.pdfmodel.pdfpath.toString(),
                               ),
                             ],
                           ),

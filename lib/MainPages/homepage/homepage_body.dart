@@ -7,6 +7,8 @@ import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';
+import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
+import 'package:pdfviewer/widget/CommonWidget/favorite_icon.dart';
 import 'package:provider/provider.dart';
 
 class HomepageBody extends StatefulWidget {
@@ -46,16 +48,7 @@ class _HomepageBodyState extends State<HomepageBody> {
                 trailing: Wrap(
                   alignment: WrapAlignment.center,
                   children: [
-                    IconButton(
-                      onPressed: () async {},
-                      constraints: BoxConstraints(),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                      icon: Icon(
-                        Icons.star,
-                        color: !isfav.isEmpty ? Colors.blue : Colors.white,
-                      ),
-                    ),
+                    FavoriteStarIcon(isfav: isfav),
                     IconButton(
                       constraints: BoxConstraints(),
                       padding:
@@ -70,28 +63,9 @@ class _HomepageBodyState extends State<HomepageBody> {
                               height: 350,
                               child: Column(
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.yellow[100],
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 5,
-                                        )),
-                                    child: ListTile(
-                                      title: Text(
-                                          pdfservice.files[index].pdfname
-                                              .toString(),
-                                          style: TextStyle(
-                                            color:
-                                                Colors.black.withOpacity(0.8),
-                                          )),
-                                      leading: Icon(
-                                        Icons.picture_as_pdf,
-                                        color: Colors.red,
-                                      ),
-                                      onTap: () {},
-                                    ),
-                                  ),
+                                  TitleOfPdf(
+                                      titlePath: pdfservice.files[index].pdfname
+                                          .toString()),
                                   ShareFiles(
                                     fileName: filePath,
                                     index: index,
@@ -149,17 +123,8 @@ class _HomepageBodyState extends State<HomepageBody> {
                     MaterialPageRoute(
                       builder: (context) {
                         return ViewPDF(
-                          pathPDF: filePath,
-                          fileDate: fileDate,
-                          fileTitle: fileTitle,
-                          fileSize: fileSize,
-                          filePath: filePath,
-                          index: index,
+                          pdfmodel: pdfservice.files[index],
                         );
-                        // return ViewPDF(
-                        // PdfListModel: pdfservice.files[index],
-                        // );
-                        //open ViewPDFHomeScreen page on click
                       },
                     ),
                   );

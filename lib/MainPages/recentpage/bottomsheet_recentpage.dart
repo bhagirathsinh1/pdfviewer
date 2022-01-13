@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 
 import 'package:pdfviewer/SQLService/sqlService.dart';
 
@@ -26,66 +27,19 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
   Widget build(BuildContext context) {
     var paths = widget.fileName;
     var titlePath = paths.toString().split('/').last;
-    var isfav = Provider.of<PdfFileService>(context, listen: false)
-        .favoritePdfList
-        .where((element) => element.pdfpath == paths);
+
     return Container(
       color: Colors.white,
       height: 300,
       child: Column(
         children: [
           TitleOfPdf(titlePath: titlePath),
-
-          //
-          ShareFiles(
-            fileName: widget.fileName,
-            index: widget.index,
-            // snapshot: widget.snapshot,
-          ),
-
-          ListTile(
-            title: !isfav.isEmpty
-                ? Text(
-                    "Remove from favorite",
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.8),
-                    ),
-                  )
-                : Text(
-                    "Add to favorite",
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.8),
-                    ),
-                  ),
-            leading: !isfav.isEmpty
-                ? Icon(
-                    Icons.star_border,
-                    color: Colors.black.withOpacity(0.5),
-                  )
-                : Icon(
-                    Icons.star,
-                    color: Colors.black.withOpacity(0.5),
-                  ),
-            onTap: () async {
-              // print(
-              //     "-------------${widget.snapshot.data![widget.index].recentpdf.toString()}-------------");
-              if (!isfav.isEmpty) {
-                Provider.of<PdfFileService>(context, listen: false)
-                    .removeFromFavoritePdfList(
-                        paths.toString(), SqlModel.tableFavorite)
-                    .whenComplete(() => Navigator.pop(context));
-              } else {
-                Provider.of<PdfFileService>(context, listen: false)
-                    .insertIntoFavoritePdfList(paths, SqlModel.tableFavorite)
-                    .whenComplete(() => Navigator.pop(context));
-              }
-            },
-          ),
-          //
+          ShareFiles(fileName: paths, index: widget.index),
+          AddRemoveWidget(paths: paths),
           removeFromRecentPdfList(paths: paths),
           DeleteFileWidget(
             index: widget.index,
-            fileName: widget.fileName,
+            fileName: paths,
           ),
         ],
       ),

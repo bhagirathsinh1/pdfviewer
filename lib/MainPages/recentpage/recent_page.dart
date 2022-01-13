@@ -9,6 +9,7 @@ import 'package:pdfviewer/MainPages/recentpage/bottomsheet_recentpage.dart';
 import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 
 import 'package:pdfviewer/MainPages/recentpage/recentlist_clear_widget.dart';
+import 'package:pdfviewer/widget/CommonWidget/favorite_icon.dart';
 import 'package:provider/provider.dart';
 
 class Recentpage extends StatefulWidget {
@@ -21,7 +22,6 @@ class Recentpage extends StatefulWidget {
 class _RecentpageState extends State<Recentpage> {
   @override
   void initState() {
-    // Provider.of<PdfFileService>(context, listen: false).getFavoritePdfList();
     super.initState();
   }
 
@@ -101,17 +101,7 @@ class _RecentpageState extends State<Recentpage> {
                         ),
                         trailing:
                             Wrap(alignment: WrapAlignment.center, children: [
-                          IconButton(
-                            onPressed: () async {},
-                            constraints: BoxConstraints(),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 10),
-                            icon: Icon(
-                              Icons.star,
-                              color:
-                                  !isfav.isEmpty ? Colors.blue : Colors.white,
-                            ),
-                          ),
+                          FavoriteStarIcon(isfav: isfav),
                           IconButton(
                             constraints: BoxConstraints(),
                             padding: EdgeInsets.symmetric(
@@ -138,16 +128,9 @@ class _RecentpageState extends State<Recentpage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                // return ViewPDF(
-                                //   pathPDF: filePath,
-                                // );
                                 return ViewPDF(
-                                    pathPDF: filePath,
-                                    fileDate: fileDate,
-                                    fileTitle: fileTitle,
-                                    fileSize: fileSize,
-                                    filePath: filePath,
-                                    index: index);
+                                  pdfmodel: pdfservice.recentPdfList[index],
+                                );
                               },
                             ),
                           );

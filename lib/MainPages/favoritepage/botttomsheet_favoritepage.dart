@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'package:pdfviewer/SQLService/sqlService.dart';
-import 'package:pdfviewer/service/pdf_file_service.dart';
+import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
-import 'package:provider/provider.dart';
 
 class BottomsheetFavoritePage extends StatefulWidget {
   BottomsheetFavoritePage({
@@ -24,39 +21,20 @@ class BottomsheetFavoritePage extends StatefulWidget {
 class _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {
   @override
   Widget build(BuildContext context) {
+    var paths = widget.fileName;
+    var titlePath = paths.toString().split('/').last;
+
     return Container(
       color: Colors.white,
       height: 250,
       child: Column(
         children: [
-          TitleOfPdf(titlePath: widget.fileName),
-
-          //
-          ShareFiles(fileName: widget.fileName, index: widget.index),
-
-          //
-          ListTile(
-            title: Text(
-              "Remove from favorite",
-              style: TextStyle(
-                color: Colors.black.withOpacity(0.8),
-              ),
-            ),
-            leading: Icon(
-              Icons.star,
-              color: Colors.black.withOpacity(0.5),
-            ),
-            onTap: () async {
-              Navigator.pop(context);
-              // Navigator.push(
-              Provider.of<PdfFileService>(context, listen: false)
-                  .removeFromFavoritePdfList(
-                      widget.fileName.toString(), SqlModel.tableFavorite);
-            },
-          ),
+          TitleOfPdf(titlePath: titlePath),
+          ShareFiles(fileName: paths, index: widget.index),
+          AddRemoveWidget(paths: paths),
           DeleteFileWidget(
             index: widget.index,
-            fileName: widget.fileName,
+            fileName: paths,
           ),
         ],
       ),

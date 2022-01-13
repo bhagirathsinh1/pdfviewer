@@ -21,8 +21,9 @@ class _FavouritepageState extends State<Favouritepage> {
   @override
   @override
   Widget build(BuildContext context) {
-    return Consumer<PdfFileService>(builder: (context, pdfservice, child) {
-      return Scaffold(
+    return Consumer<PdfFileService>(
+      builder: (context, pdfservice, child) {
+        return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
             backgroundColor: Colors.white,
@@ -117,17 +118,10 @@ class _FavouritepageState extends State<Favouritepage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    var pathPdf = pdfservice
-                                        .favoritePdfList[index].pdfpath
-                                        .toString();
                                     //
                                     return ViewPDF(
-                                      pathPDF: pathPdf,
-                                      fileDate: fileDate,
-                                      fileTitle: fileTitle,
-                                      fileSize: fileSize,
-                                      filePath: filePath,
-                                      index: index,
+                                      pdfmodel:
+                                          pdfservice.favoritePdfList[index],
                                     );
                                   },
                                 ),
@@ -138,7 +132,9 @@ class _FavouritepageState extends State<Favouritepage> {
                       ),
                     );
                   },
-                ));
-    });
+                ),
+        );
+      },
+    );
   }
 }

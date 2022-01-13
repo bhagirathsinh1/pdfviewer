@@ -72,7 +72,7 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
     );
   }
 
-  changeFileNameOnly(BuildContext context, String newFileName) {
+  changeFileNameOnly(BuildContext context, String newFileName) async {
     print("------------->arrived new name----$newFileName--------");
     var providerService = Provider.of<PdfFileService>(context, listen: false);
 
@@ -81,34 +81,24 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
     var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);
     var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + ".pdf";
 
-    var filename =
-        providerService.files[widget.index].referenceFile!.rename(newPath);
+    var filename = await providerService.files[widget.index].referenceFile!
+        .rename(newPath);
 
-    filename.then(
-      (v) {
-        print("-------------v.path data---------------- ${v.path}");
+    print("-------------v.path data---------------- ${filename.path}");
 
-        providerService.files[widget.index].referenceFile = v;
-        providerService.files[widget.index].pdfpath = v.path;
+    providerService.files[widget.index].referenceFile = filename;
+    providerService.files[widget.index].pdfpath = filename.path;
 
-        providerService.files[widget.index].pdfname = v.path.split('/').last;
+    providerService.files[widget.index].pdfname = filename.path.split('/').last;
 
-        providerService.getStorageFilleMethod();
+    providerService.getStorageFilleMethod();
 
-        print(
-          "-------------MyApp.files path data---------------- ${Provider.of<PdfFileService>(context, listen: false).files[widget.index]}",
-        );
-      },
-    ).whenComplete(
-      () {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Renamed to  ${newFileName}"),
-          ),
-        );
-      },
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Renamed to  ${newFileName}"),
+      ),
     );
   }
 }
