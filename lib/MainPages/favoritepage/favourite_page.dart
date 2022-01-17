@@ -1,8 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_svg/avd.dart';
+import 'package:pdfviewer/MainPages/favoritepage/no_pdf_found.dart';
+
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/MainPages/favoritepage/botttomsheet_favoritepage.dart';
 import 'package:pdfviewer/MainPages/favoritepage/favoritelist_clear_widget.dart';
@@ -49,24 +47,7 @@ class _FavouritepageState extends State<Favouritepage> {
             ],
           ),
           body: pdfservice.favoritePdfList.isEmpty
-              ? Center(
-                  child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                        height: 200,
-                        width: 200,
-                        decoration: new BoxDecoration(
-                            image: new DecorationImage(
-                          image: new AssetImage("assets/icon/empty_image.gif"),
-                          fit: BoxFit.fill,
-                        ))),
-                    Text(
-                      "No Favorite pdf found!!",
-                      style: TextStyle(color: Colors.grey.shade600),
-                    )
-                  ],
-                ))
+              ? Center(child: NoPdfFound(listName: 'Favorite'))
               : ListView.builder(
                   // reverse: true,
                   shrinkWrap: true,

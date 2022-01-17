@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pdfviewer/MainPages/favoritepage/no_pdf_found.dart';
 
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/MainPages/recentpage/bottomsheet_recentpage.dart';
@@ -54,24 +55,7 @@ class _RecentpageState extends State<Recentpage> {
             ],
           ),
           body: pdfservice.recentPdfList.isEmpty
-              ? Center(
-                  child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                        height: 200,
-                        width: 200,
-                        decoration: new BoxDecoration(
-                            image: new DecorationImage(
-                          image: new AssetImage("assets/icon/empty_image.gif"),
-                          fit: BoxFit.fill,
-                        ))),
-                    Text(
-                      "No Recent pdf found!!",
-                      style: TextStyle(color: Colors.grey.shade600),
-                    )
-                  ],
-                ))
+              ? Center(child: NoPdfFound(listName: 'Recent'))
               : ListView.builder(
                   // reverse: true,
                   shrinkWrap: true,

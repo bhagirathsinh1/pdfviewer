@@ -1,0 +1,22 @@
+{
+    "sourceFile": "lib/MainPages/favoritepage/no_pdf_found.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1642392664356,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642392683829,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,8 @@\n import 'package:flutter/material.dart';\r\n \r\n-class NoFavoritePdfFound extends StatelessWidget {\r\n-  const NoFavoritePdfFound({Key? key, required this.listName})\r\n-      : super(key: key);\r\n+class NoPdfFound extends StatelessWidget {\r\n+  const NoPdfFound({Key? key, required this.listName}) : super(key: key);\r\n   final String listName;\r\n \r\n   @override\r\n   Widget build(BuildContext context) {\r\n"
+                }
+            ],
+            "date": 1642392664356,
+            "name": "Commit-0",
+            "content": "import 'package:flutter/material.dart';\r\n\r\nclass NoFavoritePdfFound extends StatelessWidget {\r\n  const NoFavoritePdfFound({Key? key, required this.listName})\r\n      : super(key: key);\r\n  final String listName;\r\n\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return Column(\r\n      mainAxisAlignment: MainAxisAlignment.center,\r\n      children: [\r\n        Container(\r\n            height: 200,\r\n            width: 200,\r\n            decoration: new BoxDecoration(\r\n                image: new DecorationImage(\r\n              image: new AssetImage(\"assets/icon/empty_image.gif\"),\r\n              fit: BoxFit.fill,\r\n            ))),\r\n        Text(\r\n          \"No $listName pdf found!!\",\r\n          style: TextStyle(color: Colors.grey.shade600),\r\n        )\r\n      ],\r\n    );\r\n  }\r\n}\r\n"
+        }
+    ]
+}
