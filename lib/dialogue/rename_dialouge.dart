@@ -15,6 +15,8 @@ class RenameFileDialouge extends StatefulWidget {
 }
 
 class _RenameFileDialougeState extends State<RenameFileDialouge> {
+  bool isLoading = false;
+
   final _formKeyRenameFile = GlobalKey<FormState>();
   TextEditingController renameController = TextEditingController();
   @override
@@ -60,12 +62,16 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
           },
         ),
         TextButton(
-          child: Text("OK"),
+          child: isLoading
+              ? Center(
+                  child: Text("Loading..."),
+                )
+              : Text("OK"),
           onPressed: () {
             var newFileName = renameController.text;
             print(newFileName.split('.'));
             changeFileNameOnly(context, newFileName);
-            Navigator.pop(context);
+            // Navigator.pop(context);
           },
         )
       ],
@@ -80,7 +86,9 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
 
     var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);
     var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + ".pdf";
-
+    setState(() {
+      isLoading = true;
+    });
     var filename = await pdfServiceIndex.referenceFile!.rename(newPath);
 
     print("-------------v.path data---------------- ${filename.path}");
@@ -99,5 +107,8 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
         content: Text("Renamed to  ${newFileName}"),
       ),
     );
+    setState(() {
+      isLoading = false;
+    });
   }
 }

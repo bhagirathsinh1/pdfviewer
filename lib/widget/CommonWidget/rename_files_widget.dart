@@ -25,6 +25,7 @@ class RenameFileWidget extends StatelessWidget {
         color: Colors.black.withOpacity(0.5),
       ),
       onTap: () {
+        Navigator.pop(context);
         showDialog(
           context: context,
           builder: (BuildContext context) {

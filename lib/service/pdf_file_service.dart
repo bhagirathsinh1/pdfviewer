@@ -277,7 +277,7 @@ class PdfFileService with ChangeNotifier {
     return true;
   }
 
-  void getStorageFilleMethod() async {
+  getStorageFilleMethod() async {
     //asyn function to get list of files
     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
     var root = storageInfo[0]

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 1,
+            "activePatchIndex": 14,
             "patches": [
                 {
                     "date": 1642076212258,
@@ -12,6 +12,58 @@
                 {
                     "date": 1642077085721,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,23 +74,22 @@\n \r\n   changeFileNameOnly(BuildContext context, String newFileName) async {\r\n     print(\"------------->arrived new name----$newFileName--------\");\r\n     var providerService = Provider.of<PdfFileService>(context, listen: false);\r\n+    var pdfServiceIndex = providerService.files[widget.index];\r\n+    var temp1 = pdfServiceIndex.referenceFile!.path;\r\n \r\n-    var temp1 = providerService.files[widget.index].referenceFile!.path;\r\n-\r\n     var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);\r\n     var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + \".pdf\";\r\n \r\n-    var filename = await providerService.files[widget.index].referenceFile!\r\n-        .rename(newPath);\r\n+    var filename = await pdfServiceIndex.referenceFile!.rename(newPath);\r\n \r\n     print(\"-------------v.path data---------------- ${filename.path}\");\r\n \r\n-    providerService.files[widget.index].referenceFile = filename;\r\n-    providerService.files[widget.index].pdfpath = filename.path;\r\n+    pdfServiceIndex.referenceFile = filename;\r\n+    pdfServiceIndex.pdfpath = filename.path;\r\n \r\n-    providerService.files[widget.index].pdfname = filename.path.split('/').last;\r\n+    pdfServiceIndex.pdfname = filename.path.split('/').last;\r\n \r\n     providerService.getStorageFilleMethod();\r\n \r\n     Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642393581492,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,8 +14,10 @@\n   _RenameFileDialougeState createState() => _RenameFileDialougeState();\r\n }\r\n \r\n class _RenameFileDialougeState extends State<RenameFileDialouge> {\r\n+  bool isLoading = false;\r\n+\r\n   final _formKeyRenameFile = GlobalKey<FormState>();\r\n   TextEditingController renameController = TextEditingController();\r\n   @override\r\n   void initState() {\r\n@@ -64,16 +66,19 @@\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n             print(newFileName.split('.'));\r\n             changeFileNameOnly(context, newFileName);\r\n-            Navigator.pop(context);\r\n+            // Navigator.pop(context);\r\n           },\r\n         )\r\n       ],\r\n     );\r\n   }\r\n \r\n   changeFileNameOnly(BuildContext context, String newFileName) async {\r\n+    setState(() {\r\n+      isLoading = true;\r\n+    });\r\n     print(\"------------->arrived new name----$newFileName--------\");\r\n     var providerService = Provider.of<PdfFileService>(context, listen: false);\r\n     var pdfServiceIndex = providerService.files[widget.index];\r\n     var temp1 = pdfServiceIndex.referenceFile!.path;\r\n"
+                },
+                {
+                    "date": 1642393609120,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -95,9 +95,11 @@\n \r\n     pdfServiceIndex.pdfname = filename.path.split('/').last;\r\n \r\n     providerService.getStorageFilleMethod();\r\n-\r\n+    setState(() {\r\n+      isLoading = false;\r\n+    });\r\n     Navigator.pop(context);\r\n     ScaffoldMessenger.of(context).clearSnackBars();\r\n     ScaffoldMessenger.of(context).showSnackBar(\r\n       SnackBar(\r\n"
+                },
+                {
+                    "date": 1642393709351,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -61,9 +61,13 @@\n             Navigator.pop(context);\r\n           },\r\n         ),\r\n         TextButton(\r\n-          child: Text(\"OK\"),\r\n+          child: isLoading\r\n+              ? Center(\r\n+                  child: CircularProgressIndicator(),\r\n+                )\r\n+              : Text(\"OK\"),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n             print(newFileName.split('.'));\r\n             changeFileNameOnly(context, newFileName);\r\n"
+                },
+                {
+                    "date": 1642393822026,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -78,19 +78,18 @@\n     );\r\n   }\r\n \r\n   changeFileNameOnly(BuildContext context, String newFileName) async {\r\n-    setState(() {\r\n-      isLoading = true;\r\n-    });\r\n     print(\"------------->arrived new name----$newFileName--------\");\r\n     var providerService = Provider.of<PdfFileService>(context, listen: false);\r\n     var pdfServiceIndex = providerService.files[widget.index];\r\n     var temp1 = pdfServiceIndex.referenceFile!.path;\r\n \r\n     var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);\r\n     var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + \".pdf\";\r\n-\r\n+    setState(() {\r\n+      isLoading = true;\r\n+    });\r\n     var filename = await pdfServiceIndex.referenceFile!.rename(newPath);\r\n \r\n     print(\"-------------v.path data---------------- ${filename.path}\");\r\n \r\n"
+                },
+                {
+                    "date": 1642393872551,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -97,9 +97,9 @@\n     pdfServiceIndex.pdfpath = filename.path;\r\n \r\n     pdfServiceIndex.pdfname = filename.path.split('/').last;\r\n \r\n-    providerService.getStorageFilleMethod();\r\n+    await providerService.getStorageFilleMethod();\r\n     setState(() {\r\n       isLoading = false;\r\n     });\r\n     Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642394005431,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -61,13 +61,15 @@\n             Navigator.pop(context);\r\n           },\r\n         ),\r\n         TextButton(\r\n-          child: isLoading\r\n-              ? Center(\r\n-                  child: CircularProgressIndicator(),\r\n-                )\r\n-              : Text(\"OK\"),\r\n+          child:\r\n+              // isLoading\r\n+              //     ? Center(\r\n+              //         child: CircularProgressIndicator(),\r\n+              //       )\r\n+              //     :\r\n+              Text(\"OK\"),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n             print(newFileName.split('.'));\r\n             changeFileNameOnly(context, newFileName);\r\n"
+                },
+                {
+                    "date": 1642394136898,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -61,15 +61,13 @@\n             Navigator.pop(context);\r\n           },\r\n         ),\r\n         TextButton(\r\n-          child:\r\n-              // isLoading\r\n-              //     ? Center(\r\n-              //         child: CircularProgressIndicator(),\r\n-              //       )\r\n-              //     :\r\n-              Text(\"OK\"),\r\n+          child: isLoading\r\n+              ? Center(\r\n+                  child: Text('loading...'),\r\n+                )\r\n+              : Text(\"OK\"),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n             print(newFileName.split('.'));\r\n             changeFileNameOnly(context, newFileName);\r\n"
+                },
+                {
+                    "date": 1642394196843,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,12 +63,14 @@\n         ),\r\n         TextButton(\r\n           child: isLoading\r\n               ? Center(\r\n-                  child: Text('loading...'),\r\n+                  child: CircularProgressIndicator(),\r\n                 )\r\n               : Text(\"OK\"),\r\n           onPressed: () {\r\n+            Navigator.pop(context);\r\n+\r\n             var newFileName = renameController.text;\r\n             print(newFileName.split('.'));\r\n             changeFileNameOnly(context, newFileName);\r\n             // Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642394221935,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -67,9 +67,9 @@\n                   child: CircularProgressIndicator(),\r\n                 )\r\n               : Text(\"OK\"),\r\n           onPressed: () {\r\n-            Navigator.pop(context);\r\n+            //             // Navigator.pop(context);\r\n \r\n             var newFileName = renameController.text;\r\n             print(newFileName.split('.'));\r\n             changeFileNameOnly(context, newFileName);\r\n"
+                },
+                {
+                    "date": 1642394311075,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -67,10 +67,8 @@\n                   child: CircularProgressIndicator(),\r\n                 )\r\n               : Text(\"OK\"),\r\n           onPressed: () {\r\n-            //             // Navigator.pop(context);\r\n-\r\n             var newFileName = renameController.text;\r\n             print(newFileName.split('.'));\r\n             changeFileNameOnly(context, newFileName);\r\n             // Navigator.pop(context);\r\n@@ -100,16 +98,17 @@\n \r\n     pdfServiceIndex.pdfname = filename.path.split('/').last;\r\n \r\n     await providerService.getStorageFilleMethod();\r\n-    setState(() {\r\n-      isLoading = false;\r\n-    });\r\n+\r\n     Navigator.pop(context);\r\n     ScaffoldMessenger.of(context).clearSnackBars();\r\n     ScaffoldMessenger.of(context).showSnackBar(\r\n       SnackBar(\r\n         content: Text(\"Renamed to  ${newFileName}\"),\r\n       ),\r\n     );\r\n+    setState(() {\r\n+      isLoading = false;\r\n+    });\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642394431326,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,9 +63,11 @@\n         ),\r\n         TextButton(\r\n           child: isLoading\r\n               ? Center(\r\n-                  child: CircularProgressIndicator(),\r\n+                  child: Center(\r\n+                    child: Text(\"Loading...\"),\r\n+                  ),\r\n                 )\r\n               : Text(\"OK\"),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n"
+                },
+                {
+                    "date": 1642394514374,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,11 +63,9 @@\n         ),\r\n         TextButton(\r\n           child: isLoading\r\n               ? Center(\r\n-                  child: Center(\r\n-                    child: Text(\"Loading...\"),\r\n-                  ),\r\n+                  child: Text(\"Loading...\"),\r\n                 )\r\n               : Text(\"OK\"),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n"
+                },
+                {
+                    "date": 1642394815218,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -97,9 +97,9 @@\n     pdfServiceIndex.pdfpath = filename.path;\r\n \r\n     pdfServiceIndex.pdfname = filename.path.split('/').last;\r\n \r\n-    await providerService.getStorageFilleMethod();\r\n+    providerService.getStorageFilleMethod();\r\n \r\n     Navigator.pop(context);\r\n     ScaffoldMessenger.of(context).clearSnackBars();\r\n     ScaffoldMessenger.of(context).showSnackBar(\r\n"
                 }
             ],
             "date": 1642076212258,

@@ -43,7 +43,7 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
         TextButton(
           child: isLoading
               ? Center(
-                  child: CircularProgressIndicator(),
+                  child: Text('Loading...'),
                 )
               : Text("Continue"),
           onPressed: () {
@@ -71,11 +71,11 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
       ),
     )
         .whenComplete(() {
+      setState(() {
+        isLoading = false;
+      });
       Navigator.pop(context);
       showAlertDialog(context);
-    });
-    setState(() {
-      isLoading = false;
     });
 
     // );
