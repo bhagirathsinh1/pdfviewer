@@ -71,9 +71,11 @@ class _HomepageBodyState extends State<HomepageBody> {
                                   ),
                                   AddRemoveWidget(paths: filePath),
                                   RenameFileWidget(
-                                    
                                     index: index,
                                     fileName: filePath,
+                                    // onRename: (String newName) {
+                                    //   pdfservice.rename(index, newName);
+                                    // },
                                   ),
                                   DeleteFileWidget(
                                     index: index,

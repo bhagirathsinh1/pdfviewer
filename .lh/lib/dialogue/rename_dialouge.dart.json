@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 14,
+            "activePatchIndex": 16,
             "patches": [
                 {
                     "date": 1642076212258,
@@ -64,6 +64,14 @@
                 {
                     "date": 1642394815218,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -97,9 +97,9 @@\n     pdfServiceIndex.pdfpath = filename.path;\r\n \r\n     pdfServiceIndex.pdfname = filename.path.split('/').last;\r\n \r\n-    await providerService.getStorageFilleMethod();\r\n+    providerService.getStorageFilleMethod();\r\n \r\n     Navigator.pop(context);\r\n     ScaffoldMessenger.of(context).clearSnackBars();\r\n     ScaffoldMessenger.of(context).showSnackBar(\r\n"
+                },
+                {
+                    "date": 1642404207721,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,9 +27,10 @@\n \r\n   // set up the AlertDialog\r\n   @override\r\n   Widget build(BuildContext context) {\r\n-    return AlertDialog(\r\n+    return Consumer<PdfFileService>(builder: (context, counter, child) {\r\n+      return AlertDialog(\r\n       title: Text(\"Alert!\"),\r\n       content: Container(\r\n         height: 70,\r\n         child: Form(\r\n@@ -75,9 +76,9 @@\n           },\r\n         )\r\n       ],\r\n     );\r\n-  }\r\n+  },);\r\n \r\n   changeFileNameOnly(BuildContext context, String newFileName) async {\r\n     print(\"------------->arrived new name----$newFileName--------\");\r\n     var providerService = Provider.of<PdfFileService>(context, listen: false);\r\n"
+                },
+                {
+                    "date": 1642404422989,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,10 +27,9 @@\n \r\n   // set up the AlertDialog\r\n   @override\r\n   Widget build(BuildContext context) {\r\n-    return Consumer<PdfFileService>(builder: (context, counter, child) {\r\n-      return AlertDialog(\r\n+    return AlertDialog(\r\n       title: Text(\"Alert!\"),\r\n       content: Container(\r\n         height: 70,\r\n         child: Form(\r\n@@ -76,9 +75,9 @@\n           },\r\n         )\r\n       ],\r\n     );\r\n-  },);\r\n+  }\r\n \r\n   changeFileNameOnly(BuildContext context, String newFileName) async {\r\n     print(\"------------->arrived new name----$newFileName--------\");\r\n     var providerService = Provider.of<PdfFileService>(context, listen: false);\r\n"
                 }
             ],
             "date": 1642076212258,

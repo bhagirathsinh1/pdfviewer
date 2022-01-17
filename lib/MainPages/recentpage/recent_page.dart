@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pdfviewer/MainPages/favoritepage/no_pdf_found.dart';
 
 import 'package:pdfviewer/service/pdf_file_service.dart';
