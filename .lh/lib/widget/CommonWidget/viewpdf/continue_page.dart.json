@@ -1,0 +1,22 @@
+{
+    "sourceFile": "lib/widget/CommonWidget/viewpdf/continue_page.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1642506057384,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642506170361,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,36 @@\n import 'package:flutter/material.dart';\r\n \r\n-class ContinuePage extends StatelessWidget {\r\n-  const ContinuePage({Key? key}) : super(key: key);\r\n+class ContinuePage extends StatefulWidget {\r\n+  const ContinuePage({Key? key,required this.isContinuePage}) : super(key: key);\r\n+final bool isContinuePage;\r\n+  @override\r\n+  State<ContinuePage> createState() => _ContinuePageState();\r\n+}\r\n \r\n+class _ContinuePageState extends State<ContinuePage> {\r\n   @override\r\n   Widget build(BuildContext context) {\r\n-    return Container();\r\n+    return  ListTile(\r\n+                                title: Text(\r\n+                                  \"Continuous page\",\r\n+                                  style: TextStyle(\r\n+                                    color: widget.isContinuePage\r\n+                                        ? Colors.black.withOpacity(0.8)\r\n+                                        : Colors.blue.withOpacity(0.8),\r\n+                                  ),\r\n+                                ),\r\n+                                leading: Icon(\r\n+                                  Icons.print,\r\n+                                  color: widget.isContinuePage\r\n+                                      ? Colors.black.withOpacity(0.5)\r\n+                                      : Colors.blue.withOpacity(0.8),\r\n+                                ),\r\n+                                onTap: () {\r\n+                                  setState(() {\r\n+                                    widget.isContinuePage = false;\r\n+                                  });\r\n+                                  Navigator.pop(context);\r\n+                                },\r\n+                              )\r\n   }\r\n }\r\n"
+                }
+            ],
+            "date": 1642506057384,
+            "name": "Commit-0",
+            "content": "import 'package:flutter/material.dart';\r\n\r\nclass ContinuePage extends StatelessWidget {\r\n  const ContinuePage({Key? key}) : super(key: key);\r\n\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return Container();\r\n  }\r\n}\r\n"
+        }
+    ]
+}

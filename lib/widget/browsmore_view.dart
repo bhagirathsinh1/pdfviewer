@@ -1,29 +1,23 @@
-import 'dart:ffi';
 import 'dart:io';
-import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
-import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
-import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
-import 'package:pdfviewer/widget/CommonWidget/viewpdf/print.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class ViewPDF extends StatefulWidget {
-  PdfListModel pdfmodel;
-  var index;
-  ViewPDF({
-    required this.pdfmodel,
+class BrowsMoreView extends StatefulWidget {
+  String path;
+  BrowsMoreView({
+    required this.path,
   });
 
   @override
-  State<ViewPDF> createState() => _ViewPDFState();
+  State<BrowsMoreView> createState() => _ViewPDFState();
 }
 
-class _ViewPDFState extends State<ViewPDF> {
+class _ViewPDFState extends State<BrowsMoreView> {
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   var _myFile;
   late PdfViewerController _pdfViewerController;
@@ -57,7 +51,7 @@ class _ViewPDFState extends State<ViewPDF> {
       const Duration(milliseconds: 300),
       () async {
         _pdfViewerController = PdfViewerController();
-        _myFile = File(widget.pdfmodel.pdfpath.toString());
+        _myFile = File(widget.path.toString());
         setState(() {
           isLoading = false;
         });
@@ -111,12 +105,12 @@ class _ViewPDFState extends State<ViewPDF> {
                         scrollDirection: Axis.vertical,
                         child: Container(
                           color: Colors.white,
-                          height: 560,
+                          height: 320,
                           child: Column(
                             children: [
                               TitleOfPdf(
                                   titlePath:
-                                      widget.pdfmodel.pdfname.toString()),
+                                      widget.path.toString().split('/').last),
                               ListTile(
                                 title: Text(
                                   "Continuous page",
@@ -188,22 +182,6 @@ class _ViewPDFState extends State<ViewPDF> {
                                 onTap: () {
                                   showGotoAlert(context);
                                 },
-                              ),
-                              Divider(
-                                height: 5,
-                                color: Colors.grey,
-                              ),
-                              AddRemoveWidget(
-                                  paths: widget.pdfmodel.pdfpath.toString()),
-                              RenameFileWidget(
-                                  fileName: widget.pdfmodel.pdfpath.toString(),
-                                  callback: (String newFileName) {
-                                    pdfservice.changeFileNameOnly(
-                                        context, newFileName, widget.index);
-                                  }),
-                              PrintWidget(),
-                              DeleteFileWidget(
-                                fileName: widget.pdfmodel.pdfpath.toString(),
                               ),
                             ],
                           ),

@@ -1,0 +1,26 @@
+{
+    "sourceFile": "lib/widget/CommonWidget/viewpdf/print.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1642505859486,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642505874002,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,7 +4,19 @@\n   const Print({Key? key}) : super(key: key);\r\n \r\n   @override\r\n   Widget build(BuildContext context) {\r\n-    return Container();\r\n+    return ListTile(\r\n+      title: Text(\r\n+        \"Print\",\r\n+        style: TextStyle(\r\n+          color: Colors.black.withOpacity(0.8),\r\n+        ),\r\n+      ),\r\n+      leading: Icon(\r\n+        Icons.local_print_shop_rounded,\r\n+        color: Colors.black.withOpacity(0.5),\r\n+      ),\r\n+      onTap: () {},\r\n+    );\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642505904669,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n import 'package:flutter/material.dart';\r\n \r\n-class Print extends StatelessWidget {\r\n-  const Print({Key? key}) : super(key: key);\r\n+class PrintWidget extends StatelessWidget {\r\n+  const PrintWidget({Key? key}) : super(key: key);\r\n \r\n   @override\r\n   Widget build(BuildContext context) {\r\n     return ListTile(\r\n"
+                }
+            ],
+            "date": 1642505859486,
+            "name": "Commit-0",
+            "content": "import 'package:flutter/material.dart';\r\n\r\nclass Print extends StatelessWidget {\r\n  const Print({Key? key}) : super(key: key);\r\n\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return Container();\r\n  }\r\n}\r\n"
+        }
+    ]
+}
