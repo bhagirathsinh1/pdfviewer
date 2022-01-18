@@ -314,4 +314,34 @@ class PdfFileService with ChangeNotifier {
     print(files);
     //update the UI
   }
+
+  changeFileNameOnly(
+      BuildContext context, String newFileName, int index) async {
+    print("------------->arrived new name----$newFileName--------");
+    var temp1 = files[index].referenceFile!.path;
+
+    var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);
+    var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + ".pdf";
+
+    print("------------->arrived new name----$newPath--------");
+
+    var filename = await files[index].referenceFile!.rename(newPath);
+
+    print("-------------v.path data---------------- ${filename.path}");
+
+    files[index].referenceFile = filename;
+    files[index].pdfpath = filename.path;
+
+    files[index].pdfname = filename.path.split('/').last;
+
+    getStorageFilleMethod();
+    notifyListeners();
+    // Navigator.pop(context);
+    // ScaffoldMessenger.of(context).clearSnackBars();
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text("Renamed to  ${newFileName}"),
+    //   ),
+    // );
+  }
 }

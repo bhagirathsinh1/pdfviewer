@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 5,
+            "activePatchIndex": 7,
             "patches": [
                 {
                     "date": 1642076081081,
@@ -28,6 +28,14 @@
                 {
                     "date": 1642393263092,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -25,17 +25,17 @@\n         color: Colors.black.withOpacity(0.5),\r\n       ),\r\n       onTap: () {\r\n         Navigator.pop(context);\r\n-        // showDialog(\r\n-        //   context: context,\r\n-        //   builder: (BuildContext context) {\r\n-        //     return new RenameFileDialouge(\r\n-        //       index: index, // remove index\r\n-        //       fileName: fileName,\r\n-        //     );\r\n-        //   },\r\n-        // );\r\n+        showDialog(\r\n+          context: context,\r\n+          builder: (BuildContext context) {\r\n+            return new RenameFileDialouge(\r\n+              index: index, // remove index\r\n+              fileName: fileName,\r\n+            );\r\n+          },\r\n+        );\r\n       },\r\n     );\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642485443814,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,13 +4,15 @@\n class RenameFileWidget extends StatelessWidget {\r\n   //remove index\r\n   final int index;\r\n   final String fileName;\r\n-  const RenameFileWidget({\r\n-    Key? key,\r\n-    required this.index,\r\n-    required this.fileName,\r\n-  }) : super(key: key);\r\n+  final Function callback;\r\n+  const RenameFileWidget(\r\n+      {Key? key,\r\n+      required this.index,\r\n+      required this.fileName,\r\n+      required this.callback})\r\n+      : super(key: key);\r\n \r\n   @override\r\n   Widget build(BuildContext context) {\r\n     return ListTile(\r\n@@ -29,8 +31,9 @@\n         showDialog(\r\n           context: context,\r\n           builder: (BuildContext context) {\r\n             return new RenameFileDialouge(\r\n+              callback: callback,\r\n               index: index, // remove index\r\n               fileName: fileName,\r\n             );\r\n           },\r\n"
+                },
+                {
+                    "date": 1642490488122,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,8 @@\n           context: context,\r\n           builder: (BuildContext context) {\r\n             return new RenameFileDialouge(\r\n               callback: callback,\r\n-              index: index, // remove index\r\n               fileName: fileName,\r\n             );\r\n           },\r\n         );\r\n"
                 }
             ],
             "date": 1642076081081,

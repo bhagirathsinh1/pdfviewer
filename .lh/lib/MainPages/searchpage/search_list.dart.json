@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 10,
+            "activePatchIndex": 11,
             "patches": [
                 {
                     "date": 1642404771875,
@@ -48,6 +48,10 @@
                 {
                     "date": 1642407204554,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -89,9 +89,41 @@\n               ),\r\n             ],\r\n           ),\r\n           onTap: () async {\r\n-            AddIntoRecents().addIntoRecentsMethod(filePath, context, fileIndex);\r\n+            Map<String, Object> data = {\r\n+              'recentpdf': (filePath),\r\n+            };\r\n+\r\n+            if (!data.isEmpty) {\r\n+              try {\r\n+                await RecentSQLPDFService()\r\n+                    .insertRecentPDF(data, SqlModel.tableRecent);\r\n+\r\n+                Provider.of<PdfFileService>(context, listen: false)\r\n+                    .getRecentPdfList();\r\n+              } catch (e) {\r\n+                ScaffoldMessenger.of(context).clearSnackBars();\r\n+                ScaffoldMessenger.of(context).showSnackBar(\r\n+                  SnackBar(\r\n+                    content: Text(\r\n+                      e.toString(),\r\n+                    ),\r\n+                  ),\r\n+                );\r\n+              }\r\n+              print(\"pdfname is--------------> $data\");\r\n+            }\r\n+            Navigator.push(\r\n+              context,\r\n+              MaterialPageRoute(\r\n+                builder: (context) {\r\n+                  return ViewPDF(\r\n+                    pdfmodel: pdfservice.files[widget.index],\r\n+                  );\r\n+                },\r\n+              ),\r\n+            );\r\n           },\r\n         ),\r\n       );\r\n     });\r\n"
+                },
+                {
+                    "date": 1642485658507,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -68,11 +68,14 @@\n                               index: widget.index,\r\n                             ),\r\n                             AddRemoveWidget(paths: filePath),\r\n                             RenameFileWidget(\r\n-                              index: widget.index,\r\n-                              fileName: filePath,\r\n-                            ),\r\n+                                index: widget.index,\r\n+                                fileName: filePath,\r\n+                                callback: (String newFileName) {\r\n+                                  pdfservice.changeFileNameOnly(\r\n+                                      context, newFileName, widget.index);\r\n+                                }),\r\n                             DeleteFileWidget(\r\n                               index: widget.index,\r\n                               fileName: filePath,\r\n                             ),\r\n"
                 }
             ],
             "date": 1642404771875,

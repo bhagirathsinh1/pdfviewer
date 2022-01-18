@@ -1,13 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/service/pdf_file_service.dart';
-import 'package:provider/provider.dart';
 
 class RenameFileDialouge extends StatefulWidget {
-  final int index;
   final String fileName;
-  RenameFileDialouge({Key? key, required this.index, required this.fileName})
+  final Function callback;
+
+  RenameFileDialouge({Key? key, required this.fileName, required this.callback})
       : super(key: key);
 
   @override
@@ -64,51 +61,51 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
         TextButton(
           child: isLoading
               ? Center(
-                  child: Text("Loading..."),
+                  child: SizedBox(
+                    child: Text('Loading...'),
+                    height: 20,
+                    width: 20,
+                  ),
                 )
               : Text("OK"),
-          onPressed: () {
+          onPressed: () async {
             var newFileName = renameController.text;
+
+            setState(() {
+              isLoading = true;
+            });
             print(newFileName.split('.'));
-            changeFileNameOnly(context, newFileName);
-            // Navigator.pop(context);
+            await widget.callback(newFileName);
+
+            setState(() {
+              isLoading = false;
+            });
+            Navigator.pop(context);
+            showAlertDialog(context, newFileName);
           },
         )
       ],
     );
   }
 
-  changeFileNameOnly(BuildContext context, String newFileName) async {
-    print("------------->arrived new name----$newFileName--------");
-    var providerService = Provider.of<PdfFileService>(context, listen: false);
-    var pdfServiceIndex = providerService.files[widget.index];
-    var temp1 = pdfServiceIndex.referenceFile!.path;
-
-    var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);
-    var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + ".pdf";
-    setState(() {
-      isLoading = true;
-    });
-    var filename = await pdfServiceIndex.referenceFile!.rename(newPath);
-
-    print("-------------v.path data---------------- ${filename.path}");
-
-    pdfServiceIndex.referenceFile = filename;
-    pdfServiceIndex.pdfpath = filename.path;
-
-    pdfServiceIndex.pdfname = filename.path.split('/').last;
-
-    providerService.getStorageFilleMethod();
-
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("Renamed to  ${newFileName}"),
-      ),
+  showAlertDialog(BuildContext context, String newFileName) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Succesfuly rename"),
+          content: Text(newFileName),
+          actions: [
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
-    setState(() {
-      isLoading = false;
-    });
+    // Navigator.pop(context);
   }
 }

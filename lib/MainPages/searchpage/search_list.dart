@@ -69,9 +69,12 @@ class _SearchListState extends State<SearchList> {
                             ),
                             AddRemoveWidget(paths: filePath),
                             RenameFileWidget(
-                              index: widget.index,
-                              fileName: filePath,
-                            ),
+                                index: widget.index,
+                                fileName: filePath,
+                                callback: (String newFileName) {
+                                  pdfservice.changeFileNameOnly(
+                                      context, newFileName, widget.index);
+                                }),
                             DeleteFileWidget(
                               index: widget.index,
                               fileName: filePath,

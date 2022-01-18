@@ -5,11 +5,13 @@ class RenameFileWidget extends StatelessWidget {
   //remove index
   final int index;
   final String fileName;
-  const RenameFileWidget({
-    Key? key,
-    required this.index,
-    required this.fileName,
-  }) : super(key: key);
+  final Function callback;
+  const RenameFileWidget(
+      {Key? key,
+      required this.index,
+      required this.fileName,
+      required this.callback})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class RenameFileWidget extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return new RenameFileDialouge(
-              index: index, // remove index
+              callback: callback,
               fileName: fileName,
             );
           },
