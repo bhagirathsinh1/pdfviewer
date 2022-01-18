@@ -1,0 +1,18 @@
+{
+    "sourceFile": "lib/widget/CommonWidget/share_file_widget.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1642492241049,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1642492241048,
+            "name": "Commit-0",
+            "content": "import 'package:flutter/material.dart';\r\nimport 'package:share/share.dart';\r\n\r\nclass ShareFiles extends StatefulWidget {\r\n  const ShareFiles({\r\n    Key? key,\r\n    required this.fileName,\r\n  }) : super(key: key);\r\n  final String fileName;\r\n  // final snapshot;\r\n\r\n  @override\r\n  State<ShareFiles> createState() => _ShareFilesState();\r\n}\r\n\r\nclass _ShareFilesState extends State<ShareFiles> {\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return ListTile(\r\n      title: Text(\r\n        \"Share\",\r\n        style: TextStyle(\r\n          color: Colors.black.withOpacity(0.8),\r\n        ),\r\n      ),\r\n      leading: Icon(\r\n        Icons.share,\r\n        color: Colors.black.withOpacity(0.5),\r\n      ),\r\n      onTap: () {\r\n        Share.shareFiles([widget.fileName]);\r\n      },\r\n    );\r\n  }\r\n}\r\n"
+        }
+    ]
+}

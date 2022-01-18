@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pdfviewer/dialogue/delete_dialouge.dart';
 
 class DeleteFileWidget extends StatelessWidget {
-  final int index;
   final String fileName;
   const DeleteFileWidget({
     Key? key,
-    required this.index,
     required this.fileName,
   }) : super(key: key);
   // final VoidCallback onTap;
@@ -29,7 +27,6 @@ class DeleteFileWidget extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return new DeleteFileDialouge(
-                index: index,
                 fileName: fileName,
               );
             });

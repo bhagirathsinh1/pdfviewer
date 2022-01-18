@@ -65,18 +65,15 @@ class _SearchListState extends State<SearchList> {
                             TitleOfPdf(titlePath: fileTitle),
                             ShareFiles(
                               fileName: filePath,
-                              index: widget.index,
                             ),
                             AddRemoveWidget(paths: filePath),
                             RenameFileWidget(
-                                index: widget.index,
                                 fileName: filePath,
                                 callback: (String newFileName) {
                                   pdfservice.changeFileNameOnly(
                                       context, newFileName, widget.index);
                                 }),
                             DeleteFileWidget(
-                              index: widget.index,
                               fileName: filePath,
                             ),
                           ],

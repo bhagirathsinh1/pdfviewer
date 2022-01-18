@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 7,
+            "activePatchIndex": 8,
             "patches": [
                 {
                     "date": 1642076081081,
@@ -36,6 +36,10 @@
                 {
                     "date": 1642490488122,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,8 @@\n           context: context,\r\n           builder: (BuildContext context) {\r\n             return new RenameFileDialouge(\r\n               callback: callback,\r\n-              index: index, // remove index\r\n               fileName: fileName,\r\n             );\r\n           },\r\n         );\r\n"
+                },
+                {
+                    "date": 1642493125100,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,16 +2,12 @@\n import 'package:pdfviewer/dialogue/rename_dialouge.dart';\r\n \r\n class RenameFileWidget extends StatelessWidget {\r\n   //remove index\r\n-  final int index;\r\n   final String fileName;\r\n   final Function callback;\r\n   const RenameFileWidget(\r\n-      {Key? key,\r\n-      required this.index,\r\n-      required this.fileName,\r\n-      required this.callback})\r\n+      {Key? key, required this.fileName, required this.callback})\r\n       : super(key: key);\r\n \r\n   @override\r\n   Widget build(BuildContext context) {\r\n"
                 }
             ],
             "date": 1642076081081,

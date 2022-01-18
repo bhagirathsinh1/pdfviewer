@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 11,
+            "activePatchIndex": 16,
             "patches": [
                 {
                     "date": 1642393868052,
@@ -52,6 +52,26 @@
                 {
                     "date": 1642492045108,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -212,24 +212,9 @@\n       print(e);\r\n       return false;\r\n     }\r\n   }\r\n- deleteMethod() {\r\n-   \r\n-    removeFromFavoritePdfList(\r\n-        fileName, SqlModel.tableFavorite);\r\n-    removeFromRecentPdfList(fileName, SqlModel.tableRecent);\r\n \r\n-    deleteFile(\r\n-      File(\r\n-        fileName,\r\n-      ),\r\n-    )\r\n-      \r\n-    });\r\n-\r\n-    // );\r\n-  }\r\n   Future<void> deleteFile(File file) async {\r\n     try {\r\n       if (await file.exists()) {\r\n         await file.delete();\r\n"
+                },
+                {
+                    "date": 1642492730835,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -213,8 +213,20 @@\n       return false;\r\n     }\r\n   }\r\n \r\n+  deleteMethod(String fileName) {\r\n+    removeFromFavoritePdfList(fileName, SqlModel.tableFavorite);\r\n+    removeFromRecentPdfList(fileName, SqlModel.tableRecent);\r\n+    deleteFile(\r\n+      File(\r\n+        fileName,\r\n+      ),\r\n+    );\r\n+\r\n+    // );\r\n+  }\r\n+\r\n   Future<void> deleteFile(File file) async {\r\n     try {\r\n       if (await file.exists()) {\r\n         await file.delete();\r\n"
+                },
+                {
+                    "date": 1642493042617,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -221,10 +221,8 @@\n       File(\r\n         fileName,\r\n       ),\r\n     );\r\n-\r\n-    // );\r\n   }\r\n \r\n   Future<void> deleteFile(File file) async {\r\n     try {\r\n"
+                },
+                {
+                    "date": 1642493219752,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -345,13 +345,6 @@\n     files[index].pdfname = filename.path.split('/').last;\r\n \r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n-    // Navigator.pop(context);\r\n-    // ScaffoldMessenger.of(context).clearSnackBars();\r\n-    // ScaffoldMessenger.of(context).showSnackBar(\r\n-    //   SnackBar(\r\n-    //     content: Text(\"Renamed to  ${newFileName}\"),\r\n-    //   ),\r\n-    // );\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642493235163,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -344,7 +344,7 @@\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n \r\n     getStorageFilleMethod();\r\n-    notifyListeners();\r\n+    // notifyListeners();\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642493258241,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -344,7 +344,6 @@\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n \r\n     getStorageFilleMethod();\r\n-    // notifyListeners();\r\n   }\r\n }\r\n"
                 }
             ],
             "date": 1642393868052,

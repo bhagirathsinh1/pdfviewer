@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 58,
+            "activePatchIndex": 60,
             "patches": [
                 {
                     "date": 1642076212258,
@@ -240,6 +240,14 @@
                 {
                     "date": 1642491154928,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -81,10 +81,8 @@\n               isLoading = false;\r\n             });\r\n             Navigator.pop(context);\r\n             showAlertDialog(context, newFileName);\r\n-            // changeFileNameOnly(context, newFileName);\r\n-            // Navigator.pop(context);\r\n           },\r\n         )\r\n       ],\r\n     );\r\n"
+                },
+                {
+                    "date": 1642492956354,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -68,13 +68,13 @@\n                   ),\r\n                 )\r\n               : Text(\"OK\"),\r\n           onPressed: () async {\r\n-            var newFileName = renameController.text;\r\n-\r\n             setState(() {\r\n               isLoading = true;\r\n             });\r\n+            var newFileName = renameController.text;\r\n+\r\n             print(newFileName.split('.'));\r\n             await widget.callback(newFileName);\r\n \r\n             setState(() {\r\n"
+                },
+                {
+                    "date": 1642493013216,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -87,15 +87,15 @@\n       ],\r\n     );\r\n   }\r\n \r\n-  showAlertDialog(BuildContext context, String newFileName) {\r\n+  showAlertDialog(BuildContext context) {\r\n     showDialog(\r\n       context: context,\r\n       builder: (BuildContext context) {\r\n         return AlertDialog(\r\n           title: Text(\"Succesfuly rename\"),\r\n-          content: Text(newFileName),\r\n+          content: Text(renameController.text),\r\n           actions: [\r\n             TextButton(\r\n               child: Text(\"OK\"),\r\n               onPressed: () {\r\n"
                 }
             ],
             "date": 1642076212258,

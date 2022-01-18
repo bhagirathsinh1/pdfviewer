@@ -3,14 +3,10 @@ import 'package:pdfviewer/dialogue/rename_dialouge.dart';
 
 class RenameFileWidget extends StatelessWidget {
   //remove index
-  final int index;
   final String fileName;
   final Function callback;
   const RenameFileWidget(
-      {Key? key,
-      required this.index,
-      required this.fileName,
-      required this.callback})
+      {Key? key, required this.fileName, required this.callback})
       : super(key: key);
 
   @override

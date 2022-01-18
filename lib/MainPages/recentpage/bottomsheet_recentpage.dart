@@ -13,10 +13,8 @@ import 'package:provider/provider.dart';
 class BotomsheetRecentPage extends StatefulWidget {
   BotomsheetRecentPage({
     Key? key,
-    required this.index,
     required this.fileName,
   }) : super(key: key);
-  final int index;
   final String fileName;
   @override
   _BotomsheetRecentPageState createState() => _BotomsheetRecentPageState();
@@ -34,11 +32,10 @@ class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {
       child: Column(
         children: [
           TitleOfPdf(titlePath: titlePath),
-          ShareFiles(fileName: paths, index: widget.index),
+          ShareFiles(fileName: paths),
           AddRemoveWidget(paths: paths),
           removeFromRecentPdfList(paths: paths),
           DeleteFileWidget(
-            index: widget.index,
             fileName: paths,
           ),
         ],

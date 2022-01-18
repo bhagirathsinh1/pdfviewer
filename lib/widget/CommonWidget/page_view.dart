@@ -202,7 +202,6 @@ class _ViewPDFState extends State<ViewPDF> {
                               AddRemoveWidget(
                                   paths: widget.pdfmodel.pdfpath.toString()),
                               RenameFileWidget(
-                                  index: widget.index,
                                   fileName: widget.pdfmodel.pdfpath.toString(),
                                   callback: (String newFileName) {
                                     pdfservice.changeFileNameOnly(
@@ -222,7 +221,6 @@ class _ViewPDFState extends State<ViewPDF> {
                                 onTap: () {},
                               ),
                               DeleteFileWidget(
-                                index: widget.index,
                                 fileName: widget.pdfmodel.pdfpath.toString(),
                               ),
                             ],

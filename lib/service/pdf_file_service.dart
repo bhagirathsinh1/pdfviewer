@@ -214,6 +214,16 @@ class PdfFileService with ChangeNotifier {
     }
   }
 
+  deleteMethod(String fileName) {
+    removeFromFavoritePdfList(fileName, SqlModel.tableFavorite);
+    removeFromRecentPdfList(fileName, SqlModel.tableRecent);
+    deleteFile(
+      File(
+        fileName,
+      ),
+    );
+  }
+
   Future<void> deleteFile(File file) async {
     try {
       if (await file.exists()) {
@@ -335,13 +345,5 @@ class PdfFileService with ChangeNotifier {
     files[index].pdfname = filename.path.split('/').last;
 
     getStorageFilleMethod();
-    notifyListeners();
-    // Navigator.pop(context);
-    // ScaffoldMessenger.of(context).clearSnackBars();
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(
-    //     content: Text("Renamed to  ${newFileName}"),
-    //   ),
-    // );
   }
 }

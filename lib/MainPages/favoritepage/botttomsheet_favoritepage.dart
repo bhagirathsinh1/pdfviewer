@@ -30,10 +30,11 @@ class _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {
       child: Column(
         children: [
           TitleOfPdf(titlePath: titlePath),
-          ShareFiles(fileName: paths, index: widget.index),
+          ShareFiles(
+            fileName: paths,
+          ),
           AddRemoveWidget(paths: paths),
           DeleteFileWidget(
-            index: widget.index,
             fileName: paths,
           ),
         ],

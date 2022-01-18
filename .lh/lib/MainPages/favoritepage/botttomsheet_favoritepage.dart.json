@@ -1,0 +1,18 @@
+{
+    "sourceFile": "lib/MainPages/favoritepage/botttomsheet_favoritepage.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1642492428331,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1642492428331,
+            "name": "Commit-0",
+            "content": "import 'package:flutter/material.dart';\r\nimport 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';\r\nimport 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';\r\nimport 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';\r\nimport 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';\r\n\r\nclass BottomsheetFavoritePage extends StatefulWidget {\r\n  BottomsheetFavoritePage({\r\n    Key? key,\r\n    required this.index,\r\n    required this.fileName,\r\n  }) : super(key: key);\r\n  final int index;\r\n  final String fileName;\r\n\r\n  @override\r\n  _BottomsheetFavoritePageState createState() =>\r\n      _BottomsheetFavoritePageState();\r\n}\r\n\r\nclass _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    var paths = widget.fileName;\r\n    var titlePath = paths.toString().split('/').last;\r\n\r\n    return Container(\r\n      color: Colors.white,\r\n      height: 250,\r\n      child: Column(\r\n        children: [\r\n          TitleOfPdf(titlePath: titlePath),\r\n          ShareFiles(\r\n            fileName: paths,\r\n          ),\r\n          AddRemoveWidget(paths: paths),\r\n          DeleteFileWidget(\r\n            fileName: paths,\r\n          ),\r\n        ],\r\n      ),\r\n    );\r\n  }\r\n}\r\n"
+        }
+    ]
+}

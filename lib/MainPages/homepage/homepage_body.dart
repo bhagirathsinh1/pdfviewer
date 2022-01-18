@@ -67,18 +67,15 @@ class _HomepageBodyState extends State<HomepageBody> {
                                   TitleOfPdf(titlePath: fileTitle),
                                   ShareFiles(
                                     fileName: filePath,
-                                    index: index,
                                   ),
                                   AddRemoveWidget(paths: filePath),
                                   RenameFileWidget(
-                                      index: index,
                                       fileName: filePath,
                                       callback: (String newFileName) {
                                         pdfservice.changeFileNameOnly(
                                             context, newFileName, index);
                                       }),
                                   DeleteFileWidget(
-                                    index: index,
                                     fileName: filePath,
                                   ),
                                 ],

@@ -93,7 +93,6 @@ class _RecentpageState extends State<Recentpage> {
                                 builder: (BuildContext context) {
                                   return BotomsheetRecentPage(
                                     fileName: filePath.toString(),
-                                    index: index,
                                   );
                                 },
                               );

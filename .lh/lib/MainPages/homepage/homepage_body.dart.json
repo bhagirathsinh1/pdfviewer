@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 15,
+            "activePatchIndex": 18,
             "patches": [
                 {
                     "date": 1642075605732,
@@ -68,6 +68,18 @@
                 {
                     "date": 1642492045100,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -77,14 +77,11 @@\n                                         pdfservice.changeFileNameOnly(\r\n                                             context, newFileName, index);\r\n                                       }),\r\n                                   DeleteFileWidget(\r\n-                                      index: index,\r\n-                                      fileName: filePath,\r\n-                                      callback: (String newFileName) {\r\n-                                        pdfservice.changeFileNameOnly(\r\n-                                            context, newFileName, index);\r\n-                                      }),\r\n+                                    index: index,\r\n+                                    fileName: filePath,\r\n+                                  ),\r\n                                 ],\r\n                               ),\r\n                             );\r\n                           },\r\n"
+                },
+                {
+                    "date": 1642492249911,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -66,9 +66,8 @@\n                                 children: [\r\n                                   TitleOfPdf(titlePath: fileTitle),\r\n                                   ShareFiles(\r\n                                     fileName: filePath,\r\n-                                    index: index,\r\n                                   ),\r\n                                   AddRemoveWidget(paths: filePath),\r\n                                   RenameFileWidget(\r\n                                       index: index,\r\n"
+                },
+                {
+                    "date": 1642492380708,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -76,9 +76,8 @@\n                                         pdfservice.changeFileNameOnly(\r\n                                             context, newFileName, index);\r\n                                       }),\r\n                                   DeleteFileWidget(\r\n-                                    index: index,\r\n                                     fileName: filePath,\r\n                                   ),\r\n                                 ],\r\n                               ),\r\n"
+                },
+                {
+                    "date": 1642493125086,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -69,9 +69,8 @@\n                                     fileName: filePath,\r\n                                   ),\r\n                                   AddRemoveWidget(paths: filePath),\r\n                                   RenameFileWidget(\r\n-                                      index: index,\r\n                                       fileName: filePath,\r\n                                       callback: (String newFileName) {\r\n                                         pdfservice.changeFileNameOnly(\r\n                                             context, newFileName, index);\r\n"
                 }
             ],
             "date": 1642075605732,

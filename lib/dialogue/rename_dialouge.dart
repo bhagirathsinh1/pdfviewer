@@ -69,11 +69,11 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
                 )
               : Text("OK"),
           onPressed: () async {
-            var newFileName = renameController.text;
-
             setState(() {
               isLoading = true;
             });
+            var newFileName = renameController.text;
+
             print(newFileName.split('.'));
             await widget.callback(newFileName);
 
@@ -81,20 +81,20 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
               isLoading = false;
             });
             Navigator.pop(context);
-            showAlertDialog(context, newFileName);
+            showAlertDialog(context);
           },
         )
       ],
     );
   }
 
-  showAlertDialog(BuildContext context, String newFileName) {
+  showAlertDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Succesfuly rename"),
-          content: Text(newFileName),
+          content: Text(renameController.text),
           actions: [
             TextButton(
               child: Text("OK"),

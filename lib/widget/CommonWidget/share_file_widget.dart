@@ -4,11 +4,8 @@ import 'package:share/share.dart';
 class ShareFiles extends StatefulWidget {
   const ShareFiles({
     Key? key,
-    required this.index,
     required this.fileName,
-    // required this.snapshot,
   }) : super(key: key);
-  final int index;
   final String fileName;
   // final snapshot;
 

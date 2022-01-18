@@ -1,17 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
-
 import 'package:provider/provider.dart';
 
 class DeleteFileDialouge extends StatefulWidget {
-  final int index;
   final String fileName;
 
-  DeleteFileDialouge({Key? key, required this.index, required this.fileName})
-      : super(key: key);
+  DeleteFileDialouge({Key? key, required this.fileName}) : super(key: key);
 
   @override
   _DeleteFileDialougeState createState() => _DeleteFileDialougeState();
@@ -47,38 +41,21 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
                 )
               : Text("Continue"),
           onPressed: () {
+            setState(() {
+              isLoading = true;
+            });
             print("${widget.fileName.split('/').last}");
-            deleteMethod();
+            Provider.of<PdfFileService>(context, listen: false)
+                .deleteMethod(widget.fileName);
+            setState(() {
+              isLoading = false;
+            });
+            Navigator.pop(context);
+            showAlertDialog(context);
           },
         )
       ],
     );
-  }
-
-  deleteMethod() {
-    var pdfService = Provider.of<PdfFileService>(context, listen: false);
-    setState(() {
-      isLoading = true;
-    });
-    pdfService.removeFromFavoritePdfList(
-        widget.fileName, SqlModel.tableFavorite);
-    pdfService.removeFromRecentPdfList(widget.fileName, SqlModel.tableRecent);
-
-    pdfService
-        .deleteFile(
-      File(
-        widget.fileName,
-      ),
-    )
-        .whenComplete(() {
-      setState(() {
-        isLoading = false;
-      });
-      Navigator.pop(context);
-      showAlertDialog(context);
-    });
-
-    // );
   }
 
   showAlertDialog(BuildContext context) {
