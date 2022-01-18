@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider_extention/path_provider_extention.dart';
 import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
+import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/singing_character_enum.dart';
@@ -332,18 +333,33 @@ class PdfFileService with ChangeNotifier {
 
     var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);
     var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + ".pdf";
-
-    print("------------->arrived new name----$newPath--------");
-
     var filename = await files[index].referenceFile!.rename(newPath);
-
-    print("-------------v.path data---------------- ${filename.path}");
 
     files[index].referenceFile = filename;
     files[index].pdfpath = filename.path;
 
     files[index].pdfname = filename.path.split('/').last;
 
+    bool renameFavCheck =
+        favoritePdfList.where((element) => element.pdfpath == temp1).isNotEmpty;
+
+    if (renameFavCheck == true) {
+      removeFromFavoritePdfList(temp1, SqlModel.tableFavorite);
+      insertIntoFavoritePdfList(newPath, SqlModel.tableFavorite);
+    }
+
+    bool renameRecentCheck =
+        recentPdfList.where((element) => element.pdfpath == temp1).isNotEmpty;
+
+    if (renameRecentCheck == true) {
+      removeFromRecentPdfList(temp1, SqlModel.tableRecent);
+      Map<String, Object> data = {
+        'recentpdf': (newPath),
+      };
+
+      RecentSQLPDFService().insertRecentPDF(data, SqlModel.tableRecent);
+    }
     getStorageFilleMethod();
+    notifyListeners();
   }
 }

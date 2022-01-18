@@ -1,0 +1,22 @@
+{
+    "sourceFile": "lib/widget/CommonWidget/favorite_icon.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1642496581062,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642496592690,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,9 +16,9 @@\n       constraints: BoxConstraints(),\r\n       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),\r\n       icon: Icon(\r\n         Icons.star,\r\n-        color: widget.isfav ? Colors.white : Colors.blue,\r\n+        color: widget.isfav.isEmpty ? Colors.white : Colors.blue,\r\n       ),\r\n     );\r\n   }\r\n }\r\n"
+                }
+            ],
+            "date": 1642496581062,
+            "name": "Commit-0",
+            "content": "import 'package:flutter/material.dart';\r\n\r\nclass FavoriteStarIcon extends StatefulWidget {\r\n  var isfav;\r\n  FavoriteStarIcon({Key? key, required this.isfav}) : super(key: key);\r\n\r\n  @override\r\n  _FavoriteStarIconState createState() => _FavoriteStarIconState();\r\n}\r\n\r\nclass _FavoriteStarIconState extends State<FavoriteStarIcon> {\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return IconButton(\r\n      onPressed: () async {},\r\n      constraints: BoxConstraints(),\r\n      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),\r\n      icon: Icon(\r\n        Icons.star,\r\n        color: widget.isfav ? Colors.white : Colors.blue,\r\n      ),\r\n    );\r\n  }\r\n}\r\n"
+        }
+    ]
+}

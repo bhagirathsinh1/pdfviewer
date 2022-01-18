@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 16,
+            "activePatchIndex": 39,
             "patches": [
                 {
                     "date": 1642393868052,
@@ -72,6 +72,98 @@
                 {
                     "date": 1642493258241,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -344,7 +344,6 @@\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n \r\n     getStorageFilleMethod();\r\n-    // notifyListeners();\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642493479224,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -344,6 +344,7 @@\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n \r\n     getStorageFilleMethod();\r\n+    notifyListeners();\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642497472700,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -342,9 +342,10 @@\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n-\r\n+    getFavoritePdfList();\r\n+    getRecentPdfList();\r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642497612162,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -342,10 +342,9 @@\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n-    getFavoritePdfList();\r\n-    getRecentPdfList();\r\n+\r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642497767242,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -342,9 +342,11 @@\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n-\r\n+    removeFromFavoritePdfList(\r\n+        files[index].referenceFile, SqlModel.tableFavorite);\r\n+    removeFromRecentPdfList(files[index].referenceFile, SqlModel.tableRecent);\r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642497883578,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -342,11 +342,9 @@\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n-    removeFromFavoritePdfList(\r\n-        files[index].referenceFile, SqlModel.tableFavorite);\r\n-    removeFromRecentPdfList(files[index].referenceFile, SqlModel.tableRecent);\r\n+\r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642498161579,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -342,8 +342,11 @@\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n+    if (favoritePdfList.contains(files[index].referenceFile)) {\r\n+      print('-----------------im in--------------');\r\n+    }\r\n \r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n"
+                },
+                {
+                    "date": 1642498524768,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -344,8 +344,11 @@\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n     if (favoritePdfList.contains(files[index].referenceFile)) {\r\n       print('-----------------im in--------------');\r\n+      removeFromFavoritePdfList(\r\n+          files[index].referenceFile!.path, SqlModel.tableFavorite);\r\n+      insertIntoFavoritePdfList(filename.path, SqlModel.tableFavorite);\r\n     }\r\n \r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n"
+                },
+                {
+                    "date": 1642498595749,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -342,9 +342,9 @@\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n-    if (favoritePdfList.contains(files[index].referenceFile)) {\r\n+    if (favoritePdfList.contains(files[index].referenceFile!.path)) {\r\n       print('-----------------im in--------------');\r\n       removeFromFavoritePdfList(\r\n           files[index].referenceFile!.path, SqlModel.tableFavorite);\r\n       insertIntoFavoritePdfList(filename.path, SqlModel.tableFavorite);\r\n"
+                },
+                {
+                    "date": 1642498654678,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -346,9 +346,10 @@\n     if (favoritePdfList.contains(files[index].referenceFile!.path)) {\r\n       print('-----------------im in--------------');\r\n       removeFromFavoritePdfList(\r\n           files[index].referenceFile!.path, SqlModel.tableFavorite);\r\n-      insertIntoFavoritePdfList(filename.path, SqlModel.tableFavorite);\r\n+      insertIntoFavoritePdfList(\r\n+          files[index].pdfpath.toString(), SqlModel.tableFavorite);\r\n     }\r\n \r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n"
+                },
+                {
+                    "date": 1642498863662,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -342,15 +342,10 @@\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n-    if (favoritePdfList.contains(files[index].referenceFile!.path)) {\r\n-      print('-----------------im in--------------');\r\n-      removeFromFavoritePdfList(\r\n-          files[index].referenceFile!.path, SqlModel.tableFavorite);\r\n-      insertIntoFavoritePdfList(\r\n-          files[index].pdfpath.toString(), SqlModel.tableFavorite);\r\n-    }\r\n+    insertIntoFavoritePdfList(\r\n+        files[index].pdfpath.toString(), SqlModel.tableFavorite);\r\n \r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n"
+                },
+                {
+                    "date": 1642499029129,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -342,10 +342,15 @@\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n-    insertIntoFavoritePdfList(\r\n-        files[index].pdfpath.toString(), SqlModel.tableFavorite);\r\n+    if (favoritePdfList.contains(temp1)) {\r\n+      print('-----------------im in--------------');\r\n+      removeFromFavoritePdfList(\r\n+          files[index].referenceFile!.path, SqlModel.tableFavorite);\r\n+      insertIntoFavoritePdfList(\r\n+          files[index].pdfpath.toString(), SqlModel.tableFavorite);\r\n+    }\r\n \r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n"
+                },
+                {
+                    "date": 1642499486083,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -344,12 +344,10 @@\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n     if (favoritePdfList.contains(temp1)) {\r\n       print('-----------------im in--------------');\r\n-      removeFromFavoritePdfList(\r\n-          files[index].referenceFile!.path, SqlModel.tableFavorite);\r\n-      insertIntoFavoritePdfList(\r\n-          files[index].pdfpath.toString(), SqlModel.tableFavorite);\r\n+      removeFromFavoritePdfList(temp1, SqlModel.tableFavorite);\r\n+      insertIntoFavoritePdfList(newPath, SqlModel.tableFavorite);\r\n     }\r\n \r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n"
+                },
+                {
+                    "date": 1642499825562,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -337,13 +337,15 @@\n \r\n     var filename = await files[index].referenceFile!.rename(newPath);\r\n \r\n     print(\"-------------v.path data---------------- ${filename.path}\");\r\n+    print(\"-------------v.path data---------------- ${favo}\");\r\n \r\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n+\r\n     if (favoritePdfList.contains(temp1)) {\r\n       print('-----------------im in--------------');\r\n       removeFromFavoritePdfList(temp1, SqlModel.tableFavorite);\r\n       insertIntoFavoritePdfList(newPath, SqlModel.tableFavorite);\r\n"
+                },
+                {
+                    "date": 1642499837365,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -337,9 +337,9 @@\n \r\n     var filename = await files[index].referenceFile!.rename(newPath);\r\n \r\n     print(\"-------------v.path data---------------- ${filename.path}\");\r\n-    print(\"-------------v.path data---------------- ${favo}\");\r\n+    print(\"-------------v.path data---------------- ${favoritePdfList}\");\r\n \r\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n"
+                },
+                {
+                    "date": 1642500252712,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -344,9 +344,12 @@\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n \r\n-    if (favoritePdfList.contains(temp1)) {\r\n+    bool renameFavCheck =\r\n+        favoritePdfList.where((element) => element.pdfpath == temp1).isNotEmpty;\r\n+\r\n+    if (renameFavCheck == true) {\r\n       print('-----------------im in--------------');\r\n       removeFromFavoritePdfList(temp1, SqlModel.tableFavorite);\r\n       insertIntoFavoritePdfList(newPath, SqlModel.tableFavorite);\r\n     }\r\n"
+                },
+                {
+                    "date": 1642500949949,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,8 +7,9 @@\n import 'package:intl/intl.dart';\r\n import 'package:path_provider_extention/path_provider_extention.dart';\r\n import 'package:pdfviewer/SQLService/favorite_pdf_model.dart';\r\n import 'package:pdfviewer/SQLService/recent_pdf_model.dart';\r\n+import 'package:pdfviewer/SQLService/recent_pdf_service.dart';\r\n import 'package:pdfviewer/SQLService/sqlService.dart';\r\n import 'package:pdfviewer/model/pdf_list_model.dart';\r\n import 'package:pdfviewer/service/singing_character_enum.dart';\r\n \r\n@@ -346,15 +347,28 @@\n     files[index].pdfname = filename.path.split('/').last;\r\n \r\n     bool renameFavCheck =\r\n         favoritePdfList.where((element) => element.pdfpath == temp1).isNotEmpty;\r\n-\r\n+    bool renameRecentCheck =\r\n+        recentPdfList.where((element) => element.pdfpath == temp1).isNotEmpty;\r\n     if (renameFavCheck == true) {\r\n       print('-----------------im in--------------');\r\n       removeFromFavoritePdfList(temp1, SqlModel.tableFavorite);\r\n       insertIntoFavoritePdfList(newPath, SqlModel.tableFavorite);\r\n     }\r\n+    if (renameRecentCheck == true) {\r\n+      print('-----------------im in--------------');\r\n+      removeFromRecentPdfList(temp1, SqlModel.tableRecent);\r\n+      Map<String, Object> data = {\r\n+        'recentpdf': (newPath),\r\n+      };\r\n \r\n+      RecentSQLPDFService().insertRecentPDF(data, SqlModel.tableRecent);\r\n+\r\n+      getRecentPdfList();\r\n+\r\n+      print(\"pdfname is--------------> $data\");\r\n+    }\r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642500956126,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -363,9 +363,9 @@\n       };\r\n \r\n       RecentSQLPDFService().insertRecentPDF(data, SqlModel.tableRecent);\r\n \r\n-      getRecentPdfList();\r\n+      // getRecentPdfList();\r\n \r\n       print(\"pdfname is--------------> $data\");\r\n     }\r\n     getStorageFilleMethod();\r\n"
+                },
+                {
+                    "date": 1642501143795,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -362,12 +362,8 @@\n         'recentpdf': (newPath),\r\n       };\r\n \r\n       RecentSQLPDFService().insertRecentPDF(data, SqlModel.tableRecent);\r\n-\r\n-      // getRecentPdfList();\r\n-\r\n-      print(\"pdfname is--------------> $data\");\r\n     }\r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n"
+                },
+                {
+                    "date": 1642501250596,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -347,15 +347,16 @@\n     files[index].pdfname = filename.path.split('/').last;\r\n \r\n     bool renameFavCheck =\r\n         favoritePdfList.where((element) => element.pdfpath == temp1).isNotEmpty;\r\n-    bool renameRecentCheck =\r\n-        recentPdfList.where((element) => element.pdfpath == temp1).isNotEmpty;\r\n+\r\n     if (renameFavCheck == true) {\r\n       print('-----------------im in--------------');\r\n       removeFromFavoritePdfList(temp1, SqlModel.tableFavorite);\r\n       insertIntoFavoritePdfList(newPath, SqlModel.tableFavorite);\r\n     }\r\n+    bool renameRecentCheck =\r\n+        recentPdfList.where((element) => element.pdfpath == temp1).isNotEmpty;\r\n     if (renameRecentCheck == true) {\r\n       print('-----------------im in--------------');\r\n       removeFromRecentPdfList(temp1, SqlModel.tableRecent);\r\n       Map<String, Object> data = {\r\n"
+                },
+                {
+                    "date": 1642501258527,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -355,8 +355,9 @@\n       insertIntoFavoritePdfList(newPath, SqlModel.tableFavorite);\r\n     }\r\n     bool renameRecentCheck =\r\n         recentPdfList.where((element) => element.pdfpath == temp1).isNotEmpty;\r\n+\r\n     if (renameRecentCheck == true) {\r\n       print('-----------------im in--------------');\r\n       removeFromRecentPdfList(temp1, SqlModel.tableRecent);\r\n       Map<String, Object> data = {\r\n"
+                },
+                {
+                    "date": 1642501340244,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -349,17 +349,15 @@\n     bool renameFavCheck =\r\n         favoritePdfList.where((element) => element.pdfpath == temp1).isNotEmpty;\r\n \r\n     if (renameFavCheck == true) {\r\n-      print('-----------------im in--------------');\r\n       removeFromFavoritePdfList(temp1, SqlModel.tableFavorite);\r\n       insertIntoFavoritePdfList(newPath, SqlModel.tableFavorite);\r\n     }\r\n     bool renameRecentCheck =\r\n         recentPdfList.where((element) => element.pdfpath == temp1).isNotEmpty;\r\n \r\n     if (renameRecentCheck == true) {\r\n-      print('-----------------im in--------------');\r\n       removeFromRecentPdfList(temp1, SqlModel.tableRecent);\r\n       Map<String, Object> data = {\r\n         'recentpdf': (newPath),\r\n       };\r\n"
+                },
+                {
+                    "date": 1642501704327,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -352,8 +352,9 @@\n     if (renameFavCheck == true) {\r\n       removeFromFavoritePdfList(temp1, SqlModel.tableFavorite);\r\n       insertIntoFavoritePdfList(newPath, SqlModel.tableFavorite);\r\n     }\r\n+\r\n     bool renameRecentCheck =\r\n         recentPdfList.where((element) => element.pdfpath == temp1).isNotEmpty;\r\n \r\n     if (renameRecentCheck == true) {\r\n"
+                },
+                {
+                    "date": 1642501928221,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -332,16 +332,10 @@\n     var temp1 = files[index].referenceFile!.path;\r\n \r\n     var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);\r\n     var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + \".pdf\";\r\n-\r\n-    print(\"------------->arrived new name----$newPath--------\");\r\n-\r\n     var filename = await files[index].referenceFile!.rename(newPath);\r\n \r\n-    print(\"-------------v.path data---------------- ${filename.path}\");\r\n-    print(\"-------------v.path data---------------- ${favoritePdfList}\");\r\n-\r\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n"
                 }
             ],
             "date": 1642393868052,
