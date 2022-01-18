@@ -55,57 +55,29 @@ class _RenameFileDialougeState extends State<RenameFileDialouge> {
         TextButton(
           child: Text("CANCEL"),
           onPressed: () {
-            Navigator.pop(context);
+            Future.delayed(Duration(milliseconds: 10), () async {
+              Navigator.pop(context);
+            });
           },
         ),
-        TextButton(
-          child: isLoading
-              ? Center(
-                  child: SizedBox(
-                    child: Text('Loading...'),
-                    height: 20,
-                    width: 20,
-                  ),
-                )
-              : Text("OK"),
-          onPressed: () async {
-            setState(() {
-              isLoading = true;
-            });
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            splashFactory: NoSplash.splashFactory,
+          ),
+          onPressed: () {
             var newFileName = renameController.text;
-
-            print(newFileName.split('.'));
-            await widget.callback(newFileName);
-
-            setState(() {
-              isLoading = false;
+            widget.callback(newFileName);
+            Future.delayed(Duration(milliseconds: 10), () {
+              Navigator.pop(context);
             });
-            Navigator.pop(context);
-            showAlertDialog(context);
+            // });
           },
-        )
+          child: Text(
+            'OK',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ],
     );
-  }
-
-  showAlertDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Succesfuly rename"),
-          content: Text(renameController.text),
-          actions: [
-            TextButton(
-              child: Text("OK"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-    // Navigator.pop(context);
   }
 }

@@ -359,6 +359,7 @@ class PdfFileService with ChangeNotifier {
 
       RecentSQLPDFService().insertRecentPDF(data, SqlModel.tableRecent);
     }
+    getRecentPdfList();
     getStorageFilleMethod();
     notifyListeners();
   }

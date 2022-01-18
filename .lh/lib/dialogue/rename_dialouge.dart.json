@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 60,
+            "activePatchIndex": 99,
             "patches": [
                 {
                     "date": 1642076212258,
@@ -248,6 +248,162 @@
                 {
                     "date": 1642493013216,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -87,15 +87,15 @@\n       ],\r\n     );\r\n   }\r\n \r\n-  showAlertDialog(BuildContext context, String newFileName) {\r\n+  showAlertDialog(BuildContext context) {\r\n     showDialog(\r\n       context: context,\r\n       builder: (BuildContext context) {\r\n         return AlertDialog(\r\n           title: Text(\"Succesfuly rename\"),\r\n-          content: Text(newFileName),\r\n+          content: Text(renameController.text),\r\n           actions: [\r\n             TextButton(\r\n               child: Text(\"OK\"),\r\n               onPressed: () {\r\n"
+                },
+                {
+                    "date": 1642502235008,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -67,22 +67,23 @@\n                     width: 20,\r\n                   ),\r\n                 )\r\n               : Text(\"OK\"),\r\n-          onPressed: () async {\r\n+          onPressed: () {\r\n             setState(() {\r\n               isLoading = true;\r\n             });\r\n             var newFileName = renameController.text;\r\n+            Future.delayed(Duration(seconds: 3), () async {\r\n+              print(newFileName.split('.'));\r\n+              await widget.callback(newFileName);\r\n \r\n-            print(newFileName.split('.'));\r\n-            await widget.callback(newFileName);\r\n-\r\n-            setState(() {\r\n-              isLoading = false;\r\n+              setState(() {\r\n+                isLoading = false;\r\n+              });\r\n+              Navigator.pop(context);\r\n+              showAlertDialog(context);\r\n             });\r\n-            Navigator.pop(context);\r\n-            showAlertDialog(context, newFileName);\r\n           },\r\n         )\r\n       ],\r\n     );\r\n"
+                },
+                {
+                    "date": 1642502309413,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -61,9 +61,9 @@\n         TextButton(\r\n           child: isLoading\r\n               ? Center(\r\n                   child: SizedBox(\r\n-                    child: Text('Loading...'),\r\n+                    child: CircularProgressIndicator(),\r\n                     height: 20,\r\n                     width: 20,\r\n                   ),\r\n                 )\r\n@@ -72,9 +72,9 @@\n             setState(() {\r\n               isLoading = true;\r\n             });\r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(seconds: 3), () async {\r\n+            Future.delayed(Duration(seconds: 1), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n \r\n               setState(() {\r\n"
+                },
+                {
+                    "date": 1642502337607,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -72,9 +72,9 @@\n             setState(() {\r\n               isLoading = true;\r\n             });\r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(seconds: 1), () async {\r\n+            Future.delayed(Duration(milliseconds: 1), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n \r\n               setState(() {\r\n"
+                },
+                {
+                    "date": 1642502352235,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -72,9 +72,9 @@\n             setState(() {\r\n               isLoading = true;\r\n             });\r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 1), () async {\r\n+            Future.delayed(Duration(milliseconds: 100), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n \r\n               setState(() {\r\n"
+                },
+                {
+                    "date": 1642502374365,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -72,9 +72,9 @@\n             setState(() {\r\n               isLoading = true;\r\n             });\r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 100), () async {\r\n+            Future.delayed(Duration(milliseconds: 200), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n \r\n               setState(() {\r\n"
+                },
+                {
+                    "date": 1642502418916,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -68,8 +68,10 @@\n                   ),\r\n                 )\r\n               : Text(\"OK\"),\r\n           onPressed: () {\r\n+            Navigator.pop(context);\r\n+\r\n             setState(() {\r\n               isLoading = true;\r\n             });\r\n             var newFileName = renameController.text;\r\n"
+                },
+                {
+                    "date": 1642502542007,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,9 +74,9 @@\n             setState(() {\r\n               isLoading = true;\r\n             });\r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 200), () async {\r\n+            Future.delayed(Duration(milliseconds: 1), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n \r\n               setState(() {\r\n"
+                },
+                {
+                    "date": 1642502562568,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,9 +74,9 @@\n             setState(() {\r\n               isLoading = true;\r\n             });\r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 1), () async {\r\n+            Future.delayed(Duration(milliseconds: 100), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n \r\n               setState(() {\r\n"
+                },
+                {
+                    "date": 1642502670744,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -70,19 +70,13 @@\n               : Text(\"OK\"),\r\n           onPressed: () {\r\n             Navigator.pop(context);\r\n \r\n-            setState(() {\r\n-              isLoading = true;\r\n-            });\r\n             var newFileName = renameController.text;\r\n             Future.delayed(Duration(milliseconds: 100), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n-\r\n-              setState(() {\r\n-                isLoading = false;\r\n-              });\r\n+            }).whenComplete(() {\r\n               Navigator.pop(context);\r\n               showAlertDialog(context);\r\n             });\r\n           },\r\n"
+                },
+                {
+                    "date": 1642502688920,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -58,17 +58,9 @@\n             Navigator.pop(context);\r\n           },\r\n         ),\r\n         TextButton(\r\n-          child: isLoading\r\n-              ? Center(\r\n-                  child: SizedBox(\r\n-                    child: CircularProgressIndicator(),\r\n-                    height: 20,\r\n-                    width: 20,\r\n-                  ),\r\n-                )\r\n-              : Text(\"OK\"),\r\n+          child: Text(\"OK\"),\r\n           onPressed: () {\r\n             Navigator.pop(context);\r\n \r\n             var newFileName = renameController.text;\r\n"
+                },
+                {
+                    "date": 1642502820689,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -60,9 +60,9 @@\n         ),\r\n         TextButton(\r\n           child: Text(\"OK\"),\r\n           onPressed: () {\r\n-            Navigator.pop(context);\r\n+            // Navigator.pop(context);\r\n \r\n             var newFileName = renameController.text;\r\n             Future.delayed(Duration(milliseconds: 100), () async {\r\n               print(newFileName.split('.'));\r\n"
+                },
+                {
+                    "date": 1642502962616,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,9 +63,9 @@\n           onPressed: () {\r\n             // Navigator.pop(context);\r\n \r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 100), () async {\r\n+            Future.delayed(Duration(milliseconds: 10), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642502988718,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,9 +63,9 @@\n           onPressed: () {\r\n             // Navigator.pop(context);\r\n \r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 10), () async {\r\n+            Future.delayed(Duration(milliseconds: 200), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642503012469,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,9 +63,9 @@\n           onPressed: () {\r\n             // Navigator.pop(context);\r\n \r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 200), () async {\r\n+            Future.delayed(Duration(milliseconds: 50), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642503033777,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,9 +63,9 @@\n           onPressed: () {\r\n             // Navigator.pop(context);\r\n \r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 50), () async {\r\n+            Future.delayed(Duration(milliseconds: 70), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642503050764,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,9 +63,9 @@\n           onPressed: () {\r\n             // Navigator.pop(context);\r\n \r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 70), () async {\r\n+            Future.delayed(Duration(milliseconds: 100), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642503070986,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,9 +63,9 @@\n           onPressed: () {\r\n             // Navigator.pop(context);\r\n \r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 100), () async {\r\n+            Future.delayed(Duration(milliseconds: 200), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642503092909,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,9 +63,9 @@\n           onPressed: () {\r\n             // Navigator.pop(context);\r\n \r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 200), () async {\r\n+            Future.delayed(Duration(milliseconds: 150), () async {\r\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642503123842,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -68,9 +68,9 @@\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Navigator.pop(context);\r\n-              showAlertDialog(context);\r\n+              // showAlertDialog(context);\r\n             });\r\n           },\r\n         )\r\n       ],\r\n"
+                },
+                {
+                    "date": 1642503165781,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -68,33 +68,11 @@\n               print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Navigator.pop(context);\r\n-              // showAlertDialog(context);\r\n             });\r\n           },\r\n         )\r\n       ],\r\n     );\r\n   }\r\n-\r\n-  showAlertDialog(BuildContext context) {\r\n-    showDialog(\r\n-      context: context,\r\n-      builder: (BuildContext context) {\r\n-        return AlertDialog(\r\n-          title: Text(\"Succesfuly rename\"),\r\n-          content: Text(renameController.text),\r\n-          actions: [\r\n-            TextButton(\r\n-              child: Text(\"OK\"),\r\n-              onPressed: () {\r\n-                Navigator.pop(context);\r\n-              },\r\n-            ),\r\n-          ],\r\n-        );\r\n-      },\r\n-    );\r\n-    // Navigator.pop(context);\r\n-  }\r\n }\r\n"
+                },
+                {
+                    "date": 1642503181545,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -64,9 +64,8 @@\n             // Navigator.pop(context);\r\n \r\n             var newFileName = renameController.text;\r\n             Future.delayed(Duration(milliseconds: 150), () async {\r\n-              print(newFileName.split('.'));\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Navigator.pop(context);\r\n             });\r\n"
+                },
+                {
+                    "date": 1642503189658,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -60,10 +60,8 @@\n         ),\r\n         TextButton(\r\n           child: Text(\"OK\"),\r\n           onPressed: () {\r\n-            // Navigator.pop(context);\r\n-\r\n             var newFileName = renameController.text;\r\n             Future.delayed(Duration(milliseconds: 150), () async {\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n"
+                },
+                {
+                    "date": 1642503200544,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -61,9 +61,9 @@\n         TextButton(\r\n           child: Text(\"OK\"),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 150), () async {\r\n+            Future.delayed(Duration(milliseconds: 100), () async {\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Navigator.pop(context);\r\n             });\r\n"
+                },
+                {
+                    "date": 1642503294883,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -54,9 +54,11 @@\n       actions: [\r\n         TextButton(\r\n           child: Text(\"CANCEL\"),\r\n           onPressed: () {\r\n-            Navigator.pop(context);\r\n+            Future.delayed(Duration(milliseconds: 10), () async {\r\n+              Navigator.pop(context);\r\n+            });\r\n           },\r\n         ),\r\n         TextButton(\r\n           child: Text(\"OK\"),\r\n"
+                },
+                {
+                    "date": 1642503338974,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -54,9 +54,9 @@\n       actions: [\r\n         TextButton(\r\n           child: Text(\"CANCEL\"),\r\n           onPressed: () {\r\n-            Future.delayed(Duration(milliseconds: 10), () async {\r\n+            Future.delayed(Duration(milliseconds: 5), () async {\r\n               Navigator.pop(context);\r\n             });\r\n           },\r\n         ),\r\n"
+                },
+                {
+                    "date": 1642503351948,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -54,9 +54,9 @@\n       actions: [\r\n         TextButton(\r\n           child: Text(\"CANCEL\"),\r\n           onPressed: () {\r\n-            Future.delayed(Duration(milliseconds: 5), () async {\r\n+            Future.delayed(Duration(milliseconds: 20), () async {\r\n               Navigator.pop(context);\r\n             });\r\n           },\r\n         ),\r\n"
+                },
+                {
+                    "date": 1642503361899,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -54,9 +54,9 @@\n       actions: [\r\n         TextButton(\r\n           child: Text(\"CANCEL\"),\r\n           onPressed: () {\r\n-            Future.delayed(Duration(milliseconds: 20), () async {\r\n+            Future.delayed(Duration(milliseconds: 10), () async {\r\n               Navigator.pop(context);\r\n             });\r\n           },\r\n         ),\r\n"
+                },
+                {
+                    "date": 1642503376643,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -66,9 +66,11 @@\n             var newFileName = renameController.text;\r\n             Future.delayed(Duration(milliseconds: 100), () async {\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n-              Navigator.pop(context);\r\n+              Future.delayed(Duration(milliseconds: 10), () async {\r\n+                Navigator.pop(context);\r\n+              });\r\n             });\r\n           },\r\n         )\r\n       ],\r\n"
+                },
+                {
+                    "date": 1642503399149,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,9 +63,9 @@\n         TextButton(\r\n           child: Text(\"OK\"),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 100), () async {\r\n+            Future.delayed(Duration(milliseconds: 50), () async {\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Future.delayed(Duration(milliseconds: 10), () async {\r\n                 Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642503415217,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,9 +63,9 @@\n         TextButton(\r\n           child: Text(\"OK\"),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 50), () async {\r\n+            Future.delayed(Duration(milliseconds: 80), () async {\r\n               await widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n               Future.delayed(Duration(milliseconds: 10), () async {\r\n                 Navigator.pop(context);\r\n"
+                },
+                {
+                    "date": 1642503611224,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,12 +63,12 @@\n         TextButton(\r\n           child: Text(\"OK\"),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 80), () async {\r\n-              await widget.callback(newFileName);\r\n+            Future.delayed(Duration(milliseconds: 80), () {\r\n+              widget.callback(newFileName);\r\n             }).whenComplete(() {\r\n-              Future.delayed(Duration(milliseconds: 10), () async {\r\n+              Future.delayed(Duration(milliseconds: 10), () {\r\n                 Navigator.pop(context);\r\n               });\r\n             });\r\n           },\r\n"
+                },
+                {
+                    "date": 1642503852297,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -51,8 +51,15 @@\n           ),\r\n         ),\r\n       ),\r\n       actions: [\r\n+        ElevatedButton(\r\n+          style: ElevatedButton.styleFrom(\r\n+            splashFactory: NoSplash.splashFactory,\r\n+          ),\r\n+          onPressed: () {},\r\n+          child: Text('No Splash'),\r\n+        ),\r\n         TextButton(\r\n           child: Text(\"CANCEL\"),\r\n           onPressed: () {\r\n             Future.delayed(Duration(milliseconds: 10), () async {\r\n"
+                },
+                {
+                    "date": 1642503914777,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -51,25 +51,33 @@\n           ),\r\n         ),\r\n       ),\r\n       actions: [\r\n-        ElevatedButton(\r\n-          style: ElevatedButton.styleFrom(\r\n-            splashFactory: NoSplash.splashFactory,\r\n-          ),\r\n-          onPressed: () {},\r\n-          child: Text('No Splash'),\r\n-        ),\r\n         TextButton(\r\n           child: Text(\"CANCEL\"),\r\n           onPressed: () {\r\n             Future.delayed(Duration(milliseconds: 10), () async {\r\n               Navigator.pop(context);\r\n             });\r\n           },\r\n         ),\r\n-        TextButton(\r\n-          child: Text(\"OK\"),\r\n+        // TextButton(\r\n+        //   child: Text(\"OK\"),\r\n+        //   onPressed: () {\r\n+        //     var newFileName = renameController.text;\r\n+        //     Future.delayed(Duration(milliseconds: 80), () {\r\n+        //       widget.callback(newFileName);\r\n+        //     }).whenComplete(() {\r\n+        //       Future.delayed(Duration(milliseconds: 10), () {\r\n+        //         Navigator.pop(context);\r\n+        //       });\r\n+        //     });\r\n+        //   },\r\n+        // ),\r\n+        ElevatedButton(\r\n+          style: ElevatedButton.styleFrom(\r\n+            splashFactory: NoSplash.splashFactory,\r\n+          ),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n             Future.delayed(Duration(milliseconds: 80), () {\r\n               widget.callback(newFileName);\r\n@@ -78,9 +86,10 @@\n                 Navigator.pop(context);\r\n               });\r\n             });\r\n           },\r\n-        )\r\n+          child: Text('OK'),\r\n+        ),\r\n       ],\r\n     );\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642503949097,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -86,9 +86,12 @@\n                 Navigator.pop(context);\r\n               });\r\n             });\r\n           },\r\n-          child: Text('OK'),\r\n+          child: Text(\r\n+            'OK',\r\n+            style: TextStyle(color: Colors.white),\r\n+          ),\r\n         ),\r\n       ],\r\n     );\r\n   }\r\n"
+                },
+                {
+                    "date": 1642504005963,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -78,15 +78,15 @@\n             splashFactory: NoSplash.splashFactory,\r\n           ),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n-            Future.delayed(Duration(milliseconds: 80), () {\r\n-              widget.callback(newFileName);\r\n-            }).whenComplete(() {\r\n-              Future.delayed(Duration(milliseconds: 10), () {\r\n-                Navigator.pop(context);\r\n-              });\r\n-            });\r\n+            // Future.delayed(Duration(milliseconds: 0), () {\r\n+            widget.callback(newFileName);\r\n+            // }).whenComplete(() {\r\n+            //   Future.delayed(Duration(milliseconds: 10), () {\r\n+            Navigator.pop(context);\r\n+            // });\r\n+            // });\r\n           },\r\n           child: Text(\r\n             'OK',\r\n             style: TextStyle(color: Colors.white),\r\n"
+                },
+                {
+                    "date": 1642504037793,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -81,12 +81,12 @@\n             var newFileName = renameController.text;\r\n             // Future.delayed(Duration(milliseconds: 0), () {\r\n             widget.callback(newFileName);\r\n             // }).whenComplete(() {\r\n-            //   Future.delayed(Duration(milliseconds: 10), () {\r\n-            Navigator.pop(context);\r\n+            Future.delayed(Duration(milliseconds: 10), () {\r\n+              Navigator.pop(context);\r\n+            });\r\n             // });\r\n-            // });\r\n           },\r\n           child: Text(\r\n             'OK',\r\n             style: TextStyle(color: Colors.white),\r\n"
+                },
+                {
+                    "date": 1642504126093,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -59,30 +59,15 @@\n               Navigator.pop(context);\r\n             });\r\n           },\r\n         ),\r\n-        // TextButton(\r\n-        //   child: Text(\"OK\"),\r\n-        //   onPressed: () {\r\n-        //     var newFileName = renameController.text;\r\n-        //     Future.delayed(Duration(milliseconds: 80), () {\r\n-        //       widget.callback(newFileName);\r\n-        //     }).whenComplete(() {\r\n-        //       Future.delayed(Duration(milliseconds: 10), () {\r\n-        //         Navigator.pop(context);\r\n-        //       });\r\n-        //     });\r\n-        //   },\r\n-        // ),\r\n         ElevatedButton(\r\n           style: ElevatedButton.styleFrom(\r\n             splashFactory: NoSplash.splashFactory,\r\n           ),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n-            // Future.delayed(Duration(milliseconds: 0), () {\r\n             widget.callback(newFileName);\r\n-            // }).whenComplete(() {\r\n             Future.delayed(Duration(milliseconds: 10), () {\r\n               Navigator.pop(context);\r\n             });\r\n             // });\r\n"
+                },
+                {
+                    "date": 1642504540824,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -61,10 +61,10 @@\n           },\r\n         ),\r\n         ElevatedButton(\r\n           style: ElevatedButton.styleFrom(\r\n-            splashFactory: NoSplash.splashFactory,\r\n-          ),\r\n+              // splashFactory: NoSplash.splashFactory,\r\n+              primary: Colors.red),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n             widget.callback(newFileName);\r\n             Future.delayed(Duration(milliseconds: 10), () {\r\n"
+                },
+                {
+                    "date": 1642504570430,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -61,10 +61,10 @@\n           },\r\n         ),\r\n         ElevatedButton(\r\n           style: ElevatedButton.styleFrom(\r\n-              // splashFactory: NoSplash.splashFactory,\r\n-              primary: Colors.red),\r\n+            splashFactory: NoSplash.splashFactory,\r\n+          ),\r\n           onPressed: () {\r\n             var newFileName = renameController.text;\r\n             widget.callback(newFileName);\r\n             Future.delayed(Duration(milliseconds: 10), () {\r\n"
                 }
             ],
             "date": 1642076212258,

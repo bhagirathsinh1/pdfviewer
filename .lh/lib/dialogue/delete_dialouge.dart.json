@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 14,
+            "activePatchIndex": 20,
             "patches": [
                 {
                     "date": 1642077447320,
@@ -64,6 +64,30 @@
                 {
                     "date": 1642492850843,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -40,11 +40,19 @@\n                   child: Text('Loading...'),\r\n                 )\r\n               : Text(\"Continue\"),\r\n           onPressed: () {\r\n+            setState(() {\r\n+              isLoading = true;\r\n+            });\r\n             print(\"${widget.fileName.split('/').last}\");\r\n             Provider.of<PdfFileService>(context, listen: false)\r\n                 .deleteMethod(widget.fileName);\r\n+            setState(() {\r\n+              isLoading = false;\r\n+            });\r\n+            Navigator.pop(context);\r\n+            showAlertDialog(context, newFileName);\r\n           },\r\n         )\r\n       ],\r\n     );\r\n"
+                },
+                {
+                    "date": 1642503534567,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,32 +50,11 @@\n             setState(() {\r\n               isLoading = false;\r\n             });\r\n             Navigator.pop(context);\r\n-            showAlertDialog(context, newFileName);\r\n+            showAlertDialog(context);\r\n           },\r\n         )\r\n       ],\r\n     );\r\n   }\r\n-\r\n-  showAlertDialog(BuildContext context) {\r\n-    showDialog(\r\n-      context: context,\r\n-      builder: (BuildContext context) {\r\n-        return AlertDialog(\r\n-          title: Text(\"Succesfuly deleted\"),\r\n-          content: Text(widget.fileName.toString().split('/').last),\r\n-          actions: [\r\n-            TextButton(\r\n-              child: Text(\"OK\"),\r\n-              onPressed: () {\r\n-                Navigator.pop(context);\r\n-              },\r\n-            ),\r\n-          ],\r\n-        );\r\n-      },\r\n-    );\r\n-    // Navigator.pop(context);\r\n-  }\r\n }\r\n"
+                },
+                {
+                    "date": 1642503555104,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,25 +34,14 @@\n             Navigator.pop(context);\r\n           },\r\n         ),\r\n         TextButton(\r\n-          child: isLoading\r\n-              ? Center(\r\n-                  child: Text('Loading...'),\r\n-                )\r\n-              : Text(\"Continue\"),\r\n+          child: Text(\"Continue\"),\r\n           onPressed: () {\r\n-            setState(() {\r\n-              isLoading = true;\r\n-            });\r\n-            print(\"${widget.fileName.split('/').last}\");\r\n             Provider.of<PdfFileService>(context, listen: false)\r\n                 .deleteMethod(widget.fileName);\r\n-            setState(() {\r\n-              isLoading = false;\r\n-            });\r\n+\r\n             Navigator.pop(context);\r\n-            showAlertDialog(context);\r\n           },\r\n         )\r\n       ],\r\n     );\r\n"
+                },
+                {
+                    "date": 1642503599709,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,12 +36,16 @@\n         ),\r\n         TextButton(\r\n           child: Text(\"Continue\"),\r\n           onPressed: () {\r\n-            Provider.of<PdfFileService>(context, listen: false)\r\n-                .deleteMethod(widget.fileName);\r\n-\r\n-            Navigator.pop(context);\r\n+            Future.delayed(Duration(milliseconds: 80), () {\r\n+              Provider.of<PdfFileService>(context, listen: false)\r\n+                  .deleteMethod(widget.fileName);\r\n+            }).whenComplete(() {\r\n+              Future.delayed(Duration(milliseconds: 10), () async {\r\n+                Navigator.pop(context);\r\n+              });\r\n+            });\r\n           },\r\n         )\r\n       ],\r\n     );\r\n"
+                },
+                {
+                    "date": 1642504166726,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,10 +33,12 @@\n           onPressed: () {\r\n             Navigator.pop(context);\r\n           },\r\n         ),\r\n-        TextButton(\r\n-          child: Text(\"Continue\"),\r\n+        ElevatedButton(\r\n+          style: ElevatedButton.styleFrom(\r\n+            splashFactory: NoSplash.splashFactory,\r\n+          ),\r\n           onPressed: () {\r\n             Future.delayed(Duration(milliseconds: 80), () {\r\n               Provider.of<PdfFileService>(context, listen: false)\r\n                   .deleteMethod(widget.fileName);\r\n@@ -45,9 +47,13 @@\n                 Navigator.pop(context);\r\n               });\r\n             });\r\n           },\r\n-        )\r\n+          child: Text(\r\n+            'Continue',\r\n+            style: TextStyle(color: Colors.white),\r\n+          ),\r\n+        ),\r\n       ],\r\n     );\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642504198824,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -38,16 +38,16 @@\n           style: ElevatedButton.styleFrom(\r\n             splashFactory: NoSplash.splashFactory,\r\n           ),\r\n           onPressed: () {\r\n-            Future.delayed(Duration(milliseconds: 80), () {\r\n-              Provider.of<PdfFileService>(context, listen: false)\r\n-                  .deleteMethod(widget.fileName);\r\n-            }).whenComplete(() {\r\n-              Future.delayed(Duration(milliseconds: 10), () async {\r\n-                Navigator.pop(context);\r\n-              });\r\n+            // Future.delayed(Duration(milliseconds: 80), () {\r\n+            Provider.of<PdfFileService>(context, listen: false)\r\n+                .deleteMethod(widget.fileName);\r\n+            // }).whenComplete(() {\r\n+            Future.delayed(Duration(milliseconds: 10), () async {\r\n+              Navigator.pop(context);\r\n             });\r\n+            // });\r\n           },\r\n           child: Text(\r\n             'Continue',\r\n             style: TextStyle(color: Colors.white),\r\n"
+                },
+                {
+                    "date": 1642504230524,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -38,16 +38,13 @@\n           style: ElevatedButton.styleFrom(\r\n             splashFactory: NoSplash.splashFactory,\r\n           ),\r\n           onPressed: () {\r\n-            // Future.delayed(Duration(milliseconds: 80), () {\r\n             Provider.of<PdfFileService>(context, listen: false)\r\n                 .deleteMethod(widget.fileName);\r\n-            // }).whenComplete(() {\r\n             Future.delayed(Duration(milliseconds: 10), () async {\r\n               Navigator.pop(context);\r\n             });\r\n-            // });\r\n           },\r\n           child: Text(\r\n             'Continue',\r\n             style: TextStyle(color: Colors.white),\r\n"
                 }
             ],
             "date": 1642077447320,

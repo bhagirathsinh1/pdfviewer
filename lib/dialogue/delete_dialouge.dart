@@ -34,48 +34,23 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
             Navigator.pop(context);
           },
         ),
-        TextButton(
-          child: isLoading
-              ? Center(
-                  child: Text('Loading...'),
-                )
-              : Text("Continue"),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            splashFactory: NoSplash.splashFactory,
+          ),
           onPressed: () {
-            setState(() {
-              isLoading = true;
-            });
-            print("${widget.fileName.split('/').last}");
             Provider.of<PdfFileService>(context, listen: false)
                 .deleteMethod(widget.fileName);
-            setState(() {
-              isLoading = false;
+            Future.delayed(Duration(milliseconds: 10), () async {
+              Navigator.pop(context);
             });
-            Navigator.pop(context);
-            showAlertDialog(context);
           },
-        )
+          child: Text(
+            'Continue',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ],
     );
-  }
-
-  showAlertDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Succesfuly deleted"),
-          content: Text(widget.fileName.toString().split('/').last),
-          actions: [
-            TextButton(
-              child: Text("OK"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-    // Navigator.pop(context);
   }
 }

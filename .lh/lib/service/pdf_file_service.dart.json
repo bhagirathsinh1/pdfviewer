@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 39,
+            "activePatchIndex": 40,
             "patches": [
                 {
                     "date": 1642393868052,
@@ -164,6 +164,10 @@
                 {
                     "date": 1642501928221,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -332,16 +332,10 @@\n     var temp1 = files[index].referenceFile!.path;\r\n \r\n     var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);\r\n     var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + \".pdf\";\r\n-\r\n-    print(\"------------->arrived new name----$newPath--------\");\r\n-\r\n     var filename = await files[index].referenceFile!.rename(newPath);\r\n \r\n-    print(\"-------------v.path data---------------- ${filename.path}\");\r\n-    print(\"-------------v.path data---------------- ${favoritePdfList}\");\r\n-\r\n     files[index].referenceFile = filename;\r\n     files[index].pdfpath = filename.path;\r\n \r\n     files[index].pdfname = filename.path.split('/').last;\r\n"
+                },
+                {
+                    "date": 1642505003958,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -358,8 +358,9 @@\n       };\r\n \r\n       RecentSQLPDFService().insertRecentPDF(data, SqlModel.tableRecent);\r\n     }\r\n+    getRecentPdfList()\r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n }\r\n"
                 }
             ],
             "date": 1642393868052,
