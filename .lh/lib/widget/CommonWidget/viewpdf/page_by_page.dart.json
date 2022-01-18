@@ -1,0 +1,22 @@
+{
+    "sourceFile": "lib/widget/CommonWidget/viewpdf/page_by_page.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1642508953552,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642508986550,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -30,9 +30,9 @@\n             : Colors.black.withOpacity(0.5),\r\n       ),\r\n       onTap: () {\r\n         setState(() {\r\n-          widget.onValueChanged(false);\r\n+          widget.onValueChanged(true);\r\n         });\r\n         Navigator.pop(context);\r\n       },\r\n     );\r\n"
+                }
+            ],
+            "date": 1642508953552,
+            "name": "Commit-0",
+            "content": "import 'package:flutter/material.dart';\r\n\r\nclass PageByPage extends StatefulWidget {\r\n  PageByPage(\r\n      {Key? key, required this.isContinuePage, required this.onValueChanged})\r\n      : super(key: key);\r\n  bool isContinuePage;\r\n  final ValueChanged<bool> onValueChanged;\r\n\r\n  @override\r\n  _PageByPageState createState() => _PageByPageState();\r\n}\r\n\r\nclass _PageByPageState extends State<PageByPage> {\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return ListTile(\r\n      title: Text(\r\n        \"Page by page\",\r\n        style: TextStyle(\r\n          color: widget.isContinuePage\r\n              ? Colors.blue.withOpacity(0.8)\r\n              : Colors.black.withOpacity(0.8),\r\n        ),\r\n      ),\r\n      leading: Icon(\r\n        Icons.call_to_action_rounded,\r\n        color: widget.isContinuePage\r\n            ? Colors.blue.withOpacity(0.8)\r\n            : Colors.black.withOpacity(0.5),\r\n      ),\r\n      onTap: () {\r\n        setState(() {\r\n          widget.onValueChanged(false);\r\n        });\r\n        Navigator.pop(context);\r\n      },\r\n    );\r\n  }\r\n}\r\n"
+        }
+    ]
+}

@@ -8,6 +8,9 @@ import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
+import 'package:pdfviewer/widget/CommonWidget/viewpdf/continue_page.dart';
+import 'package:pdfviewer/widget/CommonWidget/viewpdf/nightmode.dart';
+import 'package:pdfviewer/widget/CommonWidget/viewpdf/page_by_page.dart';
 import 'package:pdfviewer/widget/CommonWidget/viewpdf/print.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -117,63 +120,23 @@ class _ViewPDFState extends State<ViewPDF> {
                               TitleOfPdf(
                                   titlePath:
                                       widget.pdfmodel.pdfname.toString()),
-                              ListTile(
-                                title: Text(
-                                  "Continuous page",
-                                  style: TextStyle(
-                                    color: isContinuePage
-                                        ? Colors.black.withOpacity(0.8)
-                                        : Colors.blue.withOpacity(0.8),
-                                  ),
-                                ),
-                                leading: Icon(
-                                  Icons.print,
-                                  color: isContinuePage
-                                      ? Colors.black.withOpacity(0.5)
-                                      : Colors.blue.withOpacity(0.8),
-                                ),
-                                onTap: () {
+                              ContinuePage(
+                                isContinuePage: isContinuePage,
+                                onValueChanged: (bool value) {
                                   setState(() {
-                                    isContinuePage = false;
+                                    isContinuePage = value;
                                   });
-                                  Navigator.pop(context);
                                 },
                               ),
-                              ListTile(
-                                title: Text(
-                                  "Page by page",
-                                  style: TextStyle(
-                                    color: isContinuePage
-                                        ? Colors.blue.withOpacity(0.8)
-                                        : Colors.black.withOpacity(0.8),
-                                  ),
-                                ),
-                                leading: Icon(
-                                  Icons.call_to_action_rounded,
-                                  color: isContinuePage
-                                      ? Colors.blue.withOpacity(0.8)
-                                      : Colors.black.withOpacity(0.5),
-                                ),
-                                onTap: () {
+                              PageByPage(
+                                isContinuePage: isContinuePage,
+                                onValueChanged: (bool value) {
                                   setState(() {
-                                    isContinuePage = true;
+                                    isContinuePage = value;
                                   });
-                                  Navigator.pop(context);
                                 },
                               ),
-                              ListTile(
-                                title: Text(
-                                  "Night Mode",
-                                  style: TextStyle(
-                                    color: Colors.black.withOpacity(0.8),
-                                  ),
-                                ),
-                                leading: Icon(
-                                  Icons.nights_stay,
-                                  color: Colors.black.withOpacity(0.5),
-                                ),
-                                onTap: () {},
-                              ),
+                              NightMode(),
                               ListTile(
                                 title: Text(
                                   "Go to page",
