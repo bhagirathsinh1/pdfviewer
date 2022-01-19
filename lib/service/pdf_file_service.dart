@@ -237,6 +237,7 @@ class PdfFileService with ChangeNotifier {
       // removeFromFavorite(file, SqlModel.tableFavorite);
       getStorageFilleMethod();
       getFavoritePdfList();
+      items.addAll(files);
       notifyListeners();
       print(
           "-----------table favorite ${SqlModel.tableFavorite}--------------");

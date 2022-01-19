@@ -42,6 +42,7 @@ class _DeleteFileDialougeState extends State<DeleteFileDialouge> {
             Provider.of<PdfFileService>(context, listen: false)
                 .deleteMethod(widget.fileName);
             Future.delayed(Duration(milliseconds: 10), () async {
+              
               Navigator.pop(context);
             });
           },
