@@ -101,9 +101,12 @@ class _FavouritepageState extends State<Favouritepage> {
                                   builder: (context) {
                                     //
                                     return ViewPDF(
-                                      pdfmodel:
-                                          pdfservice.favoritePdfList[index],
-                                    );
+                                        pdfmodel:
+                                            pdfservice.favoritePdfList[index],
+                                        callback: (String newFileName) {
+                                          pdfservice.changeFileNameOnly(
+                                              context, newFileName, index);
+                                        });
                                   },
                                 ),
                               );

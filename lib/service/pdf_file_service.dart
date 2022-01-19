@@ -327,7 +327,7 @@ class PdfFileService with ChangeNotifier {
   }
 
   changeFileNameOnly(
-      BuildContext context, String newFileName, int index) async {
+      BuildContext context, String newFileName, var index) async {
     print("------------->arrived new name----$newFileName--------");
     var temp1 = files[index].referenceFile!.path;
 

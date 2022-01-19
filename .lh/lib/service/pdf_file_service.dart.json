@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 40,
+            "activePatchIndex": 41,
             "patches": [
                 {
                     "date": 1642393868052,
@@ -168,6 +168,10 @@
                 {
                     "date": 1642505003958,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -358,8 +358,9 @@\n       };\r\n \r\n       RecentSQLPDFService().insertRecentPDF(data, SqlModel.tableRecent);\r\n     }\r\n+    getRecentPdfList()\r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1642564233843,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -326,9 +326,9 @@\n     //update the UI\r\n   }\r\n \r\n   changeFileNameOnly(\r\n-      BuildContext context, String newFileName, int index) async {\r\n+      BuildContext context, String newFileName, var index) async {\r\n     print(\"------------->arrived new name----$newFileName--------\");\r\n     var temp1 = files[index].referenceFile!.path;\r\n \r\n     var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);\r\n@@ -358,9 +358,9 @@\n       };\r\n \r\n       RecentSQLPDFService().insertRecentPDF(data, SqlModel.tableRecent);\r\n     }\r\n-    getRecentPdfList()\r\n+    getRecentPdfList();\r\n     getStorageFilleMethod();\r\n     notifyListeners();\r\n   }\r\n }\r\n"
                 }
             ],
             "date": 1642393868052,

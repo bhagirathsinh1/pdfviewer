@@ -122,8 +122,11 @@ class _HomepageBodyState extends State<HomepageBody> {
                     MaterialPageRoute(
                       builder: (context) {
                         return ViewPDF(
-                          pdfmodel: pdfservice.files[index],
-                        );
+                            pdfmodel: pdfservice.files[index],
+                            callback: (String newFileName) {
+                              pdfservice.changeFileNameOnly(
+                                  context, newFileName, index);
+                            });
                       },
                     ),
                   );

@@ -109,8 +109,11 @@ class _RecentpageState extends State<Recentpage> {
                             MaterialPageRoute(
                               builder: (context) {
                                 return ViewPDF(
-                                  pdfmodel: pdfservice.recentPdfList[index],
-                                );
+                                    pdfmodel: pdfservice.recentPdfList[index],
+                                    callback: (String newFileName) {
+                                      pdfservice.changeFileNameOnly(
+                                          context, newFileName, index);
+                                    });
                               },
                             ),
                           );

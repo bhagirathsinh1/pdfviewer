@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 18,
+            "activePatchIndex": 21,
             "patches": [
                 {
                     "date": 1642075605732,
@@ -80,6 +80,18 @@
                 {
                     "date": 1642493125086,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -69,9 +69,8 @@\n                                     fileName: filePath,\r\n                                   ),\r\n                                   AddRemoveWidget(paths: filePath),\r\n                                   RenameFileWidget(\r\n-                                      index: index,\r\n                                       fileName: filePath,\r\n                                       callback: (String newFileName) {\r\n                                         pdfservice.changeFileNameOnly(\r\n                                             context, newFileName, index);\r\n"
+                },
+                {
+                    "date": 1642564466317,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -122,8 +122,9 @@\n                     MaterialPageRoute(\r\n                       builder: (context) {\r\n                         return ViewPDF(\r\n                           pdfmodel: pdfservice.files[index],\r\n+                          index: index,\r\n                         );\r\n                       },\r\n                     ),\r\n                   );\r\n"
+                },
+                {
+                    "date": 1642564806447,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -122,9 +122,8 @@\n                     MaterialPageRoute(\r\n                       builder: (context) {\r\n                         return ViewPDF(\r\n                           pdfmodel: pdfservice.files[index],\r\n-                          index: index,\r\n                         );\r\n                       },\r\n                     ),\r\n                   );\r\n"
+                },
+                {
+                    "date": 1642565207213,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -121,10 +121,13 @@\n                     context,\r\n                     MaterialPageRoute(\r\n                       builder: (context) {\r\n                         return ViewPDF(\r\n-                          pdfmodel: pdfservice.files[index],\r\n-                        );\r\n+                            pdfmodel: pdfservice.files[index],\r\n+                            callback: (String newFileName) {\r\n+                              pdfservice.changeFileNameOnly(\r\n+                                  context, newFileName, index);\r\n+                            });\r\n                       },\r\n                     ),\r\n                   );\r\n                 },\r\n"
                 }
             ],
             "date": 1642075605732,

@@ -118,8 +118,11 @@ class _SearchListState extends State<SearchList> {
               MaterialPageRoute(
                 builder: (context) {
                   return ViewPDF(
-                    pdfmodel: pdfservice.files[widget.index],
-                  );
+                      pdfmodel: pdfservice.files[widget.index],
+                      callback: (String newFileName) {
+                        pdfservice.changeFileNameOnly(
+                            context, newFileName, widget.index);
+                      });
                 },
               ),
             );

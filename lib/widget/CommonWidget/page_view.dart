@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +16,9 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ViewPDF extends StatefulWidget {
   PdfListModel pdfmodel;
-  var index;
-  ViewPDF({
-    required this.pdfmodel,
-  });
+  final Function callback;
+
+  ViewPDF({required this.pdfmodel, required this.callback});
 
   @override
   State<ViewPDF> createState() => _ViewPDFState();
@@ -160,10 +158,7 @@ class _ViewPDFState extends State<ViewPDF> {
                                   paths: widget.pdfmodel.pdfpath.toString()),
                               RenameFileWidget(
                                   fileName: widget.pdfmodel.pdfpath.toString(),
-                                  callback: (String newFileName) {
-                                    pdfservice.changeFileNameOnly(
-                                        context, newFileName, widget.index);
-                                  }),
+                                  callback: widget.callback),
                               PrintWidget(),
                               DeleteFileWidget(
                                 fileName: widget.pdfmodel.pdfpath.toString(),

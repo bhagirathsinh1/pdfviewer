@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 3,
             "patches": [
                 {
                     "date": 1642392739431,
@@ -16,6 +16,10 @@
                 {
                     "date": 1642492380700,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -92,9 +92,8 @@\n                                 context: context,\r\n                                 builder: (BuildContext context) {\r\n                                   return BotomsheetRecentPage(\r\n                                     fileName: filePath.toString(),\r\n-                                    index: index,\r\n                                   );\r\n                                 },\r\n                               );\r\n                             },\r\n"
+                },
+                {
+                    "date": 1642565576712,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -108,10 +108,13 @@\n                             context,\r\n                             MaterialPageRoute(\r\n                               builder: (context) {\r\n                                 return ViewPDF(\r\n-                                  pdfmodel: pdfservice.recentPdfList[index],\r\n-                                );\r\n+                                    pdfmodel: pdfservice.recentPdfList[index],\r\n+                                    callback: (String newFileName) {\r\n+                                      pdfservice.changeFileNameOnly(\r\n+                                          context, newFileName, index);\r\n+                                    });\r\n                               },\r\n                             ),\r\n                           );\r\n                         },\r\n"
                 }
             ],
             "date": 1642392739431,
