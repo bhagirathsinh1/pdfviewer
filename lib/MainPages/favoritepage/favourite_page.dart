@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/favoritepage/no_pdf_found.dart';
+import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/MainPages/favoritepage/botttomsheet_favoritepage.dart';
 import 'package:pdfviewer/MainPages/favoritepage/favoritelist_clear_widget.dart';
@@ -17,9 +18,8 @@ class _FavouritepageState extends State<Favouritepage> {
   @override
   @override
   Widget build(BuildContext context) {
-    return Consumer<PdfFileService>(
-      builder: (context, pdfservice, child) {
-        return Scaffold(
+    return Consumer<PdfFileService>(builder: (context, pdfservice, child) {
+      return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
             backgroundColor: Colors.white,
@@ -62,60 +62,42 @@ class _FavouritepageState extends State<Favouritepage> {
                         pdfservice.favoritePdfList[index].pdfname.toString();
 
                     return Card(
-                      child: ListTile(
-                        title: Text(fileTitle),
-                        subtitle: fileSize.length < 7
-                            ? Text("${fileDate}\n${fileSize} Kb")
-                            : Text(
-                                "${fileDate}\n${(double.parse(fileSize) / 1024).toStringAsFixed(2)} Mb"),
-                        leading: Icon(
-                          Icons.picture_as_pdf,
-                          color: Colors.red,
-                        ),
-                        trailing: IconButton(
-                          onPressed: () {
-                            showModalBottomSheet<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return BottomsheetFavoritePage(
-                                  fileName: filePath,
+                        child: ListTile(
+                            title: Text(fileTitle),
+                            subtitle: fileSize.length < 7
+                                ? Text("${fileDate}\n${fileSize} Kb")
+                                : Text(
+                                    "${fileDate}\n${(double.parse(fileSize) / 1024).toStringAsFixed(2)} Mb"),
+                            leading: Icon(
+                              Icons.picture_as_pdf,
+                              color: Colors.red,
+                            ),
+                            trailing: IconButton(
+                              onPressed: () {
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return BottomsheetFavoritePage(
+                                      fileName: filePath,
+                                    );
+                                  },
                                 );
                               },
-                            );
-                          },
-                          icon: Icon(
-                            Icons.more_vert,
-                            color: Colors.redAccent,
-                          ),
-                        ),
-                        onTap: () {
-                          Future.delayed(
-                            Duration.zero,
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    //
-                                    return ViewPDF(
-                                        pdfmodel:
-                                            pdfservice.favoritePdfList[index],
-                                        callback: (String newFileName) {
-                                          pdfservice.changeFileNameOnly(
-                                              context, newFileName, index);
-                                        });
-                                  },
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
-        );
-      },
-    );
+                              icon: Icon(
+                                Icons.more_vert,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                            onTap: () {
+                              Future.delayed(Duration.zero, () {
+                                NavigateToViewPdf().navigateToViewPdf(
+                                    pdfservice.favoritePdfList[index],
+                                    pdfservice,
+                                    context,
+                                    index);
+                              });
+                            }));
+                  }));
+    });
   }
 }

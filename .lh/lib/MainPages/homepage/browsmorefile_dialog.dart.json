@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 3,
+            "activePatchIndex": 4,
             "patches": [
                 {
                     "date": 1642506935824,
@@ -20,6 +20,10 @@
                 {
                     "date": 1642568086345,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,7 @@\n import 'package:file_picker/file_picker.dart';\r\n import 'package:flutter/material.dart';\r\n \r\n-import 'package:pdfviewer/widget/CommonWidget/page_view.dart';\r\n import 'package:pdfviewer/widget/browsmore_pdf_view.dart';\r\n \r\n class BrowsMoreFilePopUp extends StatefulWidget {\r\n   BrowsMoreFilePopUp({\r\n@@ -70,9 +69,11 @@\n                       leading: Icon(\r\n                         Icons.star,\r\n                         color: Colors.black.withOpacity(0.5),\r\n                       ),\r\n-                      onTap: () {},\r\n+                      onTap: () {\r\n+                        Navigator.pop(context);\r\n+                      },\r\n                     ),\r\n                     ListTile(\r\n                       title: Text(\r\n                         \"Share this app\",\r\n@@ -83,9 +84,11 @@\n                       leading: Icon(\r\n                         Icons.share,\r\n                         color: Colors.black.withOpacity(0.5),\r\n                       ),\r\n-                      onTap: () {},\r\n+                      onTap: () {\r\n+                        Navigator.pop(context);\r\n+                      },\r\n                     ),\r\n                     ListTile(\r\n                       title: Text(\r\n                         \"Privacy Policy\",\r\n@@ -96,9 +99,11 @@\n                       leading: Icon(\r\n                         Icons.privacy_tip,\r\n                         color: Colors.black.withOpacity(0.5),\r\n                       ),\r\n-                      onTap: () {},\r\n+                      onTap: () {\r\n+                        Navigator.pop(context);\r\n+                      },\r\n                     ),\r\n                   ],\r\n                 ),\r\n               );\r\n"
+                },
+                {
+                    "date": 1642570401656,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n import 'package:file_picker/file_picker.dart';\r\n import 'package:flutter/material.dart';\r\n \r\n-import 'package:pdfviewer/widget/browsmore_pdf_view.dart';\r\n+import 'package:pdfviewer/MainPages/homepage/browsmore_pdf_view.dart';\r\n \r\n class BrowsMoreFilePopUp extends StatefulWidget {\r\n   BrowsMoreFilePopUp({\r\n     Key? key,\r\n"
                 }
             ],
             "date": 1642506935824,

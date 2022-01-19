@@ -91,7 +91,7 @@ class _ShortingState extends State<Shorting> {
                 },
               ),
               Text(
-                "Size : Accending",
+                "Size (smallest first)",
               )
             ],
           ),
@@ -112,7 +112,7 @@ class _ShortingState extends State<Shorting> {
                   }
                 },
               ),
-              Text("Size : Deccending")
+              Text("Size (largest first)")
             ],
           ),
           value: Sortingenum.isSizeDeccendingRadio,

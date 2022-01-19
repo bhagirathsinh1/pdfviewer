@@ -3,11 +3,27 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 4,
             "patches": [
                 {
                     "date": 1642570131922,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642571487989,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -90,9 +90,9 @@\n                   });\r\n                 },\r\n               ),\r\n               Text(\r\n-                \"Size : Accending\",\r\n+                \"Size(accending)\",\r\n               )\r\n             ],\r\n           ),\r\n           value: Sortingenum.isSizeAccendingRadio,\r\n@@ -111,9 +111,9 @@\n                     });\r\n                   }\r\n                 },\r\n               ),\r\n-              Text(\"Size : Deccending\")\r\n+              Text(\"Size(deccending)\")\r\n             ],\r\n           ),\r\n           value: Sortingenum.isSizeDeccendingRadio,\r\n         ),\r\n"
+                },
+                {
+                    "date": 1642571530947,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -90,9 +90,9 @@\n                   });\r\n                 },\r\n               ),\r\n               Text(\r\n-                \"Size(accending)\",\r\n+                \"Size(smallest first)\",\r\n               )\r\n             ],\r\n           ),\r\n           value: Sortingenum.isSizeAccendingRadio,\r\n@@ -111,9 +111,9 @@\n                     });\r\n                   }\r\n                 },\r\n               ),\r\n-              Text(\"Size(deccending)\")\r\n+              Text(\"Size(largest first)\")\r\n             ],\r\n           ),\r\n           value: Sortingenum.isSizeDeccendingRadio,\r\n         ),\r\n"
+                },
+                {
+                    "date": 1642571550094,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -90,9 +90,9 @@\n                   });\r\n                 },\r\n               ),\r\n               Text(\r\n-                \"Size(smallest first)\",\r\n+                \"Size( smallest first )\",\r\n               )\r\n             ],\r\n           ),\r\n           value: Sortingenum.isSizeAccendingRadio,\r\n@@ -111,9 +111,9 @@\n                     });\r\n                   }\r\n                 },\r\n               ),\r\n-              Text(\"Size(largest first)\")\r\n+              Text(\"Size( largest first )\")\r\n             ],\r\n           ),\r\n           value: Sortingenum.isSizeDeccendingRadio,\r\n         ),\r\n"
+                },
+                {
+                    "date": 1642571570126,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -90,9 +90,9 @@\n                   });\r\n                 },\r\n               ),\r\n               Text(\r\n-                \"Size( smallest first )\",\r\n+                \"Size (smallest first)\",\r\n               )\r\n             ],\r\n           ),\r\n           value: Sortingenum.isSizeAccendingRadio,\r\n@@ -111,9 +111,9 @@\n                     });\r\n                   }\r\n                 },\r\n               ),\r\n-              Text(\"Size( largest first )\")\r\n+              Text(\"Size (largest first)\")\r\n             ],\r\n           ),\r\n           value: Sortingenum.isSizeDeccendingRadio,\r\n         ),\r\n"
                 }
             ],
             "date": 1642570131922,

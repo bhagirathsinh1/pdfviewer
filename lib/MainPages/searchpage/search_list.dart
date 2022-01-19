@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 
 import 'package:pdfviewer/common%20mehtod/addIntoRecentMethod.dart';
+import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
@@ -91,19 +92,11 @@ class _SearchListState extends State<SearchList> {
           ),
           onTap: () async {
             AddIntoRecentsMethod().addIntoRecents(filePath, context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return ViewPDF(
-                      pdfmodel: pdfservice.files[widget.index],
-                      callback: (String newFileName) {
-                        pdfservice.changeFileNameOnly(
-                            context, newFileName, widget.index);
-                      });
-                },
-              ),
-            );
+            NavigateToViewPdf().navigateToViewPdf(
+                pdfservice.files[widget.index],
+                pdfservice,
+                context,
+                widget.index);
           },
         ),
       );

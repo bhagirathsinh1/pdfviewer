@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/favoritepage/no_pdf_found.dart';
+import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';
 
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/MainPages/recentpage/bottomsheet_recentpage.dart';
-
-import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
-
 import 'package:pdfviewer/MainPages/recentpage/recentlist_clear_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/favorite_icon.dart';
 import 'package:provider/provider.dart';
@@ -70,59 +68,49 @@ class _RecentpageState extends State<Recentpage> {
                     var isfav = pdfservice.favoritePdfList
                         .where((element) => element.pdfpath == filePath);
                     return Card(
-                      child: ListTile(
-                        title: Text(fileTitle),
-                        subtitle: fileSize.length < 7
-                            ? Text("${fileDate}\n${fileSize} Kb")
-                            : Text(
-                                "${fileDate}\n${(double.parse(fileSize) / 1024).toStringAsFixed(2)} Mb",
-                              ),
-                        leading: Icon(
-                          Icons.picture_as_pdf,
-                          color: Colors.red,
-                        ),
-                        trailing:
-                            Wrap(alignment: WrapAlignment.center, children: [
-                          FavoriteStarIcon(isfav: isfav),
-                          IconButton(
-                            constraints: BoxConstraints(),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 10),
-                            onPressed: () async {
-                              await showModalBottomSheet<bool>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return BotomsheetRecentPage(
-                                    fileName: filePath.toString(),
-                                  );
-                                },
-                              );
-                            },
-                            icon: Icon(
-                              Icons.more_vert,
-                              color: Colors.redAccent,
+                        child: ListTile(
+                            title: Text(fileTitle),
+                            subtitle: fileSize.length < 7
+                                ? Text("${fileDate}\n${fileSize} Kb")
+                                : Text(
+                                    "${fileDate}\n${(double.parse(fileSize) / 1024).toStringAsFixed(2)} Mb",
+                                  ),
+                            leading: Icon(
+                              Icons.picture_as_pdf,
+                              color: Colors.red,
                             ),
-                          ),
-                        ]),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return ViewPDF(
-                                    pdfmodel: pdfservice.recentPdfList[index],
-                                    callback: (String newFileName) {
-                                      pdfservice.changeFileNameOnly(
-                                          context, newFileName, index);
-                                    });
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ));
+                            trailing: Wrap(
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  FavoriteStarIcon(isfav: isfav),
+                                  IconButton(
+                                    constraints: BoxConstraints(),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 10),
+                                    onPressed: () async {
+                                      await showModalBottomSheet<bool>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return BotomsheetRecentPage(
+                                            fileName: filePath.toString(),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.more_vert,
+                                      color: Colors.redAccent,
+                                    ),
+                                  ),
+                                ]),
+                            onTap: () {
+                              NavigateToViewPdf().navigateToViewPdf(
+                                  pdfservice.recentPdfList[index],
+                                  pdfservice,
+                                  context,
+                                  index);
+                            }));
+                  }));
     });
   }
 }
