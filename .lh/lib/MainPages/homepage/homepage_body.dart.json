@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 33,
+            "activePatchIndex": 39,
             "patches": [
                 {
                     "date": 1642075605732,
@@ -140,6 +140,30 @@
                 {
                     "date": 1642571712348,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -30,8 +30,10 @@\n             var filePath = fileIndex.pdfpath.toString();\r\n             var fileDate = fileIndex.date.toString();\r\n             var fileSize = fileIndex.size.toString();\r\n             var fileTitle = fileIndex.pdfname.toString();\r\n+\r\n+            // why here ?\r\n             var isfav = pdfservice.favoritePdfList\r\n                 .where((element) => element.pdfpath == filePath);\r\n             return Card(\r\n               child: ListTile(\r\n"
+                },
+                {
+                    "date": 1642576777499,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,9 @@\n             var fileSize = fileIndex.size.toString();\r\n             var fileTitle = fileIndex.pdfname.toString();\r\n \r\n             // why here ?\r\n-            var isfav = pdfservice.favoritePdfList\r\n+            Iterable isfav = pdfservice.favoritePdfList\r\n                 .where((element) => element.pdfpath == filePath);\r\n             return Card(\r\n               child: ListTile(\r\n                 title: Text(fileTitle),\r\n"
+                },
+                {
+                    "date": 1642576801623,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,9 @@\n import 'package:flutter/material.dart';\r\n import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';\r\n import 'package:pdfviewer/common%20mehtod/addIntoRecentMethod.dart';\r\n import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';\r\n+import 'package:pdfviewer/model/pdf_list_model.dart';\r\n import 'package:pdfviewer/service/pdf_file_service.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/page_view.dart';\r\n@@ -32,9 +33,9 @@\n             var fileSize = fileIndex.size.toString();\r\n             var fileTitle = fileIndex.pdfname.toString();\r\n \r\n             // why here ?\r\n-            Iterable isfav = pdfservice.favoritePdfList\r\n+            Iterable<PdfListModel> isfav = pdfservice.favoritePdfList\r\n                 .where((element) => element.pdfpath == filePath);\r\n             return Card(\r\n               child: ListTile(\r\n                 title: Text(fileTitle),\r\n"
+                },
+                {
+                    "date": 1642578169113,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,8 @@\n             var fileDate = fileIndex.date.toString();\r\n             var fileSize = fileIndex.size.toString();\r\n             var fileTitle = fileIndex.pdfname.toString();\r\n \r\n-            // why here ?\r\n             Iterable<PdfListModel> isfav = pdfservice.favoritePdfList\r\n                 .where((element) => element.pdfpath == filePath);\r\n             return Card(\r\n               child: ListTile(\r\n"
+                },
+                {
+                    "date": 1642578316638,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,13 +26,12 @@\n       builder: (context, pdfservice, child) {\r\n         return ListView.builder(\r\n           itemCount: pdfservice.files.length,\r\n           itemBuilder: (BuildContext ctxt, index) {\r\n-            var fileIndex = pdfservice.files[index];\r\n-            var filePath = fileIndex.pdfpath.toString();\r\n-            var fileDate = fileIndex.date.toString();\r\n-            var fileSize = fileIndex.size.toString();\r\n-            var fileTitle = fileIndex.pdfname.toString();\r\n+            var filePath = pdfservice.files[index].pdfpath.toString();\r\n+            var fileDate = pdfservice.files[index].date.toString();\r\n+            var fileSize = pdfservice.files[index].size.toString();\r\n+            var fileTitle = pdfservice.files[index].pdfname.toString();\r\n \r\n             Iterable<PdfListModel> isfav = pdfservice.favoritePdfList\r\n                 .where((element) => element.pdfpath == filePath);\r\n             return Card(\r\n"
+                },
+                {
+                    "date": 1642578338734,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,12 +26,12 @@\n       builder: (context, pdfservice, child) {\r\n         return ListView.builder(\r\n           itemCount: pdfservice.files.length,\r\n           itemBuilder: (BuildContext ctxt, index) {\r\n-            var filePath = pdfservice.files[index].pdfpath.toString();\r\n-            var fileDate = pdfservice.files[index].date.toString();\r\n-            var fileSize = pdfservice.files[index].size.toString();\r\n-            var fileTitle = pdfservice.files[index].pdfname.toString();\r\n+            String filePath = pdfservice.files[index].pdfpath.toString();\r\n+            String fileDate = pdfservice.files[index].date.toString();\r\n+            String fileSize = pdfservice.files[index].size.toString();\r\n+            String fileTitle = pdfservice.files[index].pdfname.toString();\r\n \r\n             Iterable<PdfListModel> isfav = pdfservice.favoritePdfList\r\n                 .where((element) => element.pdfpath == filePath);\r\n             return Card(\r\n"
+                },
+                {
+                    "date": 1642579024285,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,8 @@\n import 'package:pdfviewer/model/pdf_list_model.dart';\r\n import 'package:pdfviewer/service/pdf_file_service.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';\r\n-import 'package:pdfviewer/widget/CommonWidget/page_view.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/favorite_icon.dart';\r\n import 'package:provider/provider.dart';\r\n"
                 }
             ],
             "date": 1642075605732,

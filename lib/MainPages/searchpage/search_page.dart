@@ -80,7 +80,8 @@ class _MyHomePageState extends State<SearchPage> {
   }
 
   void filterSearchResults(String query) {
-    var pdfservice = Provider.of<PdfFileService>(context, listen: false);
+    PdfFileService pdfservice =
+        Provider.of<PdfFileService>(context, listen: false);
     List<PdfListModel> dummySearchList = [];
     dummySearchList.addAll(pdfservice.files);
 

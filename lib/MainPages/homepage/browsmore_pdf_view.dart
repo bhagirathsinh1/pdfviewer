@@ -177,7 +177,7 @@ class _ViewPDFState extends State<BrowsMoreView> {
       child: Text("OK"),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
-          var temp = int.parse(textGotoValue.text);
+          int temp = int.parse(textGotoValue.text);
           changePage(temp);
           Navigator.pop(context);
           Navigator.pop(context);

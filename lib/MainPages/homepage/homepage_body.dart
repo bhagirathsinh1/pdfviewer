@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 import 'package:pdfviewer/common%20mehtod/addIntoRecentMethod.dart';
 import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';
+import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
-import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
 import 'package:pdfviewer/widget/CommonWidget/favorite_icon.dart';
@@ -26,14 +26,12 @@ class _HomepageBodyState extends State<HomepageBody> {
         return ListView.builder(
           itemCount: pdfservice.files.length,
           itemBuilder: (BuildContext ctxt, index) {
-            var fileIndex = pdfservice.files[index];
-            var filePath = fileIndex.pdfpath.toString();
-            var fileDate = fileIndex.date.toString();
-            var fileSize = fileIndex.size.toString();
-            var fileTitle = fileIndex.pdfname.toString();
+            String filePath = pdfservice.files[index].pdfpath.toString();
+            String fileDate = pdfservice.files[index].date.toString();
+            String fileSize = pdfservice.files[index].size.toString();
+            String fileTitle = pdfservice.files[index].pdfname.toString();
 
-            // why here ?
-            var isfav = pdfservice.favoritePdfList
+            Iterable<PdfListModel> isfav = pdfservice.favoritePdfList
                 .where((element) => element.pdfpath == filePath);
             return Card(
               child: ListTile(

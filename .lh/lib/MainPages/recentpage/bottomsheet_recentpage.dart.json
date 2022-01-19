@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 3,
             "patches": [
                 {
                     "date": 1642492298962,
@@ -16,6 +16,10 @@
                 {
                     "date": 1642568249644,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,8 @@\n import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';\r\n import 'package:pdfviewer/MainPages/recentpage/remove_from_recent.dart';\r\n-import 'package:provider/provider.dart';\r\n \r\n class BotomsheetRecentPage extends StatefulWidget {\r\n   BotomsheetRecentPage({\r\n     Key? key,\r\n"
+                },
+                {
+                    "date": 1642579066743,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,10 +21,10 @@\n \r\n class _BotomsheetRecentPageState extends State<BotomsheetRecentPage> {\r\n   @override\r\n   Widget build(BuildContext context) {\r\n-    var paths = widget.fileName;\r\n-    var titlePath = paths.toString().split('/').last;\r\n+    String paths = widget.fileName;\r\n+    String titlePath = paths.toString().split('/').last;\r\n \r\n     return Container(\r\n       color: Colors.white,\r\n       height: 300,\r\n"
                 }
             ],
             "date": 1642492298962,

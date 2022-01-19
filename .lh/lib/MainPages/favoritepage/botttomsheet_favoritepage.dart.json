@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 1,
+            "activePatchIndex": 2,
             "patches": [
                 {
                     "date": 1642492428331,
@@ -12,6 +12,10 @@
                 {
                     "date": 1642567883236,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,12 +6,11 @@\n \r\n class BottomsheetFavoritePage extends StatefulWidget {\r\n   BottomsheetFavoritePage({\r\n     Key? key,\r\n-    required this.index,\r\n     required this.fileName,\r\n   }) : super(key: key);\r\n-  final int index;\r\n+\r\n   final String fileName;\r\n \r\n   @override\r\n   _BottomsheetFavoritePageState createState() =>\r\n"
+                },
+                {
+                    "date": 1642578793329,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,10 +19,10 @@\n \r\n class _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {\r\n   @override\r\n   Widget build(BuildContext context) {\r\n-    var paths = widget.fileName;\r\n-    var titlePath = paths.toString().split('/').last;\r\n+    String paths = widget.fileName;\r\n+    String titlePath = paths.toString().split('/').last;\r\n \r\n     return Container(\r\n       color: Colors.white,\r\n       height: 250,\r\n"
                 }
             ],
             "date": 1642492428331,

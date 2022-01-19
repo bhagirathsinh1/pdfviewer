@@ -17,7 +17,7 @@ class SqlModel {
   Future initDb() async {
     io.Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentDirectory.path, "myDatabase2.db");
-    var taskDb = await openDatabase(path, version: 1);
+    Database taskDb = await openDatabase(path, version: 1);
 
     _db = taskDb;
     await creatingTables();

@@ -52,13 +52,13 @@ class _FavouritepageState extends State<Favouritepage> {
                   scrollDirection: Axis.vertical,
                   itemCount: pdfservice.favoritePdfList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    var filePath =
+                    String filePath =
                         pdfservice.favoritePdfList[index].pdfpath.toString();
-                    var fileDate =
+                    String fileDate =
                         pdfservice.favoritePdfList[index].date.toString();
-                    var fileSize =
+                    String fileSize =
                         pdfservice.favoritePdfList[index].size.toString();
-                    var fileTitle =
+                    String fileTitle =
                         pdfservice.favoritePdfList[index].pdfname.toString();
 
                     return Card(

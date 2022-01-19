@@ -20,8 +20,8 @@ class BottomsheetFavoritePage extends StatefulWidget {
 class _BottomsheetFavoritePageState extends State<BottomsheetFavoritePage> {
   @override
   Widget build(BuildContext context) {
-    var paths = widget.fileName;
-    var titlePath = paths.toString().split('/').last;
+    String paths = widget.fileName;
+    String titlePath = paths.toString().split('/').last;
 
     return Container(
       color: Colors.white,

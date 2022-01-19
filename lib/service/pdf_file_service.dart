@@ -37,20 +37,21 @@ class PdfFileService with ChangeNotifier {
       "Select *from ${SqlModel.tableRecent}  order by auto_id DESC",
     );
 
-    var tempValue = recentListPdfModelFromJson(jsonEncode(futurePDFList));
+    List<RecentListPdfModel> tempValue =
+        recentListPdfModelFromJson(jsonEncode(futurePDFList));
     print(tempValue);
     recentPdfList = [];
 
-    for (var file in tempValue) {
+    for (RecentListPdfModel file in tempValue) {
       File filePath = File(file.recentpdf.toString());
-      var pdfname = filePath.path.split('/').last;
+      String pdfname = filePath.path.split('/').last;
 
-      var lastModDate1 = filePath.lastModifiedSync();
-      var formattedDate1 = DateFormat('EEE, M/d/y').format(lastModDate1);
+      DateTime lastModDate1 = filePath.lastModifiedSync();
+      String formattedDate1 = DateFormat('EEE, M/d/y').format(lastModDate1);
 
-      var finalFileSize = filePath.lengthSync();
-      var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
-      var pdfmodel = PdfListModel(
+      int finalFileSize = filePath.lengthSync();
+      String sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
+      PdfListModel pdfmodel = PdfListModel(
           referenceFile: filePath,
           pdfname: pdfname,
           date: formattedDate1,
@@ -71,19 +72,20 @@ class PdfFileService with ChangeNotifier {
     List<Map<String, Object?>> futurePDFList = await dbClient.rawQuery(
         "Select *from ${SqlModel.tableFavorite}   order by auto_id DESC");
 
-    var tempValue = favouriteListPdfModelFromJson(jsonEncode(futurePDFList));
+    List<FavouriteListPdfModel> tempValue =
+        favouriteListPdfModelFromJson(jsonEncode(futurePDFList));
     print(tempValue);
     favoritePdfList = [];
-    for (var file in tempValue) {
+    for (FavouriteListPdfModel file in tempValue) {
       File filePath = File(file.pdf.toString());
-      var pdfname = filePath.path.split('/').last;
+      String pdfname = filePath.path.split('/').last;
 
-      var lastModDate1 = filePath.lastModifiedSync();
-      var formattedDate1 = DateFormat('EEE, M/d/y').format(lastModDate1);
+      DateTime lastModDate1 = filePath.lastModifiedSync();
+      String formattedDate1 = DateFormat('EEE, M/d/y').format(lastModDate1);
 
-      var finalFileSize = filePath.lengthSync();
-      var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
-      var pdfmodel = PdfListModel(
+      int finalFileSize = filePath.lengthSync();
+      String sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
+      PdfListModel pdfmodel = PdfListModel(
         referenceFile: filePath,
         pdfname: pdfname,
         date: formattedDate1,
@@ -102,7 +104,7 @@ class PdfFileService with ChangeNotifier {
   Future<bool> removeFromRecentPdfList(arriveDataRecent, String table) async {
     final dbClientremoveFromRecentPdfList = await SqlModel().db;
     try {
-      var resultremoveFromRecentPdfList =
+      List<Map<String, Object?>> resultremoveFromRecentPdfList =
           await dbClientremoveFromRecentPdfList.rawQuery(
         'DELETE FROM $table WHERE recentpdf = ?',
         [arriveDataRecent],
@@ -122,7 +124,8 @@ class PdfFileService with ChangeNotifier {
     print("-----------remove from favorite called------------");
     final dbClientRemoveFromFavorite = await SqlModel().db;
     try {
-      var resultRemoveFromFav = await dbClientRemoveFromFavorite.rawQuery(
+      List<Map<String, Object?>> resultRemoveFromFav =
+          await dbClientRemoveFromFavorite.rawQuery(
         'DELETE FROM $table WHERE pdf = ?',
         [arrivdata],
       ).whenComplete(() {
@@ -142,7 +145,7 @@ class PdfFileService with ChangeNotifier {
   Future<bool> clearRecentPdfList(String table) async {
     final dbClientDelete = await SqlModel().db;
     try {
-      var resultDelete = await dbClientDelete.rawQuery(
+      List<Map<String, Object?>> resultDelete = await dbClientDelete.rawQuery(
           """DELETE FROM $table""").whenComplete(() => notifyListeners());
       print("deleted result $resultDelete");
       getRecentPdfList();
@@ -158,7 +161,7 @@ class PdfFileService with ChangeNotifier {
   Future<bool> clearFavoritePdfList(String table) async {
     final dbClientDelete = await SqlModel().db;
     try {
-      var resultDelete = await dbClientDelete.rawQuery(
+      List<Map<String, Object?>> resultDelete = await dbClientDelete.rawQuery(
           """DELETE FROM $table""").whenComplete(() => notifyListeners());
       print("deleted result $resultDelete");
       getFavoritePdfList();
@@ -174,7 +177,7 @@ class PdfFileService with ChangeNotifier {
   Future<bool> insertIntoFavoritePdfList(String pdfPath, table) async {
     final dbClient = await SqlModel().db;
 
-    var isExist = await _checkrecordExists(pdfPath.toString());
+    bool isExist = await _checkrecordExists(pdfPath.toString());
 
     if (!isExist) {
       try {
@@ -199,7 +202,7 @@ class PdfFileService with ChangeNotifier {
     final dbClient = await SqlModel().db;
 
     try {
-      var result = await dbClient.rawQuery(
+      List<Map<String, Object?>> result = await dbClient.rawQuery(
           """select *from ${SqlModel.tableFavorite} where pdf= '$data'""");
 
       print("result $result");
@@ -291,24 +294,24 @@ class PdfFileService with ChangeNotifier {
   getStorageFilleMethod() async {
     //asyn function to get list of files
     List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
-    var root = storageInfo[0]
+    String root = storageInfo[0]
         .rootDir; //storageInfo[1] for SD card, geting the root directory
-    var fm = FileManager(root: Directory(root)); //
-    var temmpfiles = await fm.filesTree(
+    FileManager fm = FileManager(root: Directory(root)); //
+    List<File> temmpfiles = await fm.filesTree(
         excludedPaths: ["/storage/emulated/0/Android"],
         extensions: ["pdf"] //optional, to filter files, list only pdf files
         );
 
     files = [];
-    for (var file in temmpfiles) {
-      var pdfname = file.path.split('/').last;
+    for (File file in temmpfiles) {
+      String pdfname = file.path.split('/').last;
 
-      var lastModDate1 = file.lastModifiedSync();
-      var formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
+      DateTime lastModDate1 = file.lastModifiedSync();
+      String formattedDate = DateFormat('EEE, M/d/y').format(lastModDate1);
 
-      var finalFileSize = file.lengthSync();
-      var sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
-      var pdfmodel = PdfListModel(
+      int finalFileSize = file.lengthSync();
+      String sizeInKb = (finalFileSize / (1024)).toStringAsFixed(2);
+      PdfListModel pdfmodel = PdfListModel(
         referenceFile: file,
         pdfname: pdfname,
         date: formattedDate,
@@ -327,13 +330,14 @@ class PdfFileService with ChangeNotifier {
   }
 
   changeFileNameOnly(
-      BuildContext context, String newFileName, var index) async {
+      BuildContext context, String newFileName, int index) async {
     print("------------->arrived new name----$newFileName--------");
-    var temp1 = files[index].referenceFile!.path;
+    String temp1 = files[index].referenceFile!.path;
 
-    var lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);
-    var newPath = temp1.substring(0, lastSeparator + 1) + newFileName + ".pdf";
-    var filename = await files[index].referenceFile!.rename(newPath);
+    int lastSeparator = temp1.lastIndexOf(Platform.pathSeparator);
+    String newPath =
+        temp1.substring(0, lastSeparator + 1) + newFileName + ".pdf";
+    File filename = await files[index].referenceFile!.rename(newPath);
 
     files[index].referenceFile = filename;
     files[index].pdfpath = filename.path;

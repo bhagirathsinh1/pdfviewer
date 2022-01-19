@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
+import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +14,9 @@ class AddRemoveWidget extends StatefulWidget {
 class _AddRemoveWidgetState extends State<AddRemoveWidget> {
   @override
   Widget build(BuildContext context) {
-    var pdfService = Provider.of<PdfFileService>(context, listen: false);
-    var isfav = pdfService.favoritePdfList
+    PdfFileService pdfService =
+        Provider.of<PdfFileService>(context, listen: false);
+    Iterable<PdfListModel> isfav = pdfService.favoritePdfList
         .where((element) => element.pdfpath == widget.paths);
     return ListTile(
       title: !isfav.isEmpty

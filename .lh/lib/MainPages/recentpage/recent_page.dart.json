@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 9,
+            "activePatchIndex": 11,
             "patches": [
                 {
                     "date": 1642392739431,
@@ -44,6 +44,14 @@
                 {
                     "date": 1642571017403,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,11 +3,8 @@\n import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';\r\n \r\n import 'package:pdfviewer/service/pdf_file_service.dart';\r\n import 'package:pdfviewer/MainPages/recentpage/bottomsheet_recentpage.dart';\r\n-\r\n-import 'package:pdfviewer/widget/CommonWidget/page_view.dart';\r\n-\r\n import 'package:pdfviewer/MainPages/recentpage/recentlist_clear_widget.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/favorite_icon.dart';\r\n import 'package:provider/provider.dart';\r\n \r\n"
+                },
+                {
+                    "date": 1642578191314,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,8 @@\n import 'package:flutter/material.dart';\r\n import 'package:pdfviewer/MainPages/favoritepage/no_pdf_found.dart';\r\n import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';\r\n+import 'package:pdfviewer/model/pdf_list_model.dart';\r\n \r\n import 'package:pdfviewer/service/pdf_file_service.dart';\r\n import 'package:pdfviewer/MainPages/recentpage/bottomsheet_recentpage.dart';\r\n import 'package:pdfviewer/MainPages/recentpage/recentlist_clear_widget.dart';\r\n@@ -64,9 +65,9 @@\n                     var fileSize =\r\n                         pdfservice.recentPdfList[index].size.toString();\r\n                     var fileTitle =\r\n                         pdfservice.recentPdfList[index].pdfname.toString();\r\n-                    var isfav = pdfservice.favoritePdfList\r\n+                    Iterable<PdfListModel> isfav = pdfservice.favoritePdfList\r\n                         .where((element) => element.pdfpath == filePath);\r\n                     return Card(\r\n                         child: ListTile(\r\n                             title: Text(fileTitle),\r\n"
+                },
+                {
+                    "date": 1642578240873,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -57,15 +57,15 @@\n                   shrinkWrap: true,\r\n                   scrollDirection: Axis.vertical,\r\n                   itemCount: pdfservice.recentPdfList.length,\r\n                   itemBuilder: (BuildContext context, int index) {\r\n-                    var filePath =\r\n+                    String filePath =\r\n                         pdfservice.recentPdfList[index].pdfpath.toString();\r\n-                    var fileDate =\r\n+                    String fileDate =\r\n                         pdfservice.recentPdfList[index].date.toString();\r\n-                    var fileSize =\r\n+                    String fileSize =\r\n                         pdfservice.recentPdfList[index].size.toString();\r\n-                    var fileTitle =\r\n+                    String fileTitle =\r\n                         pdfservice.recentPdfList[index].pdfname.toString();\r\n                     Iterable<PdfListModel> isfav = pdfservice.favoritePdfList\r\n                         .where((element) => element.pdfpath == filePath);\r\n                     return Card(\r\n"
                 }
             ],
             "date": 1642392739431,

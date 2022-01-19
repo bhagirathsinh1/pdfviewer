@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 class FavoriteStarIcon extends StatefulWidget {
-  var isfav;
+  dynamic isfav;
   FavoriteStarIcon({Key? key, required this.isfav}) : super(key: key);
 
   @override

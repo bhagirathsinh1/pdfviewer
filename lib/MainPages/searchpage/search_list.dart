@@ -27,13 +27,15 @@ class _SearchListState extends State<SearchList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<PdfFileService>(builder: (context, pdfservice, child) {
-      var fileIndex = pdfservice.files[widget.index];
-      var filePath = fileIndex.pdfpath.toString();
-      var fileDate = fileIndex.date.toString();
-      var fileSize = fileIndex.size.toString();
-      var fileTitle = fileIndex.pdfname.toString();
-      var isfav = pdfservice.favoritePdfList.where((element) =>
-          element.pdfpath == pdfservice.files[widget.index].pdfpath.toString());
+      PdfListModel fileIndex = pdfservice.files[widget.index];
+      String filePath = fileIndex.pdfpath.toString();
+      String fileDate = fileIndex.date.toString();
+      String fileSize = fileIndex.size.toString();
+      String fileTitle = fileIndex.pdfname.toString();
+      Iterable<PdfListModel> isfav = pdfservice.favoritePdfList.where(
+          (element) =>
+              element.pdfpath ==
+              pdfservice.files[widget.index].pdfpath.toString());
       return Card(
         child: ListTile(
           title: Text(

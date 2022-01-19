@@ -23,7 +23,8 @@ class _PdfscreenState extends State<Pdfscreen> {
   TextEditingController textController = TextEditingController();
   @override
   void initState() {
-    var pdfService = Provider.of<PdfFileService>(context, listen: false);
+    PdfFileService pdfService =
+        Provider.of<PdfFileService>(context, listen: false);
     pdfService.items.addAll(pdfService.files);
     pdfService.getStorageFilleMethod();
     pdfService.getRecentPdfList();

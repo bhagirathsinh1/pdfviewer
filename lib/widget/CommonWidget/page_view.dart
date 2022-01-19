@@ -26,7 +26,7 @@ class ViewPDF extends StatefulWidget {
 
 class _ViewPDFState extends State<ViewPDF> {
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
-  var _myFile;
+  dynamic _myFile;
   late PdfViewerController _pdfViewerController;
 
   TextEditingController textGotoValue = TextEditingController();
@@ -193,7 +193,7 @@ class _ViewPDFState extends State<ViewPDF> {
       child: Text("OK"),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
-          var temp = int.parse(textGotoValue.text);
+          int temp = int.parse(textGotoValue.text);
           changePage(temp);
           Navigator.pop(context);
           Navigator.pop(context);

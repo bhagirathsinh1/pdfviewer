@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/favoritepage/no_pdf_found.dart';
 import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';
+import 'package:pdfviewer/model/pdf_list_model.dart';
 
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/MainPages/recentpage/bottomsheet_recentpage.dart';
@@ -57,15 +58,15 @@ class _RecentpageState extends State<Recentpage> {
                   scrollDirection: Axis.vertical,
                   itemCount: pdfservice.recentPdfList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    var filePath =
+                    String filePath =
                         pdfservice.recentPdfList[index].pdfpath.toString();
-                    var fileDate =
+                    String fileDate =
                         pdfservice.recentPdfList[index].date.toString();
-                    var fileSize =
+                    String fileSize =
                         pdfservice.recentPdfList[index].size.toString();
-                    var fileTitle =
+                    String fileTitle =
                         pdfservice.recentPdfList[index].pdfname.toString();
-                    var isfav = pdfservice.favoritePdfList
+                    Iterable<PdfListModel> isfav = pdfservice.favoritePdfList
                         .where((element) => element.pdfpath == filePath);
                     return Card(
                         child: ListTile(

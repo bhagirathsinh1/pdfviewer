@@ -5,11 +5,11 @@ class RecentSQLPDFService {
   Future insertRecentPDF(dynamic data, table) async {
     final dbClient = await SqlModel().db;
 
-    var isExist = await _checkrecordExists(data['recentpdf'].toString());
+    bool isExist = await _checkrecordExists(data['recentpdf'].toString());
 
     if (!isExist) {
       try {
-        var result = await dbClient.insert(table, data);
+        int result = await dbClient.insert(table, data);
 
         print("result $result");
 
@@ -23,10 +23,9 @@ class RecentSQLPDFService {
 
   Future<bool> _checkrecordExists(String data) async {
     final dbClient = await SqlModel().db;
-    // var user = await SaveData().getUserData();
 
     try {
-      var result = await dbClient.rawQuery(
+      List<Map<String, Object?>> result = await dbClient.rawQuery(
           """select *from ${SqlModel.tableRecent} where recentpdf= '$data'""");
 
       print("result $result");
