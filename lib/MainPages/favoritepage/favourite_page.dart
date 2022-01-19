@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/favoritepage/no_pdf_found.dart';
-
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/MainPages/favoritepage/botttomsheet_favoritepage.dart';
 import 'package:pdfviewer/MainPages/favoritepage/favoritelist_clear_widget.dart';
-
 import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 import 'package:provider/provider.dart';
 
@@ -81,7 +79,6 @@ class _FavouritepageState extends State<Favouritepage> {
                               builder: (BuildContext context) {
                                 return BottomsheetFavoritePage(
                                   fileName: filePath,
-                                  index: index,
                                 );
                               },
                             );

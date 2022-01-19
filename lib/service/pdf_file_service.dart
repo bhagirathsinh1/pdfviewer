@@ -11,7 +11,7 @@ import 'package:pdfviewer/SQLService/recent_pdf_model.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
-import 'package:pdfviewer/service/singing_character_enum.dart';
+import 'package:pdfviewer/service/sorting_enum.dart';
 
 class PdfFileService with ChangeNotifier {
   // List starPDF = [];
@@ -21,7 +21,7 @@ class PdfFileService with ChangeNotifier {
   bool isSizeAccending = false;
   bool isSizeDeccending = false;
   bool isReverseSized = false;
-  SingingCharacter? _character;
+  Sortingenum? _character;
 
   // List<RecentListPdfModel> recentPdfList = [];
   List<PdfListModel> items = [];

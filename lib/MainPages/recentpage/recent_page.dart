@@ -75,7 +75,8 @@ class _RecentpageState extends State<Recentpage> {
                         subtitle: fileSize.length < 7
                             ? Text("${fileDate}\n${fileSize} Kb")
                             : Text(
-                                "${fileDate}\n${(double.parse(fileSize) / 1024).toStringAsFixed(2)} Mb"),
+                                "${fileDate}\n${(double.parse(fileSize) / 1024).toStringAsFixed(2)} Mb",
+                              ),
                         leading: Icon(
                           Icons.picture_as_pdf,
                           color: Colors.red,

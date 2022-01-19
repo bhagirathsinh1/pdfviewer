@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 1,
+            "activePatchIndex": 2,
             "patches": [
                 {
                     "date": 1642075579463,
@@ -12,6 +12,10 @@
                 {
                     "date": 1642077902534,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,8 +23,13 @@\n   final _pageController = PageController(keepPage: false);\r\n   TextEditingController textController = TextEditingController();\r\n   @override\r\n   void initState() {\r\n+    var pdfService = Provider.of<PdfFileService>(context, listen: false);\r\n+    pdfService.items.addAll(pdfService.files);\r\n+    pdfService.getStorageFilleMethod();\r\n+    pdfService.getRecentPdfList();\r\n+    pdfService.getFavoritePdfList();\r\n     super.initState();\r\n   }\r\n \r\n   @override\r\n"
+                },
+                {
+                    "date": 1642568231964,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,5 @@\n import 'dart:io';\r\n-\r\n import 'package:bottom_bar/bottom_bar.dart';\r\n import 'package:flutter/material.dart';\r\n import 'package:pdfviewer/MainPages/favoritepage/favourite_page.dart';\r\n import 'package:pdfviewer/MainPages/homepage/home_page.dart';\r\n"
                 }
             ],
             "date": 1642075579463,

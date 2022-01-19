@@ -7,10 +7,9 @@ import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
 class BottomsheetFavoritePage extends StatefulWidget {
   BottomsheetFavoritePage({
     Key? key,
-    required this.index,
     required this.fileName,
   }) : super(key: key);
-  final int index;
+
   final String fileName;
 
   @override

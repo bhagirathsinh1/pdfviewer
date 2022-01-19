@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1642492428331,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642567883236,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,12 +6,11 @@\n \r\n class BottomsheetFavoritePage extends StatefulWidget {\r\n   BottomsheetFavoritePage({\r\n     Key? key,\r\n-    required this.index,\r\n     required this.fileName,\r\n   }) : super(key: key);\r\n-  final int index;\r\n+\r\n   final String fileName;\r\n \r\n   @override\r\n   _BottomsheetFavoritePageState createState() =>\r\n"
                 }
             ],
             "date": 1642492428331,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:pdfviewer/service/pdf_file_service.dart';
-import 'package:pdfviewer/service/singing_character_enum.dart';
+import 'package:pdfviewer/service/sorting_enum.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -11,7 +11,7 @@ class Shorting extends StatefulWidget {
 }
 
 class _ShortingState extends State<Shorting> {
-  SingingCharacter? _character;
+  Sortingenum? _character;
 
   bool isNameSort = true;
 
@@ -24,11 +24,11 @@ class _ShortingState extends State<Shorting> {
   bool isReverseSized = false;
 
   Widget build(BuildContext context) {
-    return PopupMenuButton<SingingCharacter>(
+    return PopupMenuButton<Sortingenum>(
       onSelected: (selectedRadio) async {
         print('--------------------------->1');
         switch (selectedRadio) {
-          case SingingCharacter.isSizeAccendingRadio:
+          case Sortingenum.isSizeAccendingRadio:
             {
               await Provider.of<PdfFileService>(context, listen: false)
                   .accendingSort();
@@ -37,7 +37,7 @@ class _ShortingState extends State<Shorting> {
               });
             }
             break;
-          case SingingCharacter.isSizeDeccendingRadio:
+          case Sortingenum.isSizeDeccendingRadio:
             {
               await Provider.of<PdfFileService>(context, listen: false)
                   .deccendingSort();
@@ -46,7 +46,7 @@ class _ShortingState extends State<Shorting> {
               });
             }
             break;
-          case SingingCharacter.nameRadio:
+          case Sortingenum.nameRadio:
             {
               await Provider.of<PdfFileService>(context, listen: false)
                   .nameSort();
@@ -55,7 +55,7 @@ class _ShortingState extends State<Shorting> {
               });
             }
             break;
-          case SingingCharacter.dateRadio:
+          case Sortingenum.dateRadio:
             {
               await Provider.of<PdfFileService>(context, listen: false)
                   .dateSort();
@@ -79,10 +79,10 @@ class _ShortingState extends State<Shorting> {
           },
           child: Row(
             children: [
-              Radio<SingingCharacter>(
-                value: SingingCharacter.isSizeAccendingRadio,
+              Radio<Sortingenum>(
+                value: Sortingenum.isSizeAccendingRadio,
                 groupValue: _character,
-                onChanged: (SingingCharacter? value) async {
+                onChanged: (Sortingenum? value) async {
                   print('---------------------------3');
 
                   setState(() {
@@ -95,16 +95,16 @@ class _ShortingState extends State<Shorting> {
               )
             ],
           ),
-          value: SingingCharacter.isSizeAccendingRadio,
+          value: Sortingenum.isSizeAccendingRadio,
         ),
         PopupMenuItem(
           onTap: () {},
           child: Row(
             children: [
-              Radio<SingingCharacter>(
-                value: SingingCharacter.isSizeDeccendingRadio,
+              Radio<Sortingenum>(
+                value: Sortingenum.isSizeDeccendingRadio,
                 groupValue: _character,
-                onChanged: (SingingCharacter? value) async {
+                onChanged: (Sortingenum? value) async {
                   if (isSizeDeccending == false) {
                     setState(() {
                       _character = value;
@@ -115,15 +115,15 @@ class _ShortingState extends State<Shorting> {
               Text("Size : Deccending")
             ],
           ),
-          value: SingingCharacter.isSizeDeccendingRadio,
+          value: Sortingenum.isSizeDeccendingRadio,
         ),
         PopupMenuItem(
           child: Row(
             children: [
-              Radio<SingingCharacter>(
-                value: SingingCharacter.nameRadio,
+              Radio<Sortingenum>(
+                value: Sortingenum.nameRadio,
                 groupValue: _character,
-                onChanged: (SingingCharacter? value) async {
+                onChanged: (Sortingenum? value) async {
                   setState(() {
                     _character = value;
                   });
@@ -132,15 +132,15 @@ class _ShortingState extends State<Shorting> {
               Text("Name")
             ],
           ),
-          value: SingingCharacter.nameRadio,
+          value: Sortingenum.nameRadio,
         ),
         PopupMenuItem(
           child: Row(
             children: [
-              Radio<SingingCharacter>(
-                value: SingingCharacter.dateRadio,
+              Radio<Sortingenum>(
+                value: Sortingenum.dateRadio,
                 groupValue: _character,
-                onChanged: (SingingCharacter? value) async {
+                onChanged: (Sortingenum? value) async {
                   setState(() {
                     _character = value;
                   });
@@ -149,7 +149,7 @@ class _ShortingState extends State<Shorting> {
               Text("Date")
             ],
           ),
-          value: SingingCharacter.dateRadio,
+          value: Sortingenum.dateRadio,
         ),
       ],
     );

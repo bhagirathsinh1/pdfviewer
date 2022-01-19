@@ -1,4 +1,4 @@
-enum SingingCharacter {
+enum Sortingenum {
   isSizeAccendingRadio,
   isSizeDeccendingRadio,
   nameRadio,

@@ -7,7 +7,6 @@ class DeleteFileWidget extends StatelessWidget {
     Key? key,
     required this.fileName,
   }) : super(key: key);
-  // final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
     return ListTile(

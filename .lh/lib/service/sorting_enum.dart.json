@@ -1,0 +1,18 @@
+{
+    "sourceFile": "lib/service/sorting_enum.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1642568491682,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1642568491682,
+            "name": "Commit-0",
+            "content": "enum Sortingenum {\r\n  isSizeAccendingRadio,\r\n  isSizeDeccendingRadio,\r\n  nameRadio,\r\n  dateRadio\r\n}\r\n"
+        }
+    ]
+}

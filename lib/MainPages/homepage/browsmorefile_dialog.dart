@@ -1,7 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
-import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 import 'package:pdfviewer/widget/browsmore_pdf_view.dart';
 
 class BrowsMoreFilePopUp extends StatefulWidget {
@@ -71,7 +70,9 @@ class _BrowsMoreFilePopUpState extends State<BrowsMoreFilePopUp> {
                         Icons.star,
                         color: Colors.black.withOpacity(0.5),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                     ),
                     ListTile(
                       title: Text(
@@ -84,7 +85,9 @@ class _BrowsMoreFilePopUpState extends State<BrowsMoreFilePopUp> {
                         Icons.share,
                         color: Colors.black.withOpacity(0.5),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                     ),
                     ListTile(
                       title: Text(
@@ -97,7 +100,9 @@ class _BrowsMoreFilePopUpState extends State<BrowsMoreFilePopUp> {
                         Icons.privacy_tip,
                         color: Colors.black.withOpacity(0.5),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                     ),
                   ],
                 ),

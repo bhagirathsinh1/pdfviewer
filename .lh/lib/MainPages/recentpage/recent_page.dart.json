@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 3,
+            "activePatchIndex": 4,
             "patches": [
                 {
                     "date": 1642392739431,
@@ -20,6 +20,10 @@
                 {
                     "date": 1642565576712,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -108,10 +108,13 @@\n                             context,\r\n                             MaterialPageRoute(\r\n                               builder: (context) {\r\n                                 return ViewPDF(\r\n-                                  pdfmodel: pdfservice.recentPdfList[index],\r\n-                                );\r\n+                                    pdfmodel: pdfservice.recentPdfList[index],\r\n+                                    callback: (String newFileName) {\r\n+                                      pdfservice.changeFileNameOnly(\r\n+                                          context, newFileName, index);\r\n+                                    });\r\n                               },\r\n                             ),\r\n                           );\r\n                         },\r\n"
+                },
+                {
+                    "date": 1642568312127,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -74,9 +74,10 @@\n                         title: Text(fileTitle),\r\n                         subtitle: fileSize.length < 7\r\n                             ? Text(\"${fileDate}\\n${fileSize} Kb\")\r\n                             : Text(\r\n-                                \"${fileDate}\\n${(double.parse(fileSize) / 1024).toStringAsFixed(2)} Mb\"),\r\n+                                \"${fileDate}\\n${(double.parse(fileSize) / 1024).toStringAsFixed(2)} Mb\",\r\n+                              ),\r\n                         leading: Icon(\r\n                           Icons.picture_as_pdf,\r\n                           color: Colors.red,\r\n                         ),\r\n"
                 }
             ],
             "date": 1642392739431,

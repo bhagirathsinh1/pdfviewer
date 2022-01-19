@@ -1,0 +1,18 @@
+{
+    "sourceFile": "lib/MainPages/favoritepage/favoritelist_clear_widget.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1642567911483,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1642567911483,
+            "name": "Commit-0",
+            "content": "import 'package:flutter/material.dart';\r\nimport 'package:pdfviewer/SQLService/sqlService.dart';\r\nimport 'package:pdfviewer/service/pdf_file_service.dart';\r\nimport 'package:provider/provider.dart';\r\n\r\nclass FavoriteClear extends StatefulWidget {\r\n  FavoriteClear({Key? key}) : super(key: key);\r\n\r\n  @override\r\n  _FavoriteClearState createState() => _FavoriteClearState();\r\n}\r\n\r\nclass _FavoriteClearState extends State<FavoriteClear> with ChangeNotifier {\r\n  @override\r\n  Widget build(BuildContext context) {\r\n    return Container(\r\n      color: Colors.white,\r\n      height: 70,\r\n      child: Column(\r\n        children: [\r\n          ListTile(\r\n            title: Text(\r\n              \"Clear Favorites\",\r\n              style: TextStyle(\r\n                color: Colors.black.withOpacity(0.8),\r\n              ),\r\n            ),\r\n            leading: Icon(\r\n              Icons.delete,\r\n              color: Colors.black.withOpacity(0.5),\r\n            ),\r\n            onTap: () async {\r\n              Navigator.pop(context);\r\n\r\n              Provider.of<PdfFileService>(context, listen: false)\r\n                  .clearFavoritePdfList(SqlModel.tableFavorite);\r\n              ScaffoldMessenger.of(context).clearSnackBars();\r\n              ScaffoldMessenger.of(context).showSnackBar(SnackBar(\r\n                content: Text(\"Favorite list cleared !!\"),\r\n              ));\r\n            },\r\n          ),\r\n        ],\r\n      ),\r\n    );\r\n  }\r\n}\r\n"
+        }
+    ]
+}
