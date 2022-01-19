@@ -26,7 +26,7 @@ class _ReloadPdfState extends State<ReloadPdf> {
 
                 print("......get my files bool 1....");
               },
-              child: isShowFiles ? Text("Get files") : Text("Reload Pdf"),
+              child: isShowFiles ? Text("Get file") : Text("Reload Pdf"),
             ),
           ],
         ),
