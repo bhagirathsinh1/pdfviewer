@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 15,
+            "activePatchIndex": 16,
             "patches": [
                 {
                     "date": 1642404771875,
@@ -68,6 +68,10 @@
                 {
                     "date": 1642565576718,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -117,10 +117,13 @@\n               context,\r\n               MaterialPageRoute(\r\n                 builder: (context) {\r\n                   return ViewPDF(\r\n-                    pdfmodel: pdfservice.files[widget.index],\r\n-                  );\r\n+                      pdfmodel: pdfservice.files[widget.index],\r\n+                      callback: (String newFileName) {\r\n+                        pdfservice.changeFileNameOnly(\r\n+                            context, newFileName, widget.index);\r\n+                      });\r\n                 },\r\n               ),\r\n             );\r\n           },\r\n"
+                },
+                {
+                    "date": 1642567661212,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,9 @@\n import 'package:flutter/material.dart';\r\n import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';\r\n import 'package:pdfviewer/SQLService/recent_pdf_service.dart';\r\n import 'package:pdfviewer/SQLService/sqlService.dart';\r\n+import 'package:pdfviewer/common%20mehtod/addIntoRecentMethod.dart';\r\n import 'package:pdfviewer/model/pdf_list_model.dart';\r\n import 'package:pdfviewer/service/pdf_file_service.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';\r\n import 'package:pdfviewer/widget/CommonWidget/page_view.dart';\r\n@@ -89,31 +90,9 @@\n               ),\r\n             ],\r\n           ),\r\n           onTap: () async {\r\n-            Map<String, Object> data = {\r\n-              'recentpdf': (filePath),\r\n-            };\r\n-\r\n-            if (!data.isEmpty) {\r\n-              try {\r\n-                await RecentSQLPDFService()\r\n-                    .insertRecentPDF(data, SqlModel.tableRecent);\r\n-\r\n-                Provider.of<PdfFileService>(context, listen: false)\r\n-                    .getRecentPdfList();\r\n-              } catch (e) {\r\n-                ScaffoldMessenger.of(context).clearSnackBars();\r\n-                ScaffoldMessenger.of(context).showSnackBar(\r\n-                  SnackBar(\r\n-                    content: Text(\r\n-                      e.toString(),\r\n-                    ),\r\n-                  ),\r\n-                );\r\n-              }\r\n-              print(\"pdfname is--------------> $data\");\r\n-            }\r\n+            AddIntoRecentsMethod().addIntoRecents(filePath, context);\r\n             Navigator.push(\r\n               context,\r\n               MaterialPageRoute(\r\n                 builder: (context) {\r\n"
                 }
             ],
             "date": 1642404771875,

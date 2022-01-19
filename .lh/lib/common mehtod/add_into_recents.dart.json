@@ -1,0 +1,22 @@
+{
+    "sourceFile": "lib/common mehtod/add_into_recents.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1642566153350,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642566219821,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,1 +1,10 @@\n+import 'package:flutter/material.dart';\r\n \r\n+class AddIntoRecentsMethod extends StatelessWidget {\r\n+  const AddIntoRecentsMethod({Key? key}) : super(key: key);\r\n+\r\n+  @override\r\n+  Widget build(BuildContext context) {\r\n+    return Container();\r\n+  }\r\n+}\r\n"
+                }
+            ],
+            "date": 1642566153350,
+            "name": "Commit-0",
+            "content": "\r\n"
+        }
+    ]
+}

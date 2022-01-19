@@ -1,0 +1,22 @@
+{
+    "sourceFile": "lib/common mehtod/addIntoRecentMetho.dart",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1642567507846,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1642567536067,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n import 'package:pdfviewer/SQLService/sqlService.dart';\r\n import 'package:pdfviewer/service/pdf_file_service.dart';\r\n import 'package:provider/provider.dart';\r\n \r\n-class AddIntoRecents {\r\n+class AddIntoRecentsMethod {\r\n   Future<void> addIntoRecents(String filePath, BuildContext context) async {\r\n     Map<String, Object> data = {\r\n       'recentpdf': (filePath),\r\n     };\r\n"
+                }
+            ],
+            "date": 1642567507846,
+            "name": "Commit-0",
+            "content": "import 'package:flutter/widgets.dart';\r\nimport 'package:pdfviewer/SQLService/recent_pdf_service.dart';\r\nimport 'package:pdfviewer/SQLService/sqlService.dart';\r\nimport 'package:pdfviewer/service/pdf_file_service.dart';\r\nimport 'package:provider/provider.dart';\r\n\r\nclass AddIntoRecents {\r\n  Future<void> addIntoRecents(String filePath, BuildContext context) async {\r\n    Map<String, Object> data = {\r\n      'recentpdf': (filePath),\r\n    };\r\n    await RecentSQLPDFService().insertRecentPDF(data, SqlModel.tableRecent);\r\n\r\n    Provider.of<PdfFileService>(context, listen: false).getRecentPdfList();\r\n  }\r\n}\r\n"
+        }
+    ]
+}

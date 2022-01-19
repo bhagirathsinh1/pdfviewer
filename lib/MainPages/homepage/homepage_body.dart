@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
 import 'package:pdfviewer/SQLService/recent_pdf_service.dart';
 import 'package:pdfviewer/SQLService/sqlService.dart';
+import 'package:pdfviewer/common%20mehtod/addIntoRecentMethod.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
@@ -92,31 +93,7 @@ class _HomepageBodyState extends State<HomepageBody> {
                   ],
                 ),
                 onTap: () async {
-                  // recent_index = index;
-
-                  Map<String, Object> data = {
-                    'recentpdf': (filePath),
-                  };
-
-                  if (!data.isEmpty) {
-                    try {
-                      await RecentSQLPDFService()
-                          .insertRecentPDF(data, SqlModel.tableRecent);
-
-                      Provider.of<PdfFileService>(context, listen: false)
-                          .getRecentPdfList();
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).clearSnackBars();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            e.toString(),
-                          ),
-                        ),
-                      );
-                    }
-                    print("pdfname is--------------> $data");
-                  }
+                  AddIntoRecentsMethod().addIntoRecents(filePath, context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
