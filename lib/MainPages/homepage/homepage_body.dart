@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
+import 'package:pdfviewer/widget/CommonWidget/addremove_widget.dart';
 import 'package:pdfviewer/common%20mehtod/addIntoRecentMethod.dart';
 import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';

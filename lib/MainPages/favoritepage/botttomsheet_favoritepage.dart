@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
+import 'package:pdfviewer/widget/CommonWidget/addremove_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';

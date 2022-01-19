@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pdfviewer/MainPages/homepage/addremove_widget.dart';
+import 'package:pdfviewer/widget/CommonWidget/addremove_widget.dart';
 
 import 'package:pdfviewer/SQLService/sqlService.dart';
 
