@@ -55,7 +55,7 @@ class _ViewPDFState extends State<ViewPDF> {
     });
 
     Future.delayed(
-      const Duration(milliseconds: 300),
+      const Duration(seconds: 1),
       () async {
         _pdfViewerController = PdfViewerController();
         _myFile = File(widget.pdfmodel.pdfpath.toString());
