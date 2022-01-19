@@ -25,7 +25,7 @@ class _PdfscreenState extends State<Pdfscreen> {
   void initState() {
     PdfFileService pdfService =
         Provider.of<PdfFileService>(context, listen: false);
-    pdfService.items.addAll(pdfService.files);
+    // pdfService.items.addAll(pdfService.files);
     pdfService.getStorageFilleMethod();
     pdfService.getRecentPdfList();
     pdfService.getFavoritePdfList();

@@ -62,7 +62,7 @@ class _MyHomePageState extends State<SearchPage> {
                 Expanded(
                   child: ListView.builder(
                     //if file/folder list is grabbed, then show here
-                    itemCount: pdfservice.files.length,
+                    itemCount: pdfservice.items.length,
                     itemBuilder: (BuildContext ctxt, index) {
                       return SearchList(
                         index: index,

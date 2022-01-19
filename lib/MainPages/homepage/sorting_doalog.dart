@@ -12,7 +12,6 @@ class Shorting extends StatefulWidget {
 
 class _ShortingState extends State<Shorting> {
   Sortingenum? _character;
-
   bool isNameSort = true;
 
   bool isDateSort = false;

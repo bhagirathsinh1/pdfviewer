@@ -8,14 +8,17 @@ import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
-import 'package:pdfviewer/widget/CommonWidget/favorite_icon.dart';
+import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
 import 'package:provider/provider.dart';
 
 class SearchList extends StatefulWidget {
-  SearchList({Key? key, required this.index}) : super(key: key);
+  SearchList({
+    Key? key,
+    required this.index,
+  }) : super(key: key);
   int index;
   @override
   _SearchListState createState() => _SearchListState();
@@ -37,7 +40,7 @@ class _SearchListState extends State<SearchList> {
       return Card(
         child: ListTile(
           title: Text(
-            pdfservice.files[widget.index].pdfname.toString(),
+            pdfservice.items[widget.index].pdfname.toString(),
           ),
           subtitle: fileSize.length < 7
               ? Text("${fileDate}\n${fileSize} Kb")
@@ -49,7 +52,10 @@ class _SearchListState extends State<SearchList> {
           ),
           trailing: Wrap(
             children: [
-              FavoriteStarIcon(isfav: isfav),
+              Icon(
+                Icons.star,
+                color: !isfav.isEmpty ? Colors.blue : Colors.white,
+              ),
               IconButton(
                 onPressed: () {
                   showModalBottomSheet<void>(

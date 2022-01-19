@@ -24,11 +24,11 @@ class PdfFileService with ChangeNotifier {
   Sortingenum? _character;
 
   // List<RecentListPdfModel> recentPdfList = [];
-  List<PdfListModel> items = [];
 
   List<PdfListModel> favoritePdfList = [];
   List<PdfListModel> files = [];
   List<PdfListModel> recentPdfList = [];
+  List<PdfListModel> items = [];
 
   Future getRecentPdfList() async {
     final dbClient = await SqlModel().db;
@@ -237,8 +237,8 @@ class PdfFileService with ChangeNotifier {
       // removeFromFavorite(file, SqlModel.tableFavorite);
       getStorageFilleMethod();
       getFavoritePdfList();
-      items.clear();
-      items.addAll(files);
+      // items.clear();
+      // items.addAll(files);
       notifyListeners();
       print(
           "-----------table favorite ${SqlModel.tableFavorite}--------------");
@@ -325,7 +325,8 @@ class PdfFileService with ChangeNotifier {
       );
       files.add(pdfmodel);
     }
-
+    items.clear();
+    items.addAll(files);
     notifyListeners();
     print(files);
     //update the UI
