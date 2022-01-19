@@ -26,15 +26,15 @@ class _HomepageState extends State<Homepage> {
     return Consumer<PdfFileService>(builder: (context, counter, child) {
       return Scaffold(
           appBar: AppBar(
-            title: Permission.storage.request().isGranted == true
-                ? Text(
-                    "PDF Reader",
-                    style: TextStyle(color: Colors.black),
-                  )
-                : Text(
-                    " ${counter.files.length} pdf found !",
-                    style: TextStyle(color: Colors.black),
-                  ),
+            title: ListTile(
+                title: Text(
+                  "PDF Reader",
+                  style: TextStyle(color: Colors.black),
+                ),
+                subtitle: Text(
+                  "${counter.files.length} pdf found !",
+                  style: TextStyle(color: Colors.black),
+                )),
             backgroundColor: Colors.white,
             actions: <Widget>[
               ///search button
