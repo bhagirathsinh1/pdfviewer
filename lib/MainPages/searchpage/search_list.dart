@@ -8,17 +8,14 @@ import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
-import 'package:pdfviewer/widget/CommonWidget/page_view.dart';
 import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
 import 'package:provider/provider.dart';
 
 class SearchList extends StatefulWidget {
-  SearchList({Key? key, required this.index, required this.items})
-      : super(key: key);
+  SearchList({Key? key, required this.index}) : super(key: key);
   int index;
-  List<PdfListModel> items = [];
   @override
   _SearchListState createState() => _SearchListState();
 }
@@ -39,7 +36,7 @@ class _SearchListState extends State<SearchList> {
       return Card(
         child: ListTile(
           title: Text(
-            widget.items[widget.index].pdfname.toString(),
+            pdfservice.files[widget.index].pdfname.toString(),
           ),
           subtitle: fileSize.length < 7
               ? Text("${fileDate}\n${fileSize} Kb")
