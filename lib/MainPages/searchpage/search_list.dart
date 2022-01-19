@@ -8,6 +8,7 @@ import 'package:pdfviewer/common%20mehtod/navigate_to_viewpdf.dart';
 import 'package:pdfviewer/model/pdf_list_model.dart';
 import 'package:pdfviewer/service/pdf_file_service.dart';
 import 'package:pdfviewer/widget/CommonWidget/delete_file_widget.dart';
+import 'package:pdfviewer/widget/CommonWidget/favorite_icon.dart';
 import 'package:pdfviewer/widget/CommonWidget/rename_files_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/share_file_widget.dart';
 import 'package:pdfviewer/widget/CommonWidget/title_of_bottomsheetpdf.dart';
@@ -48,10 +49,7 @@ class _SearchListState extends State<SearchList> {
           ),
           trailing: Wrap(
             children: [
-              Icon(
-                Icons.star,
-                color: !isfav.isEmpty ? Colors.blue : Colors.white,
-              ),
+              FavoriteStarIcon(isfav: isfav),
               IconButton(
                 onPressed: () {
                   showModalBottomSheet<void>(

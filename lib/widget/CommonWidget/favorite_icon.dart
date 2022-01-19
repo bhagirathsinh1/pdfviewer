@@ -19,7 +19,7 @@ class _FavoriteStarIconState extends State<FavoriteStarIcon> {
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       icon: Icon(
         Icons.star,
-        color: widget.isfav.isEmpty ? Colors.white : Colors.blue,
+        color: widget.isfav.isEmpty ? Colors.transparent : Colors.blue,
       ),
     );
   }
